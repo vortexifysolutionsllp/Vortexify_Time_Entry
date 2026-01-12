@@ -1,0 +1,18 @@
+<template>
+    <lightning-card icon-name="standard:account" variant="base">
+        <div slot="title">
+            Split Opportunity Based on Facility
+        </div>
+        <div slot="actions">
+
+        </div>
+        <div for:each={accordList} for:item="accord" for:index="index" key={accord.Number}>
+            <!-- Repeatable Accord  -->
+            <div>
+                <lightning-input name="question" label="Question"></lightning-input>
+                <lightning-input name="answer" label="Answer"></lightning-input>
+            </div>
+        </div>
+        <lightning-button variant="base" label="Add More" onclick={handleAddMore}></lightning-button>
+    </lightning-card>
+</template>

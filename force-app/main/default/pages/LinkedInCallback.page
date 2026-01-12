@@ -1,0 +1,98 @@
+<apex:page controller="LinkedInOAuthController" lightningStylesheets="true" showHeader="false" sidebar="false">
+<html>
+<head>
+    <c:libraries ></c:libraries>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .container {
+            background: white;
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .auth-btn {
+            background: #0073b1;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .auth-btn:hover {
+            background: #005582;
+        }
+
+        .code-box {
+            margin-top: 20px;
+            padding: 10px;
+            background: #eef6ff;
+            border: 1px solid #0073b1;
+            border-radius: 5px;
+            display: inline-block;
+            word-wrap: break-word;
+            max-width: 90%;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body ng-app="myApp" ng-controller="myController">
+    <div class="container">
+        <h1>LinkedIn Authorization</h1>
+        <p>Click the button below to authenticate with LinkedIn.</p>
+        <button class="auth-btn" ng-click="redirectURL()">Connect with LinkedIn</button>
+
+        <div class="code-box" ng-show="linkedinAuthCode">
+            <strong>Authorization Code:</strong>
+            <p>{{ linkedinAuthCode }}</p>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myController', function ($scope) {
+            $scope.redirectURL = function () {
+                LinkedInOAuthController.redirectToUtilitarianLabs(function (result, event) {
+                    if (event.status && result) {
+                        window.location.href = result;
+                    }
+                    $scope.$apply();
+                });
+            };
+
+            function getQueryParam(param) {
+                var urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
+            }
+
+            $scope.linkedinAuthCode = getQueryParam('code');
+        });
+    </script>
+</body>
+</html>
+</apex:page>

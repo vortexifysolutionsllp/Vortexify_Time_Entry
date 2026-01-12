@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="Milestone Records" class="slds-p-around_small">
+        <lightning-record-picker
+            label="Project"
+            placeholder="Search Projecr..."
+            object-api-name="Project__c"
+            record-id={selectedProjectId}
+            value={selectedProjectId}
+            onchange={handleRecordChange}
+           size="large"
+        >
+        </lightning-record-picker>
+        <lightning-datatable
+            key-field="Id"
+            data={milestoneRecords}
+            columns={columns}
+            onsave={handleSave}
+            draft-values={draftValues}            
+            onrowselection={handleRowSelection}>
+        </lightning-datatable>
+
+          <!-- selected-rows={selectedRows} -->
+
+        <lightning-button
+            variant="brand"
+            label="Export Selected"
+            onclick={clickHandler}>
+        </lightning-button>
+
+        <template if:true={isLoading}>
+            <lightning-spinner size="large" alternative-text="Exporting..." class="slds-m-top_medium"></lightning-spinner>
+        </template>
+    </lightning-card>
+</template>

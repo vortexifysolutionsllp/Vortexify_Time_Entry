@@ -1,0 +1,102 @@
+<apex:page controller="LeaveApprovalController" showHeader="false" sidebar="false">
+
+    <apex:pageMessages />
+
+    <style>
+        /* shivam kumar mishra */
+        
+        /* Full page center alignment */
+        .center-wrapper {
+            display: flex;
+            justify-content: center;     
+            align-items: center;         
+            height: 100vh;               
+            background: #b3e5e6;
+        }
+
+        /* Card styling */
+        .card {
+            background: #f2f0f0;
+            padding: 30px;
+            width: 600px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 30, 66, 0.15);
+            text-align: left;
+        }
+        
+
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .row-text {
+            margin: 8px 0;
+            font-size: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            color: white;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .approve-btn {
+            background: #28a745;
+        }
+
+        .reject-btn {
+            background: #d9534f;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+
+    <div class="center-wrapper">
+
+        <apex:outputPanel rendered="{!isValid}">
+            <div class="card">
+
+                <div class="title">Leave Approval Request</div>
+
+                <div class="row-text"><b>Employee:</b> {!leaveRecord.Employee__r.Name}</div>
+                <div class="row-text"><b>From Date:</b> {!YEAR(leaveRecord.Start_Date__c)}-{!LPAD(TEXT(MONTH(leaveRecord.Start_Date__c)),2,'0')}-{!LPAD(TEXT(DAY(leaveRecord.Start_Date__c)),2,'0')}</div>
+                <div class="row-text"><b>To Date:</b> {!YEAR(leaveRecord.End_Date__c)}-{!LPAD(TEXT(MONTH(leaveRecord.End_Date__c)),2,'0')}-{!LPAD(TEXT(DAY(leaveRecord.End_Date__c)),2,'0')}</div>
+                <div class="row-text"><b>Number of Days:</b> {!leaveRecord.Days__c}</div>
+                <div class="row-text"><b>Leave Type:</b> {!leaveRecord.Leave_Type__c}</div>
+                <div class="row-text"><b>Reason:</b> {!leaveRecord.Reason_for_Leave__c}</div>
+
+                <br/>
+
+                <apex:form >
+                    <apex:commandButton value="Approve"
+                                        action="{!approve}"
+                                        disabled="{!OR(leaveRecord.Status__c='Approved', leaveRecord.Status__c='Rejected')}"
+                                        style="background:green;color:white;padding:8px;border-radius:4px;" />
+
+                    <apex:commandButton value="Reject"
+                                        action="{!reject}"
+                                        disabled="{!OR(leaveRecord.Status__c='Approved', leaveRecord.Status__c='Rejected')}"
+                                        style="background:red;color:white;padding:8px;border-radius:4px;" />
+                </apex:form>
+
+            </div>
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!!isValid}">
+            <div class="card" style="text-align:center;">
+                Invalid or expired approval link.
+            </div>
+        </apex:outputPanel>
+
+    </div>
+
+</apex:page>

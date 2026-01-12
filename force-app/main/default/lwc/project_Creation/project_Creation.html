@@ -1,0 +1,92 @@
+<template>
+	<lightning-quick-action-panel header="New Project">
+	<div class="slds-p-around_medium">
+		<template if:true={isShowProject}>
+			<!-- projectForm.html -->
+			<template for:each={projects} for:item="project">
+
+				<div key={project.Id}> 
+			<!-- <lightning-card title="Enter Project Details" icon-name="custom:custom19"> -->
+				<div class="slds-m-around_medium">
+					<lightning-input label="Project Name" type="text" value={project.Name} name="projectName" onchange={handleonChange}></lightning-input>
+					<!-- <lightning-input label="Percentage Level" type="number" min="0" max="100" value={percentageLevel}
+						onchange={handlePercentageChange}></lightning-input> -->
+						<!-- <lightning-record-picker
+							record-id={selectedAccountId}
+							onrecordidchange={handleAccountChange}
+							object-api-name="Account"
+							icon-name="standard:account"
+							fields={accountFields}>
+						</lightning-record-picker> -->
+					<lightning-input label="Start Date" type="date" value={project.Project_Start_Date__c} name="startDate" onchange={handleonChange}>
+					</lightning-input>
+					<lightning-input label="End Date" type="date" value={project.Project_End_Date__c} name="endDate" onchange={handleonChange}>
+					</lightning-input>
+					
+					<lightning-dual-listbox label="Salesforce Products" source-label="Available"
+						selected-label="Selected" field-level-help="Select Salesforce Products" options={productOptions} value={project.salesforceProducts} name="selectedProducts" onchange={handleonChange}>
+					</lightning-dual-listbox>
+					<lightning-button variant="brand" label="Create Project" title="Create Project" class="slds-m-top_large" onclick={createProject}></lightning-button>
+				</div>
+				</div>
+				</template>
+			<!-- </lightning-card> -->
+
+		</template>
+
+		<!-- <template if:true={isShowProject} class="slds-p-around_xx-small">
+		<div class="slds-text-heading_large">
+			Entre Project Details 🧑‍💼
+		</div>
+		<lightning-record-edit-form object-api-name="Project__c">
+			<lightning-messages> </lightning-messages>
+			<lightning-input-field field-name="Active__c"> </lightning-input-field>
+			<lightning-input-field field-name="Project_End_Date__c"> </lightning-input-field>
+			<lightning-input-field field-name="Name"> </lightning-input-field>
+			<lightning-input-field field-name="Project_Start_Date__c"> </lightning-input-field>
+			<lightning-input-field field-name="Resource_Price_Rate__c"> </lightning-input-field>
+			<lightning-input-field field-name="Salesforce_Products__c"> </lightning-input-field>
+			<lightning-input-field field-name="Type__c"> </lightning-input-field>
+			<lightning-output-field field-name="Account__c" value="0016D00000w0Ll9QAE"> </lightning-output-field>
+			<lightning-button class="slds-m-top_small" variant="brand" type="submit" name="submit" label="Submit">
+			</lightning-button>
+		</lightning-record-edit-form>
+	</template> -->
+		<template if:true={isShowMilstones} class="slds-p-around_xx-small">
+			<div class="slds-text-heading_large">
+				Entre Milstones Details 🧑‍💼
+			</div>
+			<c-update_milstones  record-id= {recordId}></c-update_milstones>
+		</template>
+		<template if:true={isShowModules} class="slds-p-around_xx-small">
+			<div class="slds-text-heading_large">
+				Entre Modules Details 🧑‍💼
+			</div>
+			<c-add-modules record-id = {recordId}></c-add-modules>
+		</template>
+
+		<div class="slds-align_absolute-center" style="height:5rem">
+			<template if:true={isShowProject}>
+				<lightning-button class="slds-m-top_small" variant="brand" name="project" label="Next"
+					onclick={nextPage}>
+				</lightning-button>
+			</template>
+			<template if:true={isShowMilstones}>
+				<lightning-button class="slds-m-top_small" variant="destructive" name="milestones" label="Back"
+					onclick={backPage}></lightning-button>
+				<lightning-button class="slds-m-top_small" variant="brand" name="milestones" label="Next"
+					onclick={nextPage}></lightning-button>
+			</template>
+			<template if:true={isShowModules}>
+				<lightning-button class="slds-m-top_small" variant="destructive" name="modules" label="Back"
+					onclick={backPage}>
+				</lightning-button>
+				<lightning-button class="slds-m-top_small" variant="brand" name="modules" label="Next"
+					onclick={nextPage}>
+				</lightning-button>
+			</template>
+
+		</div>
+	</div>
+	</lightning-quick-action-panel>
+</template>

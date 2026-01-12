@@ -1,0 +1,157 @@
+<template>
+    <!-- Filters header (like your screenshot) -->
+    <div class="slds-card">
+        <lightning-card title="Employee Attendance Dashboard" icon-name="custom:custom63">
+        <!-- <div class="slds-card__header slds-grid slds-p-around_small slds-grid_vertical-align-center">
+            <div class="slds-media slds-media_center slds-grow">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="standard:dashboard" size="small"></lightning-icon>
+                </div>
+                <div class="slds-media__body">
+                    <lightning-card title="Employee Attendance Dashboard" icon-name="custom:custom63">
+                    <h2 class="slds-card__header-title slds-text-heading_small">Attendance Report</h2>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Filter Bar -->
+        <div class="slds-card__body slds-p-around_small">
+            <div class="slds-grid slds-gutters slds-wrap">
+                <!-- State -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox
+                        name="state"
+                        label="Organisation State"
+                        placeholder="Select State"
+                        value={selectedState}
+                        options={stateOptions}
+                        onchange={handleStateChange}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Branch (dependent on State) -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox
+                        name="branch"
+                        label="Branch"
+                        placeholder="Select Branch"
+                        value={selectedBranch}
+                        options={branchOptions}
+                        onchange={handleBranchChange}
+                        disabled={isBranchDisabled}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Start Date -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-input
+                        type="date"
+                        name="startDate"
+                        label="Start Date"
+                        value={startDate}
+                        onchange={handleStartDateChange}>
+                    </lightning-input>
+                </div>
+
+                <!-- End Date (controls visibility) -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-input
+                        type="date"
+                        name="endDate"
+                        label="End Date"
+                        value={endDate}
+                        onchange={handleEndDateChange}>
+                    </lightning-input>
+                </div>
+            </div>
+        </div>
+        </lightning-card>
+    </div>
+    
+
+    <!-- Static table: render ONLY after End Date is chosen -->
+    <template if:true={showTable}>
+        <div class="slds-card table-container slds-m-top_small">
+            <div class="slds-card__body slds-card__body_inner">
+                <div class="table-wrapper">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped custom-table">
+                        <thead>
+                            <!-- Parent headings -->
+                            <tr>
+                                <th rowspan="2" class="sticky-header date-col">Date</th>
+                                <template for:each={parentHeadings} for:item="parent">
+                                    <th key={parent.id} colspan={childrenPerParent} class="sticky-header parent-header">
+                                        {parent.name}
+                                    </th>
+                                </template>
+                            </tr>
+
+                            <!-- Child headings -->
+                            <tr>
+                                <template for:each={columnsForRender} for:item="col">
+                                    <th key={col.key} class="sticky-header child-header">{col.label}</th>
+                                </template>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <template for:each={rowsForRender} for:item="row">
+                                <tr key={row.id}>
+                                    <td class="date-col">{row.date}</td>
+                                    <template for:each={row.cells} for:item="cell">
+                                        <td key={cell.key} class="td_cell">
+                                            <template if:true={cell.isBadge}>
+                                                <span class={cell.badgeClass}>{cell.displayValue}</span>
+                                            </template>
+
+                                            <template if:false={cell.isBadge}>
+                                                <!-- with tooltip -->
+                                                <template if:true={cell.hasTooltip}>
+                                                    <div class="custom-tooltip">
+                                                        {cell.displayValue}
+
+                                                        <!-- Time tooltip -->
+                                                        <template if:true={cell.isTimeColumn}>
+                                                            <div class="tooltip-text">
+                                                                <p><strong class="tootip_label">Within Branch : </strong>{cell.tooltipText.withinBranch}</p>
+                                                                <p><strong class="tootip_label">Travel Time : </strong>{cell.tooltipText.travel}</p>
+                                                                <p><strong class="tootip_label">Activity Time : </strong>{cell.tooltipText.activity}</p>
+                                                                <p><strong class="tootip_label">Ideal Time : </strong>{cell.tooltipText.ideal}</p>
+                                                            </div>
+                                                        </template>
+
+                                                        <!-- Activities tooltip -->
+                                                        <template if:true={cell.isActivityColumn}>
+                                                            <div class="tooltip-text">
+                                                                <p><strong>Sourcing :</strong> {cell.tooltipText.sourcing}</p>
+                                                                <p><strong>DSA Meet :</strong> {cell.tooltipText.dsaMeet}</p>
+                                                            </div>
+                                                        </template>
+
+                                                        <!-- Travel tooltip -->
+                                                        <template if:true={cell.isTravelColumn}>
+                                                            <div class="tooltip-text">
+                                                                <p><strong>Local Travel :</strong> {cell.tooltipText.local}</p>
+                                                                <p><strong>Outstation :</strong> {cell.tooltipText.outstation}</p>
+                                                                <p><strong>Client Visit :</strong> {cell.tooltipText.clientVisit}</p>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+
+                                                <!-- without tooltip -->
+                                                <template if:false={cell.hasTooltip}>
+                                                    {cell.displayValue}
+                                                </template>
+                                            </template>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

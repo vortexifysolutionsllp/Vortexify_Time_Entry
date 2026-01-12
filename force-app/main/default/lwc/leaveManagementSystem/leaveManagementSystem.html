@@ -1,0 +1,112 @@
+<template>
+
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium">
+        </lightning-spinner>
+    </template>
+
+    <!-- TOP HEADER AREA -->
+    <div class="leave-header">
+
+        <!-- RIGHT: CUSTOM LOOKUP 
+        <template if:false={isBlockedRole}>
+            <div class="lookup-container">
+                <c-custom-lookup
+                    object-api-name="Contact"
+                    placeholder="Search Employee"
+                    onrecordselect={handleEmployeeChange}
+                    selected-id={selectedEmployeeId}
+                    selected-name={selectedEmployeeName}>
+                </c-custom-lookup>
+            </div>
+        </template> -->
+
+        <!-- LEFT: BALANCE CARDS -->
+        <div class="balance-wrapper">
+            <div class="balance-section">
+                <template for:each={leaveBalances} for:item="bal">
+                    <div key={bal.label} class="balance-card glow">
+                        <div class="value">{bal.value}</div>
+                        <div class="label">{bal.label}</div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+
+    </div>
+
+    <lightning-card title="Leave Requests" class="table-card">
+
+        <lightning-button slot="actions" label="New" variant="brand" class="btn-new" onclick={openForm}>
+        </lightning-button>
+
+        <div class="datatable-wrapper">
+            <lightning-datatable key-field="Id" data={leaveData} columns={columns} hide-checkbox-column
+                class="futuristic-table">
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+
+    <!-- FUTURISTIC MODAL -->
+    <template if:true={isFormOpen}>
+        <section class="slds-modal slds-fade-in-open futuristic-modal">
+            <div class="slds-modal__container futuristic-modal-container">
+
+                <header class="slds-modal__header modal-header">
+                    <h2>New Leave Application</h2>
+                </header>
+
+                <div class="slds-modal__content modal-body">
+
+                    <!--   <lightning-input label="Leave Application Name" data-id="recName"></lightning-input> -->
+
+                    <!-- <lightning-input label="Status" value="Draft" disabled></lightning-input> -->
+
+                    <div class="form-grid">
+
+                        <!-- LEFT COLUMN -->
+                        <template if:false={hide}>
+                            <lightning-input label="Status" value="Draft" disabled>
+                            </lightning-input>
+                        </template>
+
+                        <template if:false={hide}>
+                            <lightning-input label="Employee" value={employeeName} disabled>
+                            </lightning-input>
+                        </template>
+
+                        <lightning-input type="date" label="Start Date" data-id="start" onchange={handleDateChange} required>
+                        </lightning-input>
+
+                        <lightning-input type="date" label="End Date" data-id="end" onchange={handleDateChange} required>
+                        </lightning-input>
+
+                        <lightning-combobox label="Leave Type" data-id="leaveType" options={leaveTypeOptions} required>
+                        </lightning-combobox>
+
+                        <lightning-input type="number" label="Number of Days" data-id="days" value={numberOfDays}
+                            disabled>
+                        </lightning-input>
+
+                        <lightning-textarea class="full-width" label="Reason" data-id="reason" required>
+                        </lightning-textarea>
+
+                    </div>
+
+                </div>
+                <footer class="slds-modal__footer modal-footer">
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeForm}>
+                    </lightning-button>
+
+                    <lightning-button label="Save" variant="brand" class="btn-save" onclick={saveLeave}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open futuristic-backdrop"></div>
+    </template>
+
+</template>

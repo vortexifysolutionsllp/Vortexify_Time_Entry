@@ -1,0 +1,53 @@
+<apex:page showHeader="false">
+    
+    <apex:includeScript value="{!$Resource.cometd}"/>
+    <apex:includeScript value="{!URLFOR($Resource.cometd)}"/>
+        <!-- apex:includeScript value="{!$Resource.jquery}"/>
+            <apex:includeScript value="{!$Resource.json2}"/>
+                <apex:includeScript value="{!$Resource.jquery_cometd}"/ -->
+                    
+                    <script>
+    				var cometdlib = new window.org.cometd.CometD();
+                    cometdlib.configure({
+                        url: window.location.protocol + '//' + window.location.hostname + '/cometd/47.0/',
+                        requestHeaders: { Authorization: 'OAuth ' + this.sessionId},
+                         appendMessageTypeToURL : false,
+          				logLevel: 'debug'
+                    });
+                    
+                    
+                    cometdlib.subscribe('/event/Availability_me__e', function(message)  
+                                       {  //your logic for whenever event is fired.
+                                           alert('Event recieved');
+                                       });
+                    
+                    </script>
+    
+    
+    
+    
+    
+    
+    
+    <apex:includeLightning />
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    <div id="lightningapp" />
+    <script>
+    debugger;
+    //var PhoneNumb = "{!$CurrentPage.parameters.id}";
+    var Hashcode = "{!$CurrentPage.parameters.id}";
+    
+    $Lightning.use("c:EmployeeProjectManagmentViewParentForVFPageApp", function () {
+        $Lightning.createComponent("c:EmployeeProjectManagmentViewParent",
+                                   {
+                                    "recordId" :"{!$CurrentPage.parameters.id}"
+                                   },
+                                   "lightningapp",
+                                   function (cmp) {
+                                       console.log("Customer Detail is loaded in Vf page");
+                                   }
+                                  );
+    });
+    </script>
+    
+</apex:page>

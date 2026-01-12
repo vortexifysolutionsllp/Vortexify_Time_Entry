@@ -1,0 +1,43 @@
+.container {
+    padding: 1rem;
+    background: linear-gradient(to right, #f4f6f9, #ffffff);
+    border-radius: 0.75rem;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.dropdown {
+    flex: 1;
+}
+
+.download-btn {
+    --sds-c-button-brand-color-background: #0176d3;
+    --sds-c-button-brand-color-background-hover: #014486;
+    border-radius: 1.5rem;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.table-wrapper {
+    border: 1px solid #d8dde6;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.styled-table {
+    --sds-c-table-cell-spacing: 0.75rem;
+    --sds-c-table-text-color: #16325c;
+}

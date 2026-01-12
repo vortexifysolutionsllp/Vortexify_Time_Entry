@@ -1,0 +1,18 @@
+.content-section {
+  font-size: 0;
+  line-height: 0;
+  width: 100%;
+}
+
+.brick {
+  width: 100%;
+  min-width: 302px;
+  margin: 0;
+  margin-right: 2.5%;
+  margin-bottom: 2.5%;
+  display: inline-block;
+  border: 1px solid darken(#fff, 6);
+  background: #fafaf2;
+  background: darken(#fff, 3);
+
+}

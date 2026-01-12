@@ -1,0 +1,64 @@
+<template>
+    <div class="body">
+        <lightning-card>
+        <div class="title">
+            <h2>PPROJECT NAME</h2>
+        </div>
+        <div class="headerboxexContainer">
+            <div class="headerboxe">
+                <h3>Start Date</h3>
+                <p>SOME TEXT DATA</p>
+            </div>
+            <div>
+                <h3>End Date</h3>
+                <p>SOME TEXT DATA</p>
+            </div>
+            <div>
+                <h3>Precentage Level</h3>
+                <p>SOME TEXT DATA</p>
+            </div>
+            <div>
+                <h3>Resource Value</h3>
+                <p>SOME TEXT DATA</p>
+            </div>
+            <div>
+                <h3></h3>
+                <p>SOME TEXT DATA</p>
+            </div>
+
+        </div>
+
+            <!-- <div class="tabset-container">
+                <lightning-tabset class="vertical-tabset" variant="vertical">
+                <lightning-tab label="Milestones Details">
+                    <div class="tab-content">
+                    One Content!
+                    </div>
+                </lightning-tab>
+                <lightning-tab label="Modules Details">
+                    <div class="tab-content">
+                    Two Content!
+                    </div>
+                </lightning-tab>
+                <lightning-tab label="Report">
+                    <div class="tab-content">
+                    Three Content!
+                    </div>
+                </lightning-tab>
+                </lightning-tabset>
+            </div> -->
+    </lightning-card>
+
+     <div class="vertical-navbar">
+        <ul>
+        <li class="nav-item" onclick={handleItemClick} data-id="home">Home</li>
+        <li class="nav-item" onclick={handleItemClick} data-id="about">About</li>
+        <li class="nav-item" onclick={handleItemClick} data-id="services">Services</li>
+        <li class="nav-item" onclick={handleItemClick} data-id="contact">Contact</li>
+        </ul>
+    </div>
+        <div class="content-container">
+            <!-- Content goes here -->
+        </div>
+    </div>
+</template>

@@ -1,0 +1,136 @@
+<apex:page controller="Employmentbond" renderAs="pdf" showHeader="false" applyBodyTag="false" standardStylesheets="false">
+    <apex:form >
+
+        <!-- HEADER (Fixed on every page) -->
+        <div style="position: fixed; top: 0; left: 0; right: 0; width: 100%; text-align: center; z-index: 1000;">
+            <img src="{!URLFOR($Resource.vortexify_bond)}" style="width: 100%; height: auto;" />
+        </div>
+
+        <!-- FOOTER (Fixed on every page) -->
+        <div style="position: fixed; bottom: 0; left: 0; right: 0;
+                    border-top: 1px solid #000;
+                    font-size:10px;
+                    text-align: center;
+                    width: 100%;
+                    padding: 5px; z-index: 1000;">
+            Registered Address: 18B, Gyan Khand - 4, Indirapuram, Ghaziabad, Uttar Pradesh, 201014, India <br/>
+            Noida Branch: 305, 3rd Floor, B-158, Sector 63, Noida, Uttar Pradesh, 201301, India
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div style="margin-top: 160px; margin-bottom: 60px;">
+
+            <!-- Rich Text Area Content -->
+            <apex:outputPanel rendered="{!NOT(ISBLANK(finalContent))}">
+                <apex:outputText value="{!finalContent}" escape="false"/>
+            </apex:outputPanel>
+
+            <!-- Default Content if Rich Text is blank -->
+            <apex:outputPanel rendered="{!ISBLANK(finalContent)}">
+                <strong>EMPLOYMENT BOND AGREEMENT</strong>
+                <p style="line-height: 2;">
+                    This Employment Bond Agreement ("Agreement") is made and entered into on this 01 day of April, <strong>2025</strong>, by and between:<br/>
+                    Vortexify Solutions LLP, a company incorporated under the laws of India, having its registered office at 18B,
+                    Gyan Khand – 4, Indirapuram, Ghaziabad, Uttar Pradesh, India (hereinafter referred to as the "Employer"); <br/><br/>
+                    AND &nbsp;<apex:outputText value="{!contactName}"/>, residing at&nbsp;
+                    <apex:outputText value="{!mailingCountry} {!mailingCity} {!mailingState} {!mailingZipcode}"/>  herein after referred to as the "Employee"). 
+                </p>
+
+                <strong>WHEREAS:</strong>
+                <p style="line-height: 2;">
+                    1. The Employer is engaged in IT services and wishes to employ the Employee for a specific role. <br/>
+                    2. The Employer will invest in the Employee’s training and skill development. <br/>
+                    3. The Employee agrees to serve the Employer for a minimum period of <strong>two (2)</strong> years from the date of joining. 
+                </p>
+
+                <strong>NOW, THEREFORE, in consideration of the mutual covenants contained herein, the parties agree as follows:</strong>
+                
+                
+                <!-- Next Page start -->
+                <div style="page-break-before: always;"></div>
+                
+                <p style="line-height: 10;">
+                    <br/>
+                </p>
+                <strong style="color: blue;">1. Term of Employment</strong>
+                <p style="line-height: 2;">
+                    The Employee agrees to remain in employment with the Employer for a period of <strong>two (2) years</strong> commencing from the date of joining, i.e., &nbsp; <apex:outputText value="{!dateOfJoining}"/>. 
+                </p>
+
+                <strong style="color: blue;">2. Compensation and Benefits</strong>
+                <p style="line-height: 2;">
+                    The Employee shall receive salary, allowances, and benefits as per the terms and conditions mentioned in the Offer Letter and the Employer’s HR policies.  
+                </p>
+
+                <strong style="color: blue;">3. Training and Investment</strong>
+                <p style="line-height: 2;">
+                    The Employer shall provide necessary training to the Employee, and the estimated cost of such training is <strong>INR 2,00,000/-</strong>. The Employee acknowledges that this investment is for their professional growth. 
+                </p>
+
+                <strong style="color: blue;">4. Resignation and Breach of Agreement</strong>
+                <p style="line-height: 2;">
+                    4.1. If the Employee resigns before completing the two-year bond period, they shall be liable to pay a compensation amount of <strong>INR 2,00,000/-</strong>, which includes training costs and operational expenses incurred by the Employer. 
+                </p>
+                
+                
+                 <!-- Next Page start -->
+                <div style="page-break-before: always;"></div>
+                
+                   <p style="line-height: 10;">
+                    <br/>
+                </p>
+                <strong style="color: blue;">5. Termination</strong>
+                <p style="line-height: 2;">
+                    5.1. The Employer may terminate the Employee’s service in case of misconduct, poor performance, violation of company policies, or breach of confidentiality. <br/>
+                    5.2. In such cases, the Employee shall not be liable for the bond amount unless termination is due to misconduct.  
+                </p>
+
+                <strong style="color: blue;">6. Confidentiality &amp; Non-Compete Clause</strong>
+                <p style="line-height: 2;">
+                    6.1. The Employee shall not disclose, share, or misuse any confidential information obtained during their employment.<br/>  
+                    6.2. The Employee agrees not to join a direct competitor for a period of <strong>12 months</strong> after leaving the company. 
+                </p>
+
+                <strong style="color: blue;">7. Dispute Resolution</strong>
+                <p style="line-height: 2;">
+                    In case of any dispute arising out of this Agreement, the parties agree to resolve the matter through arbitration in accordance with the <strong>Arbitration and Conciliation Act, 1996</strong>. The venue of arbitration shall be Ghaziabad, India.  
+                </p>
+                
+                 <!-- Next Page start -->
+                <div style="page-break-before: always;"></div>
+                
+                <p style="line-height: 10;">
+                    <br/>
+                </p>
+                <strong style="color: blue;">8. Governing Law</strong>
+                <p style="line-height: 2;">
+                   This Agreement shall be governed by and construed in accordance with the laws of India.  
+                </p>
+
+                <strong style="color: blue;">9. Acceptance</strong>
+                <p style="line-height: 2;">
+                    By signing this Agreement, both parties acknowledge and agree to the terms and conditions set forth herein.
+                </p>
+                 
+                
+                 <!-- Next Page start -->
+                <div style="page-break-before: always;"></div>
+                
+                
+                <p style="line-height: 10;">
+                    <br/>
+                </p>
+                <strong> For Employee  </strong>
+                <p style="line-height: 2;">
+                   Employee Name: &nbsp;<apex:outputText value="{!contactName} "/><br/>
+                   Signature:   _____________________  <br/>
+                   Date: &nbsp;
+                   <!--apex:outputText value="{0,date,dd MMM yyyy}"><apex:param value="{!dateOfJoining}" /></apex:outputText-->
+                    <apex:outputText value="{!dateOfJoining}"/>
+                </p>
+            </apex:outputPanel>
+
+        </div>
+
+    </apex:form>
+</apex:page>

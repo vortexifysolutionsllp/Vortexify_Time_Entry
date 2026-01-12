@@ -1,0 +1,187 @@
+<template>
+    <lightning-card>
+
+        <div class="slds-grid slds-grid_vertical-align-center slds-p-around_small">
+            <div class="slds-col slds-size_1-of-3"></div>
+
+            <div class="slds-col slds-size_1-of-3 slds-align_absolute-center">
+                <div class="date-nav">
+                    <button class="nav-btn" onclick={handlePrev}>
+                        <lightning-icon icon-name="utility:chevronleft" size="x-small" class="icon-white"></lightning-icon>
+                    </button>
+                    <div class="date-display">{formattedDate}</div>
+                    <button class="nav-btn" onclick={handleNext}>
+                        <lightning-icon icon-name="utility:chevronright" size="x-small" class="icon-white"></lightning-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="slds-col slds-size_1-of-3 slds-text-align_right">
+                <lightning-input type="search" placeholder="Search..." onchange={handleSearch}>
+                </lightning-input>
+            </div>
+        </div>
+
+        <div class="blue-heading" onclick={toggleTaskSection}>
+            <span>Jira Tasks</span>
+            <lightning-icon icon-name={taskIcon} size="small" variant="inverse" ></lightning-icon>
+        </div>
+
+        <template if:true={showTasks}>
+            <lightning-datatable key-field="Id" data={taskData} columns={taskColumns} onrowaction={handleRowAction}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+
+        <div class="blue-heading slds-m-top_medium" onclick={toggleEmployeeSection}>
+            <span>Employees Without Jira Task</span>
+            <lightning-icon icon-name={employeeIcon} size="small" variant="inverse"></lightning-icon>
+        </div>
+
+        <template if:true={showEmployees}>
+            <lightning-datatable key-field="Id" data={employeeData} columns={employeeColumns}
+                onrowaction={handleRowAction} hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+
+    </lightning-card>
+
+    <!-- ---------------- VIEW TASK MODAL ----------------- -->
+    <template if:true={isViewTaskModalOpen}>
+        <section class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Task Details</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p><strong>Task Name:</strong> {selectedTask.Name}</p>
+                    <p><strong>Description:</strong> {selectedTask.Task_Description__c}</p>
+                    <p><strong>Status:</strong> {selectedTask.Status__c}</p>
+                    <p><strong>Assigned By:</strong> {selectedTask.assignedBy}</p>
+                    <p><strong>Created Date:</strong> {selectedTask.CreatedDate}</p>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeViewModal}></lightning-button>
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={isCreateTaskModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open create-task-modal">
+            <div class="slds-modal__container">
+
+                <!-- HEADER -->
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Create Task</h2>
+                </header>
+
+                <!-- BODY -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-grid slds-wrap slds-gutters">
+
+                        <!-- PROJECT -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <label class="field-label">
+                            Select Project <span class="required">*</span>
+                        </label>
+                            <c-custom-lookup object-api-name="Project__c" placeholder="Search Project"
+                                onrecordselect={handleProjectChange} selected-id={selectedProject}>
+                            </c-custom-lookup>
+                        </div>
+
+                        <!-- MODULE -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <label class="field-label">
+                            Select Module <span class="required">*</span>
+                        </label>
+                            <c-custom-filtered-lookup placeholder="Search Module" records-list={moduleOptions}
+                                onrecordselect={handleModuleSelect}>
+                            </c-custom-filtered-lookup>
+                        </div>
+
+                        <!-- TEAM MEMBER -->
+                        <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                            <label class="field-label">
+                                Team Member <span class="required">*</span>
+                            </label>
+
+                            <c-custom-filtered-lookup placeholder="Search Team Member" records-list={contactOptions}
+                                selected-id={selectedContact} selected-name={selectedContactName}
+                                onrecordselect={handleContactSelect}>
+                            </c-custom-filtered-lookup>
+
+                        </div>
+
+                        <!-- PRIORITY -->
+                        <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                            <label class="field-label">
+                            Select Priority <span class="required">*</span>
+                        </label>
+                            <lightning-combobox value={selectedPriority} options={priorityOptions}
+                                placeholder="Select an Option" onchange={handlePriorityChange}>
+                            </lightning-combobox>
+                        </div>
+
+                        <!-- START DATE & TIME -->
+                        <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                            <label class="field-label">
+                            Task Start Date & Time <span class="required">*</span>
+                        </label>
+                            <div class="date-time-grid">
+                                <lightning-input type="date" value={startDate} onchange={handleStartDate}>
+                                </lightning-input>
+                                <lightning-input type="time" value={startTime} onchange={handleStartTime}>
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <!-- END DATE & TIME -->
+                        <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                            <label class="field-label">
+                            Task End Date & Time <span class="required">*</span>
+                        </label>
+                            <div class="date-time-grid">
+                                <lightning-input type="date" value={endDate} onchange={handleEndDate}>
+                                </lightning-input>
+                                <lightning-input type="time" value={endTime} onchange={handleEndTime}>
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <!-- DESCRIPTION -->
+                        <div class="slds-col slds-size_2-of-2 slds-m-top_medium">
+                            <label class="field-label">
+                            Description <span class="required">*</span>
+                        </label>
+                            <lightning-textarea value={description} placeholder="Enter description"
+                                onchange={handleDescriptionChange}>
+                            </lightning-textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- FOOTER -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeCreateModal}>
+                    </lightning-button>
+
+                    <lightning-button label="Create Task" variant="brand" class="slds-m-left_small"
+                        onclick={handleSubmit}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+</template>

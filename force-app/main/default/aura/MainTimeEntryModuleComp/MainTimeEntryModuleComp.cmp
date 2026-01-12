@@ -1,0 +1,496 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" controller="JiraTaskManagerViewHelper">
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="isModalOpen2" type="boolean" default="false"/>
+    <aura:attribute name="isOpenGraph" type="boolean" default="false"/>
+    <aura:attribute name="isUploadOpen" type="boolean" default="false"/>
+    <aura:attribute name="isCaseOpen" type="boolean" default="false"/>
+    <aura:attribute name="addMember" type="boolean" default="false"/>
+    <aura:attribute name="showAvailComp" type="boolean" default="false"/>
+    <aura:attribute name="recordData" type="sobject" />
+    <aura:attribute name="showHolidays" type="boolean" default="false"/>
+    <aura:attribute name="createHolidays" type="boolean" default="false"/>
+    <aura:attribute name="isModuleUpdateOpen" type="boolean" default="false"/>
+    <aura:attribute name="recordId" type="String" default="003C400000JIQIsIAP" />
+    <aura:attribute name="conDetails" type="Contact" />
+    <aura:attribute name="ShowProgress" type="Boolean" default="false"/>
+    <aura:attribute name="ShowManDashboard" type="Boolean" default="false"/>
+    <aura:attribute name="ShowResTasks" type="Boolean" default="true"/>
+    <aura:attribute name="ShowTLDashboard" type="Boolean" default="false"/>
+    <aura:attribute name="ShowResDashboard" type="Boolean" default="false"/>
+    <aura:attribute name="ShowTaskOnDTV" type="Boolean" default="false"/>
+    <aura:attribute name="ShowLeaveManagement" type="Boolean" default="false"/>
+    <aura:attribute name="ShowAttendanceManagement" type="Boolean" default="false"/>
+    <aura:attribute name="ShowAvaiableResource" type="Boolean" default="false"/>
+    <aura:attribute name="ShowTaskOnCalender" type="Boolean" default="false"/>
+    <aura:attribute name="titleName" type="String" />
+    <aura:attribute name="isCheckInDisabled" type="Boolean" default="false"/>
+    <aura:attribute name="isCheckOutDisabled" type="Boolean" default="true"/>
+    <aura:attribute name="ShowDailyTaskTab" type="Boolean" default="true"/>
+
+
+
+    
+    <aura:import library="lightning:alert" property="LightningAlert" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="myfull">
+        <!-- Header Section with Logo -->
+        <div class="header-section">
+            <!-- Logo -->
+            <div>
+                <a href="https://vortexifysync.com" target="_blank">
+                    <img src="{!$Resource.logo_vortexify}" alt="Vortexify Logo" />
+                </a>
+            </div>
+            
+            <!-- Title -->
+            <div class="welcome">
+                <h1>{!v.titleName}</h1>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="bttnclass-right">
+                <!-- Logout Button -->
+                
+                
+                
+                <!-- Check In & Out -->
+                <div>
+                    <lightning:button label="Check In" onclick="{!c.handleCheckIn}" class="small-header-btn check-in slds-m-right_x-small" disabled="{!v.isCheckInDisabled}"/>
+                    <!--<lightning:button label="Check Out" onclick="{!c.handleCheckOut}" class="small-header-btn check-out" disabled="{!v.isChexkOutDisabled}"/>-->
+                    
+                    <!-- <lightning:button label="Check In" onclick="{!c.handleCheckIn}" class="check-button check-in slds-m-right_x-small"/>
+            <lightning:button label="Check Out" onclick="{!c.handleCheckOut}" class="check-button check-out"/>-->
+                </div>
+                <lightning:buttonIcon 
+                                      iconName="utility:logout"
+                                      alternativeText="Logout"
+                                      onclick="{!c.handleLogout}"
+                                      class="logout-icon"
+                                      variant="border-filled"
+                                      tooltip="Logout"
+                                      />
+                
+            </div>
+        </div>
+        
+        
+        
+        <!-- <div class="slds-grid slds-wrap slds-grid_align-center slds-gutters slds-m-around_medium" style="height:50px;">
+            
+            <div class="slds-m-right_x-small">
+                <lightning:button variant="brand" onclick="{!c.showUploadComp}" label="Upload Jira Tasks 📝"/>
+            </div>
+            
+            
+            <div class="slds-m-right_x-small">
+                <lightning:button variant="brand" onclick="{!c.tagTeamMember}" label="Add Team Members 🚸"/>
+            </div>
+            
+            
+            <div class="slds-m-right_x-small">
+                <lightning:button variant="brand" onclick="{!c.showCaseComp}" label="Submit a Case 🙋🏻"/>
+            </div>
+            
+            
+            <div class="slds-m-right_x-small">
+                <lightning:button variant="brand" onclick="{!c.showHolidayss}" label="Holidays 📆"/>
+            </div>
+            
+            
+            <div class="slds-m-right_x-small">
+                <lightning:button variant="brand" onclick="{!c.showModuleUpdate}" label="Update Modules"/>
+            </div>
+            
+            
+            <div class="slds-m-right_x-small">
+                <lightning:button variant="brand" onclick="{!c.showme}" label="I'm Available"/>
+            </div>
+        </div> -->
+        <!-- Main Content Section -->
+        <div class="slds-grid slds-wrap">
+            <lightning:tabset class="modern-tabset">
+                <lightning:tab label="Task Creation" onactive="{!c.handleShowTLDashboard}">
+                </lightning:tab>
+                <lightning:tab label="Manage Tasks" onactive="{!c.handleShowResDashboard}">
+                </lightning:tab>
+                <lightning:tab label="Task Activity" onactive="{!c.handleShowTasks}">
+                </lightning:tab>
+                <lightning:tab label="Monthly View" onactive="{!c.handleShowTasksOnCalender}">
+                </lightning:tab>
+               <!-- <lightning:tab label="Daily Task View" onactive="{!c.handleShowDTVDashboard}">
+                </lightning:tab>-->
+<aura:if isTrue="{!v.ShowDailyTaskTab}">
+    <lightning:tab label="Daily Task View" onactive="{!c.handleShowDTVDashboard}">
+    </lightning:tab>
+</aura:if>
+                <lightning:tab label="Leave Management" onactive="{!c.handleShowLeaveManagement}">
+                </lightning:tab>
+               <lightning:tab label="Attendence Management" onactive="{!c.handleShowAttendanceManagement}">
+                </lightning:tab>
+                <!-- You can optionally put content here or leave it blank -->
+                
+                <!--<lightning:tab label="Item Three">
+            <lightning:button label="Manage Your Task" onclick="{!c.handleShowResDashboard}" class="nav-button" />
+        </lightning:tab>
+         <lightning:tab label="Item fourth">
+            <lightning:button onclick="{!c.createHolidayss}" label="Log My Leave🛑⏳" class="nav-button"/>
+        </lightning:tab>-->
+            </lightning:tabset>
+            
+            
+            <!-- Left Section: Navigation Menu -->
+            <!-- Left Section: Navigation Menu -->
+            <!--<div class="slds-col slds-size_1-of-5 nav-section">
+            <div class="notification-section" style = "padding:20px;height:100vh;">
+                <ul class="slds-list_vertical slds-has-dividers_around-space">
+                    <li>
+                        <lightning:button label="Show Today's Tasks" onclick="{!c.handleShowTasks}" class="nav-button" />
+                    </li>
+                    <li>
+                        <lightning:button label="Show Task Creation" onclick="{!c.handleShowTLDashboard}" class="nav-button" />
+                    </li>
+                    <li>
+                        <lightning:button label="Manage Your Task" onclick="{!c.handleShowResDashboard}" class="nav-button" />
+                    </li>
+                    <li>
+                        <lightning:button onclick="{!c.createHolidayss}" label="Log My Leave🛑⏳" class="nav-button"/>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>-->
+            
+            <!-- Right Section: Data Display -->
+            <div class="slds-col slds-size_5-of-5" style="padding: 10px;height:100vh;overflow-y:none;">
+                <aura:if isTrue="{!v.ShowResTasks}">
+                    <div class="right-section">
+                        
+                        <!--<div class="slds-grid slds-wrap slds-gutters slds-m-around_medium custom-button-row">
+    
+    
+<div class="slds-m-right_x-small">
+    <lightning:buttonIcon
+        iconName="utility:refresh"
+        variant="brand"
+        alternativeText="Refresh"
+        onclick="{!c.refreshTaskPage}"
+        class="equal-height-icon"/>
+</div>
+
+  
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showUploadComp}" label="Upload Jira Tasks 📝"/>
+    </div>
+
+  
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.tagTeamMember}" label="Add Team Members 🚸"/>
+    </div>
+
+    
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showCaseComp}" label="Submit a Case 🙋🏻"/>
+    </div>
+
+
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showHolidayss}" label="Holidays 📆"/>
+    </div>
+
+
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showModuleUpdate}" label="Update Modules"/>
+    </div>
+
+   
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showme}" label="I'm Available"/>
+    </div>
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.createHolidayss}" label="Log My Leave🛑⏳"/>
+    </div>
+</div>-->
+                        
+                        
+                        
+                        
+                        <div style="padding:0px;">
+                            <aura:if isTrue="{!v.ShowProgress}">
+                                <div class="progress-container slds-grid slds-gutters slds-wrap">
+                                    <div class="slds-col">
+                                        <span>
+                                            <c:ProgressRingComp themeAfterThreshold="blue" themeBeforeThreshold="red" size="small"
+                                                                totalProgress="{!v.recordData.activeProjects}" actualProgress="{!v.recordData.individualProjects}"
+                                                                Legend="Involved Projects..💻💻" resultFormat="Mix" threshold="50" />
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span>
+                                            <c:ProgressRingComp themeAfterThreshold="orange" themeBeforeThreshold="orange" size="small"
+                                                                totalProgress="{!v.recordData.totalProjects}" actualProgress="{!v.recordData.individualWorkingHours}"
+                                                                Legend="Total Working Hours..⌛⌛" resultFormat="Actual Number" threshold="50" />
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span>
+                                            <c:ProgressRingComp themeAfterThreshold="green" themeBeforeThreshold="green" size="small"
+                                                                actualProgress="{!v.recordData.individualHighPriorityTasks}"
+                                                                Legend="High Priority Tasks..🚨🚨" resultFormat="Actual Number" threshold="50" />
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span>
+                                            <c:ProgressRingComp themeAfterThreshold="red" themeBeforeThreshold="red" size="small"
+                                                                Legend="Dependency on you..👿👿" resultFormat="Actual Number" threshold="50" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            
+                        </div>
+                        <div class="jira-report-card">
+                            <div style="zoom:60%;">
+                                <c:JiraTaskReportCmp recordId="{!v.recordId}"/>
+                            </div>
+                        </div>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.ShowTLDashboard}">
+                    <div class="right-section">
+                        
+                        <!--<div class="slds-grid slds-wrap slds-gutters slds-m-around_medium custom-button-row">
+    
+
+<div class="slds-m-right_x-small">
+ <lightning:buttonIcon
+    iconName="utility:chart"
+    variant="brand"
+    alternativeText="Show Graph"
+    onclick="{!c.OpenGraphModal}"
+    class="equal-height-icon"/>
+
+</div>
+
+
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showUploadComp}" label="Upload Jira Tasks 📝"/>
+    </div>
+
+
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.tagTeamMember}" label="Add Team Members 🚸"/>
+    </div>
+
+
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showCaseComp}" label="Submit a Case 🙋🏻"/>
+    </div>
+
+  
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showHolidayss}" label="Holidays 📆"/>
+    </div>
+
+  
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showModuleUpdate}" label="Update Modules"/>
+    </div>
+
+    
+    <div class="slds-m-right_x-small">
+        <lightning:button variant="brand" onclick="{!c.showme}" label="I'm Available"/>
+    </div>
+</div>-->
+                        <!--<aura:if isTrue="{!v.isOpenGraph}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+           
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Task Updated Status</h2>
+                </header>
+
+<div class="slds-modal__content slds-p-around_medium">
+    <div style="margin-top:10px;margin-bottom:10px;">
+        <aura:if isTrue="{!v.ShowProgress}"> 
+            <div class="progress-container slds-grid slds-wrap slds-gutters">
+                
+               
+                <div class="slds-col slds-size_1-of-2">
+                    <span>
+                        <c:ProgressRingComp 
+                            themeAfterThreshold="orange" 
+                            themeBeforeThreshold="orange" 
+                            size="small" 
+                            totalProgress="{!v.recordData.totalResources}" 
+                            actualProgress="{!v.recordData.activeResources}" 
+                            Legend="Resources Active....🙋🏻🙋" 
+                            resultFormat="Mix" 
+                            threshold="50"/>  
+                    </span>
+                </div>
+
+                
+                <div class="slds-col slds-size_1-of-2">
+                    <span>
+                        <c:ProgressRingComp 
+                            themeAfterThreshold="blue" 
+                            themeBeforeThreshold="red" 
+                            size="small" 
+                            totalProgress="{!v.recordData.totalProjects}" 
+                            actualProgress="{!v.recordData.activeProjects}" 
+                            Legend="Active Projects..📚📚" 
+                            resultFormat="Mix" 
+                            threshold="50"/> 
+                    </span>
+                </div>
+
+
+                <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                    <span>  
+                        <c:ProgressRingComp 
+                            themeAfterThreshold="green" 
+                            themeBeforeThreshold="red" 
+                            size="small" 
+                            totalProgress="100" 
+                            actualProgress="{!v.recordData.TotalTasks}" 
+                            Legend="Total Tasks..📝📝" 
+                            resultFormat="Actual Number" 
+                            threshold="50"/>  
+                    </span>
+                </div>
+
+                
+                <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                    <span>
+                        <c:ProgressRingComp 
+                            themeAfterThreshold="red" 
+                            themeBeforeThreshold="red" 
+                            size="small" 
+                            actualProgress="{!v.recordData.totalDependency}" 
+                            Legend="Bugs/Dependencies..🐛🐛" 
+                            resultFormat="Actual Number" 
+                            threshold="50"/>  
+                    </span>
+                </div>
+
+            </div>
+        </aura:if>
+    </div>
+</div>
+
+
+
+               
+                <footer class="slds-modal__footer">
+                    <lightning:button label="Close" onclick="{!c.closeModal}" />
+                </footer>
+
+            </div>
+        </section>
+
+       
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>-->
+                        <c:createTask recordid="{!v.recordId}" />
+                        
+                    </div>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.ShowResDashboard}">
+                    <div class="right-section">
+                        <!--<div style="margin-bottom: 30px;">
+                            <aura:if isTrue="{!v.ShowProgress}">
+                                <div class="progress-container slds-grid slds-gutters slds-wrapslds-grid slds-gutters" style="margin: 0.1%;">
+                                    <div class="slds-col">
+                                        <span>
+                                            <c:ProgressRingComp themeAfterThreshold="blue" themeBeforeThreshold="red" size="small" totalProgress="{!v.recordData.totalProjects}" actualProgress="{!v.recordData.individualProjects}" Legend="Involved Projects..🧑‍💻🧑‍💻" resultFormat="Mix" threshold="50"/>  
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span>
+                                            <c:ProgressRingComp themeAfterThreshold="orange" themeBeforeThreshold="orange" size="small" totalProgress="{!v.recordData.totalProjects}" actualProgress="{!v.recordData.individualWorkingHours}" Legend="Total Working Hours..⌛⌛" resultFormat="Actual Number" threshold="50"/>  
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span>  
+                                            <c:ProgressRingComp themeAfterThreshold="green" themeBeforeThreshold="red" size="small" totalProgress="{!v.recordData.individualTasks}" actualProgress="{!v.recordData.individualHighPriorityTasks}" Legend="High-Priority Tasks..📝📝" resultFormat="Mix" threshold="50"/>  
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span>
+                                            <c:ProgressRingComp themeAfterThreshold="red" themeBeforeThreshold="red" size="small" totalProgress="{!v.recordData.individualBugs}" actualProgress="{!v.recordData.individualDependency}" Legend="Bugs/Dependencies..🐛🐛" resultFormat="Mix" threshold="50"/>  
+                                        </span>
+                                    </div>
+                                </div>
+                            </aura:if>
+                        </div>-->
+                        
+                        <c:taskManagerParentPlaceholder conId="{!v.recordId}"/>
+                        <!--<div class="jira-report-card">
+                        <div style="zoom:60%;">
+                            <c:JiraTaskReportCmp recordId="{!v.recordId}"/>
+                        </div>
+                    </div>-->
+                    </div>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.ShowTaskOnCalender}">
+                    <div class="right-section">
+                        
+                        <c:taskMonthlyViewCalender recordId="{!v.recordId}" />
+                        
+                    </div>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.ShowTaskOnDTV}">
+                    <div class="right-section">
+                        
+                        <c:dailyTaskView recordId="{!v.recordId}" />
+                        
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.ShowLeaveManagement}">
+                    <div class="right-section">
+                        
+                       <c:leaveManagementSystem recordId="{!v.recordId}"/>
+                        
+                    </div>
+                </aura:if> 
+                
+                 <aura:if isTrue="{!v.ShowAttendanceManagement}">
+                    <div class="right-section">
+                        
+                        <c:employeeAttendance recordId="{!v.recordId}"/>
+                        
+                    </div>
+                </aura:if>
+                
+            </div>
+        </div>
+        <aura:if isTrue="{!v.isUploadOpen}">
+            <c:UploadJiraTasksModalComp isModalOpen="{!v.isUploadOpen}"/>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.isCaseOpen}">
+            <c:RaiscaseModalComp isModalOpen="{!v.isCaseOpen}"/>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.addMember}">
+            <c:ProjectResourceMappingCmp isModalOpen="{!v.addMember}"/>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.isModuleUpdateOpen}">
+            <c:UpdateModuleforSite isModalOpen="{!v.isModuleUpdateOpen}" label="Update the Modules For a Project"/>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.showHolidays}">
+            <c:fullCalendarJS  contactId="{!v.recordId}" onmyevent="{!c.falsecalender}" aura:id ="mylwccmp" />
+        </aura:if> 
+        <aura:if isTrue="{!v.createHolidays}">
+            <c:createHolidaysThroughNav  contactId="{!v.recordId}" onmyevent="{!c.falsecalender}"  aura:id ="mylwccmp" />
+        </aura:if> 
+        <!--c:notificationlwc  recordId="{!v.recordId}" isModalOpenAvail="{!v.showAvailComp}"/-->
+    </div>
+</aura:component>

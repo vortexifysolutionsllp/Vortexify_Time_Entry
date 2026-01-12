@@ -1,0 +1,18 @@
+<template>
+    <div class={pickerClass}>
+        <button class="close-button" onclick={handleClose}>✖</button>
+        <div class="emoji-categories">
+            <template for:each={categories} for:item="category">
+                <button key={category.key} class="category-button" data-category={category.key}
+                    onclick={handleCategoryChange}>
+                    {category.name}
+                </button>
+            </template>
+        </div>
+        <div class="emoji-list">
+            <template for:each={filteredEmojis} for:item="emoji">
+                <span key={emoji} class="emoji" onclick={handleEmojiClick}>{emoji}</span>
+            </template>
+        </div>
+    </div>
+</template>

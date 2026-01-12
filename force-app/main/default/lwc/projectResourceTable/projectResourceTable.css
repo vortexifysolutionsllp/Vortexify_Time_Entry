@@ -1,0 +1,18 @@
+.slds-table_bordered {
+    border: 1px solid #d8dde6;
+}
+
+.slds-table_cell-buffer {
+    padding: 0.75rem;
+}
+
+.slds-truncate {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.slds-text-color_error {
+    color: #c23934;
+}

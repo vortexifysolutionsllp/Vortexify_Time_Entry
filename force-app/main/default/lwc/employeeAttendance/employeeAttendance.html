@@ -1,0 +1,76 @@
+<template>
+    <div class="container">
+
+        <!-- FILTERS -->
+        <div class="filters">
+            <lightning-combobox label="View Mode" value={viewMode} options={viewModeOptions}
+                onchange={handleViewModeChange}>
+            </lightning-combobox>
+
+            <!-- MONTH -->
+            <template if:true={isMonthly}>
+                <lightning-combobox label="Select Month" value={selectedMonth} options={monthOptions}
+                    onchange={handleMonthChange}>
+                </lightning-combobox>
+            </template>
+
+            <!-- CUSTOM DATE -->
+            <template if:true={isCustom}>
+                <lightning-input type="date" label="From Date" value={fromDate} onchange={handleFromDateChange}>
+                </lightning-input>
+
+                <lightning-input type="date" label="To Date" value={toDate} onchange={handleToDateChange}>
+                </lightning-input>
+            </template>
+
+            <!-- STATUS (ALWAYS VISIBLE) -->
+            <lightning-combobox label="Status" value={selectedStatus} options={statusOptions}
+                onchange={handleStatusChange}>
+            </lightning-combobox>
+
+            <!-- EMPLOYEE SEARCH 
+            <lightning-input type="search" label="Search Employee" placeholder="Search by name" value={searchKey}
+                onchange={handleSearchChange}>
+            </lightning-input>   -->
+
+            <template if:false={isBlockedRole}> 
+                <div class="lookup-container">
+                    <c-custom-lookup 
+                        object-api-name="Contact"
+                        placeholder="Search Employee"
+                        onrecordselect={handleEmployeeChange}
+                        selected-id={selectedEmployeeId}
+                        selected-name={selectedEmployeeName}>
+                    </c-custom-lookup>
+                </div>
+           </template> 
+
+
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary-section">
+            <template for:each={summaryCards} for:item="card">
+                <div key={card.id} class="summary-card">
+                    <div class="value">{card.value}</div>
+                    <div class="label">{card.label}</div>
+                </div>
+            </template>
+        </div>
+
+        <!-- TABLE -->
+        <lightning-card title="Attendance Records" icon-name="utility:clock">
+            <template if:true={filteredData}>
+                <div class="table-container slds-scrollable_y">
+                    <lightning-datatable key-field="id" data={filteredData} columns={columns} hide-checkbox-column>
+                    </lightning-datatable>
+                </div>
+            </template>
+
+            <template if:true={isEmpty}>
+                <p class="no-record">No Attendance Records Found</p>
+            </template>
+        </lightning-card>
+
+    </div>
+</template>

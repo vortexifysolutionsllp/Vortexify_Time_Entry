@@ -1,0 +1,183 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="AddModuleButtonHelper" >
+    
+    <aura:attribute name="ProjectId" type="String"/>
+    <aura:attribute name="label" type="String"/>
+    <aura:attribute name="isModalOpen" type="boolean" default="true"/>
+    <aura:attribute name="moduleData" type="Object"/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="draftValues" type="Object" default="[]"/>
+    <aura:attribute name="truthy" type="boolean" default="false" />
+    <!-- handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="slds-m-around_xx-large">
+        <aura:if isTrue="{!v.isModalOpen}">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" >
+                <div class="slds-modal__container" style="overflow-y:hidden !important;">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.label}</h2>
+                    </header>
+                    
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" >
+                        
+                        <lightning:card >
+                            <div class=" slds-size_8-of-8 demo-only demo-only--sizing slds-grid slds-wrap  slds-p-left_medium" style=" height:70px;">
+                                <div class="slds-size_3-of-8" style="position: absolute;">
+                                    <c:customLookup 
+                                                    label="Select Project"
+                                                    placeholder="Search Project"
+                                                    objectApiName="Project__c"
+                                                    onrecordselect="{!c.handleProductChange}" />
+                                </div>
+                                
+                                
+                                <div class="slds-size_5-of-8" style="padding-top:23px;margin-left:250px;">
+                                    <!-- Search Button -->
+                                    <!-- <lightning:button 
+        variant="success" 
+        label="Search" 
+        title="Search" 
+        class="slds-button slds-button_small slds-m-right_x-small"
+        onclick="{! c.handleClick }"/>-->
+                                    
+                                    <!-- Search Results -->
+                                    <aura:if isTrue="{!v.truthy}">
+                                        <div class="search-results-container">
+                                            <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" style="display: none;">
+                                                <aura:iteration items="{!v.data}" var="item">
+                                                    <li class="slds-listbox__item">
+                                                        <div class="slds-truncate">{!item.Name}</div>
+                                                    </li>
+                                                </aura:iteration>
+                                            </ul>
+                                        </div>
+                                    </aura:if>
+                                    <!-- Add Module Button (optional, if you want) -->
+                                    <lightning:button 
+                                                      variant="brand" 
+                                                      label="Add Module" 
+                                                      title="Create Module" 
+                                                      class="slds-button slds-button_small"
+                                                      onclick="{! c.addRow }"/>
+                                </div>
+                            </div>
+                            
+                            <aura:if isTrue="{!v.truthy}">
+                            </aura:if> 
+                            
+                            <div style="position: relative;">   
+                                <div class="slds-box slds-p-around_none slds-m-around_none" style="min-height:10rem; width:100%;" tabindex="0">
+                                    <div class="slds-table_edit_container slds-is-relative">
+                                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-no-row-hover slds-table_fixed-layout">
+                                            <thead>
+                                                <tr>
+                                                    <th width="8%" style="padding-left:10px !important;">Sr.No.</th>
+                                                    <th width="18%" title="Name">Name</th>
+                                                    <th width="22%">Description</th>
+                                                    <th width="16%">Actual Hours</th>
+                                                    <th width="18%">Anticipated Hours</th>
+                                                    <th width="9%">Status</th>
+                                                    <th width="10%">Update</th>
+                                                </tr>
+                                            </thead>
+                                            <aura:if isTrue="{!v.data.length > 0}">
+                                                <tbody>
+                                                    <aura:iteration items="{!v.data}" var="acc" indexVar="index">
+                                                        <tr class="slds-hint-parent">
+                                                            <td>{!index + 1}</td>
+                                                            <th>
+                                                                <aura:if isTrue="{!acc.is_Disabled}">
+                                                                    <div class="slds-truncate" title="{!acc.Name}">{!acc.Name}</div>
+                                                                    <aura:set attribute="else">
+                                                                        <lightning:input value="{!acc.Name}" class="slds-p-bottom_large" type="text" />
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </th>
+                                                            <td data-label="Description">
+                                                                <aura:if isTrue="{!acc.is_Disabled}">
+                                                                    <div class="slds-truncate" title="{!acc.Description}">{!acc.Description}</div>
+                                                                    <aura:set attribute="else">
+                                                                        <lightning:input value="{!acc.Description}" class="slds-p-bottom_large" type="text" />
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </td>
+                                                            <th data-label="Actual Hours" scope="row">
+                                                                <aura:if isTrue="{!acc.is_Disabled}">
+                                                                    <div class="slds-truncate" title="{!acc.Actual_Hours}">{!acc.Actual_Hours}</div>
+                                                                    <aura:set attribute="else">
+                                                                        <lightning:input value="{!acc.Actual_Hours}" class="slds-p-bottom_large" type="number" />
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </th>
+                                                            <th data-label="Anticipated Hours" scope="row" class="slds-p-bottom_large">
+                                                                <aura:if isTrue="{!acc.is_Disabled}">
+                                                                    <lightning:input value="{!acc.Aniticipated_Hours}" disabled="true" class="slds-p-bottom_large" type="number" />
+                                                                    <aura:set attribute="else">
+                                                                        <lightning:input value="{!acc.Aniticipated_Hours}" class="slds-p-bottom_large" type="number" />
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </th>
+                                                            <td data-label="Status">
+                                                                <aura:if isTrue="{!acc.Status}">
+                                                                    <lightning:button
+                                                                                      name="{!acc.Id}"
+                                                                                      variant="success"
+                                                                                      label="Close"
+                                                                                      title="Click to Close"
+                                                                                      onclick="{! c.handleCloseAccount }"
+                                                                                      class="small-button" />
+                                                                    <aura:set attribute="else">
+                                                                        <lightning:button
+                                                                                          name="{!acc.Id}"
+                                                                                          variant="brand"
+                                                                                          label="Open"
+                                                                                          title="Click to Open"
+                                                                                          onclick="{! c.handleCloseAccount }"
+                                                                                          class="small-button" />
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </td>
+                                                            <td>
+                                                                <div style="border:none !important;"><lightning:button name="{!acc.Id}" iconName="utility:record_update" title="Click to Edit"  onclick="{! c.EditableInput }" /></div>
+                                                            </td>
+                                                        </tr>
+                                                    </aura:iteration>
+                                                </tbody>
+                                            </aura:if>
+                                        </table>
+                                    </div>
+                                </div>
+                                <aura:if isTrue="{!empty(v.data)}">
+                                    <div class="slds-align_absolute-center">
+                                        No records found
+                                    </div>
+                                </aura:if>
+                            </div>
+                        </lightning:card>                        
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{!c.closeModel }"/>
+                        
+                        <lightning:button variant="success"
+                                          label="Save"
+                                          title="Save"
+                                          onclick="{!c.saveChangesRecord}"/>
+                    </footer>
+                </div>
+            </section>
+            <!-- Modal Backdrop -->
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            
+        </aura:if>
+    </div>
+</aura:component>

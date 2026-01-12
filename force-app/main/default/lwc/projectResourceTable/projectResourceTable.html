@@ -1,0 +1,56 @@
+<template>
+    <lightning-card title="Project Resource Tagging">
+        <template if:true={projectResources}>
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col">
+                            <div class="slds-truncate" title="SR No.">SR No.</div>
+                        </th>
+                        <!-- <th scope="col">
+                            <div class="slds-truncate" title="Project Name">Project Name</div>
+                        </th> -->
+                        <th scope="col">
+                            <div class="slds-truncate" title="Team Member Name">Team Member Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Type">Role</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Type">Tagging Date</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={projectResources} for:item="resource" for:index="index">
+                        <tr key={resource.Id}>
+                            <td data-label="Project Index">
+                                <div class="slds-truncate" title={resource.index}>{resource.index}</div>
+                            </td>
+                            <!-- <td data-label="Project Name">
+                                <div class="slds-truncate" title={resource.Project_Name__c}>{resource.Project_Name__c}</div>
+                            </td> -->
+                            <td data-label="Team Member Name">
+                                <div class="slds-truncate" title={resource.Team_Member_Name__c}>{resource.Team_Member_Name__c}</div>
+                            </td>
+                            <td data-label="Type">
+                                <div class="slds-truncate" title={resource.Type__c}>{resource.Type__c}</div>
+                            </td>
+                            <td data-label="Tagging date">
+                                <div class="slds-truncate">{resource.taggedDate}
+                                    <!-- <lightning-input type="datetime" name="Tagging" label="Tagging date/time" value={resource.CreatedDate}></lightning-input> -->
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        <!-- <template if:true={error}>
+            <p class="slds-text-color_error">{error}</p>
+        </template>
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template> -->
+    </lightning-card>
+</template>

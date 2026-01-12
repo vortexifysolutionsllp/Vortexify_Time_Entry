@@ -1,0 +1,44 @@
+<!-- <template>
+<lightning-card title="Employee Project Dashboard">
+    
+</lightning-card>
+</template> -->
+
+<template>
+    <lightning-card title="Monthly Working Hours" icon-name="utility:summary">
+        <div class="slds-p-around_medium">
+            <lightning-combobox
+                name="month"
+                label="Select Month"
+                value={selectedMonth}
+                placeholder="Select a Month"
+                options={monthOptions}
+                onchange={handleMonthChange}>
+            </lightning-combobox>
+        </div>
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-p-around_small">{error}</div>
+        </template>
+        <div class="summary-box">
+            <span class="summary-title">Total Holidays</span>
+            <span class="summary-count">{holiCount}</span>
+        </div>
+        <template if:true={holidays}>
+            <div class="dashboard-container">
+                <template for:each={holidays} for:item="proj">
+                    <div key={proj.id} class="project-item">
+                        <div class="project-name">
+                            <lightning-icon 
+                                icon-name="standard:work_order" 
+                                size="small" 
+                                alternative-text="Project">
+                            </lightning-icon>
+                            <span>{proj.date}</span><span>{proj.reason}</span><span>{proj.status}</span> <!-- 👈 Now shows the project name -->
+                        </div>
+                        <lightning-badge label={proj.label} class="count-badge"></lightning-badge>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </lightning-card>
+</template>

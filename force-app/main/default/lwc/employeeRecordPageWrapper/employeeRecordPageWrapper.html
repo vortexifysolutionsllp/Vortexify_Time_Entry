@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-grid slds-wrap custom-layout">
+        <div class="slds-col slds-size_12-of-12 slds-medium-size_8-of-12 left-section">
+            <lightning-record-form
+                record-id={recordId}
+                object-api-name={objectApiName}
+                layout-type="Full"
+                mode="view"
+                columns="2">
+            </lightning-record-form>
+        </div>
+        <div class="slds-col slds-size_12-of-12 slds-medium-size_4-of-12 right-section">
+            <slot name="right"><c-employee-management-dashboard record-id={recordId}></c-employee-management-dashboard></slot>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,38 @@
+<template>
+    <div class="slds-form-element">
+        <label class="slds-form-element__label">{label}</label>
+        <!-- <lightning-input 
+            type="text" 
+            value={searchKey} 
+            onchange={handleChange} 
+            placeholder={placeholder} 
+            onfocus={handleFocus}>
+        </lightning-input> -->
+        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+            <input 
+                type="text" 
+                class="slds-input"
+                placeholder={placeholder}
+                value={searchKey}
+                oninput={handleChange}
+                onfocus={handleFocus}
+            />
+            <svg class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" aria-hidden="true">
+                <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#search"></use>
+            </svg>
+        </div>
+        
+
+        <template if:true={hasRecords}>
+            <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-dropdown_length-5">
+                <template for:each={records} for:item="record">
+                    <li key={record.Id} class="slds-listbox__item" onclick={handleSelect} data-id={record.Id} data-name={record.Name}>
+                        <div class="slds-listbox__option slds-listbox__option_plain slds-media" role="option">
+                            {record.Name}
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+    </div>
+</template>

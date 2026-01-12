@@ -1,0 +1,69 @@
+.content-section {
+  font-size: 0;
+  line-height: 0;
+  width: 100%;
+}
+
+.brick {
+  width: 100%;
+  min-width: 302px;
+  margin: 0;
+  margin-right: 2.5%;
+  margin-bottom: 2.5%;
+  display: flex;
+  border: 1px solid darkred;
+  background: white;
+  background: darken(#fff, 3);
+
+}
+.Modulebrick{
+
+  width: 100%;
+  min-width: 302px;
+  margin: 0;
+  margin-right: 2.5%;
+  margin-bottom: 2.5%;
+  display: flex;
+  border: 1px solid black;
+  color: black;
+  background: white;
+  background: darken(#fff, 3);
+
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+  
+/* .brick-chart {
+  .chart {
+      margin: 0 auto;
+      padding: 0;
+      width: @chart-size;
+      height: @chart-size;
+    }
+    canvas {
+      width: 250px !important;
+      height: 250px !important;
+    }
+  .legend {
+    width: 250px !important;
+    margin: 0 auto;
+    padding: 10px 0;
+    min-height: 80px;
+    .entry {
+      margin: 5px;
+      line-height: 12px;
+      font-size: 12px;
+      .swatch {
+        display: block;
+        float: left;
+        width:12px;
+        height:12px;
+        content: "";
+        margin: 0px 10px 0 0;
+      }
+    }
+  }
+} */

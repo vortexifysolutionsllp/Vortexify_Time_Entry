@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+.slds-boxx {
+    display: flex;
+    flex-wrap: wrap;
+	/* height: 100vh; */
+    /* justify-content: space-around; */
+}
+
+.module-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    padding: 0.7rem;
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.module-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.red{
+	background:red;
+	border: 2px saddlebrown;
+}
+
+.green{
+	background:green;
+	border: 2px saddlebrown;
+}
+.orange{
+	background: orange;
+	border: 2px saddlebrown;
+}
+
+.yellow{
+	background: yellow;
+	border: 2px saddlebrown;
+}
+
+.Blue{
+	background: blue;
+	border: 2px saddlebrown;
+}
+.module-stage {
+    font-size: 1rem;
+    color: gray;
+}
+
+.module-body {
+  text-align: left;
+
+}
+.module-footer{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-top: 1px solid #ddd;
+}
+
+.module-footer p{
+    padding: 0.5rem;
+    border-top: 1px solid #ddd;
+}
+
+.milestone-name, .expected-hours, .consumed-hours, .delay-rate {
+    margin: 0.5rem 0;
+}

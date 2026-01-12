@@ -1,0 +1,8 @@
+.mainChartContainer{
+	width:800px;
+	height:80;
+}
+
+.kendo-chart-container {
+    height: 400px; /* Adjust as needed */
+}

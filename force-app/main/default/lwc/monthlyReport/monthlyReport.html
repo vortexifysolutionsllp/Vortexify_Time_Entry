@@ -1,0 +1,25 @@
+<template>
+    <lightning-card  title="Montly Report">
+        <div class="slds-scrollable"> 
+        <table class="slds-table slds-table_bordered slds-table_col-bordered" width="100" >
+        <!-- <template for:each={columns} for:item="clm"> -->
+            <thead > 
+              <tr>
+                 <template for:each={columns} for:item="clm">
+                <th key={clm}>{clm}</th>
+                </template> 
+           </tr>
+           <tr>
+            <td>
+               <template if:true={istrue}>
+
+               </template>
+              </td>
+           </tr>
+
+        </thead>
+       
+    </table>
+</div>
+    </lightning-card>
+</template>

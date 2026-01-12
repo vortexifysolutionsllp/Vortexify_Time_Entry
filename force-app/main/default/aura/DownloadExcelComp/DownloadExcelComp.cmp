@@ -1,0 +1,52 @@
+<aura:component controller = "CSV_Controller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:attribute name="downloadFiles" type="sobject"/>
+    
+    <div style="width:100%;padding: 25px">
+        <div style="float:right">
+            <lightning:button iconName="utility:download" 
+                              iconPosition="left" 
+                              label="Download Format" 
+                              onclick="{!c.downloadFormat}" 
+                              class="slds-button slds-button_brand"/>        
+        </div>
+    </div>
+    <br/><br/>
+    <!--table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div class="slds-truncate" title="Hotel Name">Hotel Name</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Tour Code">Tour Code</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Date From">Date From</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Date To">Date To</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Rooms">Rooms</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Overwrite Standard Price">Overwrite Standard Price</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Double/Twin Single Occupancy">Double/Twin Single Occupancy</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Double/Twin Double Occupancy">Double/Twin Double Occupancy</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Triple Room 2 Adults + 1 Child(0-12 yrs)">Triple Room 2 Adults + 1 Child(0-12 yrs))</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Triple Room 3 Adults">Triple Room 3 Adults</div>
+                </th>
+            </tr>
+        </thead>
+    </table-->    
+</aura:component>

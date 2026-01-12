@@ -1,0 +1,107 @@
+<template>
+    <lightning-card>
+        <div class="child-table-padding">
+            <div class="JiraTask-header">
+                <div class="header-left">
+                    <lightning-icon icon-name='standard:timesheet' alternative-text='timesheet' size='small' title='timesheet'></lightning-icon>
+                    <strong class="child-TimeEntry">Jira Task</strong>
+                </div>
+                <div class="header-right">
+                    <span class="team-member-name">{teamMemberName}</span>
+                </div>
+            </div>
+            <template if:true={jiraTasks}>
+                <div class="slds-scrollable child-table-padding">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Sr No.</th>
+                                <th>Task Name</th>
+                                <th>Description</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Estimated Efforts</th>
+                                <th>Actual Efforts</th>
+                                <th>Assigned By</th>
+                                <th>Team Member</th>
+                                <th>Time Entry Line Items</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={currentJiraListToDisplay} for:item="task">
+                                <tr key={task.Id}>
+                                    <td>{task.rowNumber}</td>
+                                    <td class="bold-task-name">{task.Name}</td>
+                                    <td class="word-wrap">
+                                        <span lwc:dom="manual" data-description-id={task.Id}></span>
+                                    </td>
+                                    <td>{task.Priority__c}</td>
+                                    <td>{task.Status__c}</td>
+                                    <td>{task.Estimated_Efforts__c}</td>
+                                    <td class={task.actualEffortsClass}>
+                                        {task.Actual_Hours_Utilised__c}
+                                    </td>
+                                    <td>{task.Assigned_By_Name__c}</td>
+                                    <td>{task.Team_Member_Name__c}</td>
+                                    <td>
+                                        <button class="slds-button slds-button_brand" data-id={task.Id} onclick={handleToggle}>
+                                            View Time Entries
+                                        </button>
+                                    </td>
+                                </tr>
+                                <template if:true={task.showChildRecords}>
+                                    <tr key={task.Id} class="child-records">
+                                        <td colspan="10" class="child-table-header child-tr">
+                                           <lightning-icon icon-name='standard:timesheet' alternative-text='timesheet' size='small' title='timesheet'></lightning-icon> 
+                                           <strong class="child-TimeEntry">Time Entry</strong>
+                                        </td>
+                                    </tr>
+                                    <tr key={task.Id} class="child-records">
+                                        <td colspan="10" class="child-table-padding">
+                                            <template if:true={task.Time_Entry_Line_Items__r}>
+                                                <table class="custom-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr No.</th>
+                                                            <th>Task Name</th>
+                                                            <th>Time Entry</th>
+                                                            <th>Project</th>
+                                                            <th>Allocated Hours</th>
+                                                            <th>Consumed Hours</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={task.Time_Entry_Line_Items__r} for:item="timeEntry">
+                                                            <tr key={timeEntry.Id}>
+                                                                <td>{timeEntry.rowNumber}</td>
+                                                                <td>{timeEntry.Jira_Task__r.Name}</td>
+                                                                <td>{timeEntry.Name}</td>
+                                                                <td>{timeEntry.Project__r.Name}</td>
+                                                                <td>{timeEntry.Allocated_Hours__c}</td>
+                                                                <td>{timeEntry.Consumed_Hours__c}</td>
+                                                                <td>{timeEntry.Status__c}</td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </template>
+                                            <template if:false={task.Time_Entry_Line_Items__r.length}>
+                                                <p class="No-TimeEntry">No Time Entry Line Items found.</p>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <c-custom-pagination class="jobPagination" list={jiraTasks}
+                        onpagechanged={jobPaginationCallback}></c-custom-pagination>
+            </template>
+            <template if:true={error}>
+                <p>{error}</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

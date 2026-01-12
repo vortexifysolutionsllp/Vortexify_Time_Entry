@@ -1,0 +1,44 @@
+<template>
+	<div class="slds-boxx slds-theme_default">
+		<template if:true={isjiraTaskListView}>
+			<div class="slds-float_left slds-m-bottom_small">
+				<lightning-icon icon-name='utility:back' alternative-text='back' variant='error' size='medium'
+					title='back' onclick={backAction}></lightning-icon>
+			</div>
+		</template>
+		<template if:true={isjiraTaskList}>
+			<template if:true={jiraTaskList}>
+				<template for:each={jiraTaskList} for:item="task">
+					<div key={task.JiraNumber} class="task-item slds-boxx slds-m-around_small"
+                        >
+						<div class="task-header">
+							<h2 class="slds-text-heading_small">{task.assignedTo}</h2>
+							<!-- <p class="slds-text-body_small slds-text-color_weak">Assigned To: {task.assignedTo}</p> -->
+						</div>
+						<div class="task-body">
+							<!-- <p><strong>Status:</strong> {task.Status}</p> -->
+							<!-- <p><strong>Priority:</strong> {task.Priority}</p> -->
+							<p><strong>Assigned By:</strong> {task.assignedBy}</p>
+							<p><strong>Expected Hours:</strong> {task.ExpectedHours}</p>
+							<p><strong>Consumed Hours:</strong> {task.ConsumedHours}</p>
+							<p><strong>Task Count:</strong> {task.JiraTaskCount}</p>
+							<p><strong>Description:</strong></p>
+							<div class="task-description" lwc:dom="manual"></div>
+						</div>
+						<div class="module-footer">
+							<p class="flag-color" style={task.flagStyle}></p>
+                            <lightning-icon icon-name='utility:picklist_type' alternative-text='picklist_type' size='small' title='picklist_type' data-id={task.assignedToId} data-mid={task.moduleId} onclick={viewRelatedTasks}></lightning-icon>
+						</div>
+					</div>
+				</template>
+			</template>
+			<template if:false={jiraTaskList}>
+				<p>No Jira Tasks available.</p>
+			</template>
+		</template>
+		<template if:true={isjiraTaskListView}>
+			<c-jira-task-time-entry-line-item-dashboard module-id={selectedModuleId} team-member-id={selectedTeamMemeberId}>
+			</c-jira-task-time-entry-line-item-dashboard>
+		</template>
+	</div>
+</template>

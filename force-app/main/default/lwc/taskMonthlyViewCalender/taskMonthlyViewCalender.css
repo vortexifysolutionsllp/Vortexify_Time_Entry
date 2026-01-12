@@ -1,0 +1,169 @@
+.custom-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+ 
+.card-header {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+ 
+.card-header .icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+ 
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+ 
+.description {
+    margin-bottom: 0.5rem;
+}
+ 
+.description .text {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+ 
+.modified {
+    font-size: 0.9rem;
+    margin-top: auto;
+    margin-bottom: 0.8rem;
+    color: #333;
+}
+ 
+.button-group {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: flex-start;
+}
+ 
+.delete-btn {
+    --slds-c-button-text-color: #a0003f;
+    --slds-c-button-brand-color-background: #fff0f5;
+}
+ 
+.tooltip-container {
+    display: inline-block;
+    position: relative;
+ 
+}
+ 
+.view-more {
+    color: #1a73e8; /* Softer blue that's easier on white background */
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+.view-more:hover {
+    text-decoration: underline;
+    color: #0c5fc1; /* Slightly darker on hover */
+}
+ 
+.tooltip {
+    position: absolute;
+    top: 30px;
+    left: -100%;
+   
+    z-index: 1000;
+    background: #2c3e50; /* deep navy blue for contrast */
+    border: 1px solid #1a252f;
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    max-width: 240px;
+    white-space: normal;
+    font-size: 0.775rem; /* slightly larger and readable */
+    line-height: 1.5;
+    color: #f5f7fa; /* soft white for easy reading */
+    transition: opacity 0.2s ease-in-out;
+}
+.hide-cell {
+    display: none;
+}
+
+.custom-nav-btn button {
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    background-color: #0176d3;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.custom-nav-btn button:hover {
+   
+    background-color: #005fb2;
+}
+.custom-today-btn{
+	margin-inline:5px;
+}
+.custom-today-btn button {
+    border-radius: 20px;
+    padding: 0 16px;
+    box-shadow: 0 2px 6px rgba(0, 118, 211, 0.3);
+    background-color: #0176d3;
+    color: white;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.custom-today-btn button:hover {
+    background-color: #005fb2;
+}
+.month-year-display {
+    background: linear-gradient(135deg, #0176d3, #00bfff);
+	padding-inline:10px;
+	padding-block:5px;
+	align-items: center;
+    color: white;
+    font-weight: 600;
+    border-radius: 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+    display: flex;
+}
+
+.month-year-display:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.month-year-display {
+    margin-left: 16px;   /* Adjust space as needed */
+}
+
+.white-icon lightning-primitive-icon {
+    fill: white !important;
+}
+
+
+
+/* Force lookup dropdown/listbox to appear on top */
+.slds-combobox__list,
+.slds-listbox,
+.lookup-dropdown {
+    position: absolute !important;
+    z-index: 99999 !important;
+}
+
+/* Ensure host component allows dropdown overflow */
+:host {
+    overflow: visible !important;
+}
+
+/* Calendar container override (important in your case) */
+.calendar-wrapper,
+.full-calendar-container,
+.slds-grid,
+.slds-card {
+    overflow: visible !important;
+}

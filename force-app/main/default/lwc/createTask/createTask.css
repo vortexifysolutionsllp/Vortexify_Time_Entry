@@ -1,0 +1,263 @@
+.required {
+    color: red;
+    font-weight: bold;
+}
+.lookup-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+}
+
+
+.task-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+    padding: 1rem;
+}
+
+.custom-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1rem 1rem;
+    width: 23.9%;
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid lightgray;
+}
+
+.custom-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;  /* pushes edit/delete to right */
+    align-items: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    font-size: 1.4rem;
+    margin-right: 0.5rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+}
+
+.circle-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.22);
+    transition: 0.18s ease-in-out;
+}
+
+.read-only-btn {
+    background: #e69b72;  /* Blue */
+}
+
+.view-btn{
+    background: gray;
+}
+
+/* BLUE EDIT BUTTON */
+.edit-btn {
+    background: #1E88E5;  /* Blue */
+}
+
+/* RED DELETE BUTTON */
+.delete-btn {
+    background: #D32F2F;  /* Red */
+}
+
+/* White icon */
+.circle-btn lightning-icon {
+    --slds-c-icon-color-foreground-default: white !important;
+    color: white !important;
+    fill: white !important;
+}
+
+/* Hover */
+.circle-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.28);
+}
+
+
+.row {
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    margin-bottom: 0.5rem;
+}
+
+.description .text {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.modified {
+    font-size: 0.9rem;
+    margin-top: auto;
+    margin-bottom: 0.8rem;
+    color: #333;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: flex-start;
+}
+
+.tooltip-container {
+    display: inline-block;
+    position: relative;
+  
+}
+
+.view-more {
+    color: #1a73e8; /* Softer blue that's easier on white background */
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+.view-more:hover {
+    text-decoration: underline;
+    color: #0c5fc1; /* Slightly darker on hover */
+}
+
+.tooltip {
+    position: absolute;
+    top: 30px;
+    left: -100%;
+    z-index: 1000;
+    background: #2c3e50; /* deep navy blue for contrast */
+    border: 1px solid #1a252f;
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    max-width: 240px;
+    white-space: normal;
+    font-size: 0.775rem; /* slightly larger and readable */
+    line-height: 1.5;
+    color: #f5f7fa; /* soft white for easy reading */
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* ============================================================
+   RESET & FIX SLDS STYLING ONLY FOR TASK DETAILS VIEW MODAL
+   ============================================================ */
+.task-details-modal lightning-input,
+.task-details-modal lightning-textarea {
+    background: white !important;
+    border-radius: 4px !important;
+}
+
+.task-details-modal lightning-input input[readonly],
+.task-details-modal lightning-textarea textarea[readonly] {
+    background: #f3f3f3 !important;
+    border: 1px solid #d8dde6 !important;
+    cursor: not-allowed;
+}
+
+.task-details-modal .slds-modal__container {
+    border-radius: 8px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+}
+
+.task-details-modal .slds-modal__header {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* Fix SLDS borders & background for readonly fields */
+/* Make readonly fields show SLDS border like the Create Task modal */
+.readonly-field lightning-input input[readonly],
+.readonly-field lightning-textarea textarea[readonly] {
+    background: #ffffff !important;
+    border: 1px solid #d8dde6 !important;
+    border-radius: 4px !important;
+    padding: 0 0.5rem !important;
+    cursor: not-allowed;
+}
+
+.readonly-field lightning-input,
+.readonly-field lightning-textarea {
+    background: #ffffff !important;
+}
+
+.custom-input-border .slds-input {
+    border: 1px solid #807f7f; /* Example: 1px solid light gray border */
+    border-radius: 4px; /* Optional: Add some border-radius */
+}
+
+/* ================================
+   UNIVERSAL INPUT BORDER FIX
+   ================================ */
+
+/* Lookup input box */
+c-custom-lookup .slds-input,
+c-custom-filtered-lookup .slds-input {
+    border: 1px solid #807f7f !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+}
+
+/* Combobox */
+lightning-combobox .slds-input {
+    border: 1px solid #807f7f !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+}
+
+/* Date & Time fields */
+lightning-input .slds-input {
+    border: 1px solid #807f7f !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+}
+
+/* Textarea */
+lightning-textarea textarea {
+    border: 1px solid #807f7f !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+}
+
+/* Label spacing */
+.slds-form-element__label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* Make lookup container consistent */
+c-custom-lookup,
+c-custom-filtered-lookup {
+    width: 100%;
+}

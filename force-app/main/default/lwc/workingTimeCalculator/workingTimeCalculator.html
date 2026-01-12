@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Monthly Working Hours" icon-name="standard:timesheet">
+        <div class="slds-p-around_medium">
+
+            <!-- Month Selector -->
+            <lightning-combobox
+                name="month"
+                label="Select Month"
+                value={selectedMonth}
+                placeholder="Select a Month"
+                options={monthOptions}
+                onchange={handleMonthChange}>
+            </lightning-combobox>
+
+            <!-- Result -->
+            <template if:true={totalHours}>
+                <div class="result-card slds-m-top_large">
+                    <p class="result-text">⏱ {totalHours} Hours</p>
+                </div>
+            </template>
+
+            <template if:true={loading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>

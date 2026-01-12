@@ -1,0 +1,62 @@
+<template>
+    <lightning-card title={porjectTitlewithName}>
+        <div style="margin:2%">
+            <div class="slds-float_right slds-p-bottom_small">
+                <h1 class="slds-page-header__title">Add Row 
+                    <lightning-button-icon icon-name="utility:add"  size="large" variant="bare" alternative-text="Add" onclick={addRow}></lightning-button-icon>
+                </h1>
+            </div>
+            <div class="container-fluid">        
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+                    <thead>
+                        <tr class="slds-text-title_caps">
+                            <th scope="col">
+                                <div class="slds-truncate">Sr. No</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Module Name">Milestone Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Module Description">Milestone description</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Total Estimated Efforts">Expected Start Date</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Module Start Date">Expected End Date</div>
+                            </th>
+                        </tr>
+                    </thead>   
+                    <tbody>      
+                        <template for:each={MilestoneList} for:item="mdl" for:index="index">
+                            <tr key={mdl.Id}>
+                                <td>{index}</td>
+                                <td>
+                                    <lightning-input name="mdlName" type="text" maxlength="50" value={mdl.Name__c}></lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-input name="mdlDescription" type="text" value={mdl.Description__c}></lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-input name="mdl" type="date" value={mdl.Expected_Start_Date__c}></lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-input name="mdl" type="date" value={mdl.Expected_End_Date__c}></lightning-input>
+                                </td>
+                                <td>
+                                    <a onclick={removeRecord} data-record={index}>
+                                        <lightning-icon icon-name="utility:delete" size="small" alternative-text="Delete"></lightning-icon>
+                                        <span class="slds-assistive-text">Delete</span>
+                                    </a>
+                                </td> 
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="slds-float_right slds-p-top_small">
+                    <lightning-button variant="brand" label="Save" title="Brand action" onclick={updateMilestones}></lightning-button>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

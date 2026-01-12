@@ -1,0 +1,112 @@
+<aura:component controller="CSV_Controller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+    
+    <aura:html tag="style">
+        .slds-modal__container{
+        max-width: 90rem !important;
+        width:175% !important;
+        }
+    </aura:html>
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+    </aura:html>
+    
+    <aura:attribute
+                    name="TableContent"
+                    type="String"
+                    description=" Show the Result class"
+                    />
+    <aura:attribute
+                    name="TargetFileName"
+                    type="String"
+                    description="Name of the file"
+                    />
+    <aura:attribute name="tableheaders" type="Object[]" />
+    <aura:attribute name="fileContentData" type="String" />
+    
+    <!-- It will display 100 records . Change for your requirement-->
+    <aura:attribute name="NumOfRecords" type="Integer" default="100" />
+    <aura:attribute name="showMain" type="Boolean" default="true" />
+    <aura:attribute name="loading" type="Boolean" default="false" />
+    <aura:attribute name="fileName" type="String" default="No File Selected.." />
+    
+    <aura:attribute
+                    name="buttonLabel"
+                    type="string"
+                    default="Upload File"
+                    access="global"
+                    description="The label of the button."
+                    />
+    <aura:attribute
+                    name="disabled"
+                    type="Boolean"
+                    default="false"
+                    access="global"
+                    />
+    <div class="slds-form-element" aura:id="form-container">
+        
+        <div class="slds-form-element__control">
+            <div class="slds-file-selector slds-file-selector_files slds-is-relative">
+                <!-- Loading indicator -->
+                <aura:if isTrue="{!v.loading}">
+                    <lightning:spinner alternativeText="Loading" size="small" variant="brand"/>
+                </aura:if>
+                
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_0.5-of-4.5">
+                    </div>
+                    <div class="slds-col slds-size_2-of-4.5">
+                        <span>
+                            
+                            <lightning:input aura:id="fuploader" onchange="{!c.onchange}" type="file" name="file" label="Upload File" multiple="false"/>
+                            <div class="slds-text-body_small slds-text-color_error">{!v.fileName}</div>
+                            <div class="slds-text-body_small slds-text-color_error">Date columns should be in YYYY-MM-DD format.</div>
+                        </span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-4.5">
+                        <span>
+                            <c:DownloadExcelComp/>
+                        </span>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+    
+    <aura:if isTrue="{!v.showMain}">
+        
+        <aura:set attribute="else">
+            <div style = "border-style: solid">
+                <ui:outputRichText class="uiOutputRichText slds-m-around--large" value="{!v.TargetFileName}"/>
+                
+                <ui:outputRichText class="uiOutputRichText slds-m--around-large" value="{!v.TableContent}"/>
+            </div>
+            <div class="slds-p-around--large slds-align--absolute-center">
+                <lightning:button
+                                  label="Save"
+                                  variant="brand"
+                                  onclick="{!c.processFileContent}"
+                                  />
+                <lightning:button
+                                  label="Cancel"
+                                  variant="brand"
+                                  onclick="{!c.cancel}"
+                                  />
+            </div>
+        </aura:set>
+    </aura:if>
+    
+    <!--old-->
+</aura:component>

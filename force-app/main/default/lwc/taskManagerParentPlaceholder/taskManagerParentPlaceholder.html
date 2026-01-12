@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-card">
+        <c-task-manager-date-time-bar ondateselected={dateSelectedCallback}></c-task-manager-date-time-bar>
+        <!-- <div style="margin-top: 3%;margin-left: 5%;margin-right: 5%;text-align:center;">
+            <template if:true={conId}>
+                <c-task-manager-child-view con-id={conId} selected-date={selectedDate} selected-month={selectedMonth} selected-year={selectedYear} ondateselected={dateSelectedCallback}></c-task-manager-child-view>
+            </template>
+        </div> -->
+        <template if:true={isDateSelected}>
+                <c-task-manager-child-view 
+                    con-id={conId} 
+                    selected-date={selectedDate} 
+                    selected-month={selectedMonth} 
+                    selected-year={selectedYear}>
+                </c-task-manager-child-view>
+        </template>
+    </div>
+</template>

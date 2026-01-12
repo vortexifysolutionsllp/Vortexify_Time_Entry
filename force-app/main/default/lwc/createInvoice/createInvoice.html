@@ -1,0 +1,136 @@
+<template>
+    <lightning-card title="Create Invoice">
+
+<div class="slds-grid slds-wrap slds-p-around_medium">
+    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-around_x-small">
+        <lightning-input
+            type="date"
+            name="DueDate"
+            label="Due Date"
+            value={invoiceFields.DueDate}
+            onchange={handleInvoiceInputChange}>
+        </lightning-input>
+    </div>
+<div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-around_x-small">
+    <lightning-input
+    type="date"
+    name="StartDate"
+    label="Start Date"
+    value={invoiceFields.StartDate}
+    onchange={handleInvoiceInputChange}>
+</lightning-input>
+</div>
+
+    
+    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-around_x-small">
+        <lightning-input
+            type="date"
+            name="EndDate"
+            label="End Date"
+            value={invoiceFields.EndDate}
+            onchange={handleInvoiceInputChange}>
+        </lightning-input>
+    </div>
+</div>
+
+        <!-- Row Table -->
+        <div class="slds-m-around_medium">
+            <div class="slds-m-bottom_small">
+                <h1 class="slds-page-header__title">
+                    Add Project Rows
+                    <lightning-button-icon icon-name="utility:add" size="medium" variant="bare" alternative-text="Add" onclick={addRow}></lightning-button-icon>
+                </h1>
+            </div>
+
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th>Project Description</th>
+                        <th>Project Date</th>
+                        <th>Duration(Hours)</th>
+                        <th>Rate</th>
+                        <th>GST</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={rows} for:item="row">
+                        <tr key={row.Id}>
+                            <td>
+                                <lightning-input
+                                    data-id={row.Id}
+                                    name="Description"
+                                    value={row.Description}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input
+                                    type="date"
+                                    data-id={row.Id}
+                                    name="Date"
+                                    value={row.Date}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input
+                                    type="number"
+                                    step="0.01"
+                                    data-id={row.Id}
+                                    name="Time"
+                                    value={row.Time}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+                            <!-- <td>
+                                <lightning-input
+                                    type="time"
+                                    data-id={row.Id}
+                                    name="Time"
+                                    value={row.Time}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td> -->
+                            <td>
+                                <lightning-input
+                                    type="number"
+                                    data-id={row.Id}
+                                    name="Rate"
+                                    value={row.Rate}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input
+                                    type="number"
+                                    data-id={row.Id}
+                                    name="GST"
+                                    value={row.GST}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-button-icon
+                                    icon-name="utility:delete"
+                                    alternative-text="Delete"
+                                    data-id={row.Id}
+                                    onclick={handleDelete}>
+                                </lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <div class="slds-align_absolute-center slds-m-top_medium">
+                <lightning-button
+                    variant="brand"
+                    label="Save Invoice"
+                    onclick={handleSave}>
+                </lightning-button>
+            </div>
+        </div>
+
+    </lightning-card>
+</template>

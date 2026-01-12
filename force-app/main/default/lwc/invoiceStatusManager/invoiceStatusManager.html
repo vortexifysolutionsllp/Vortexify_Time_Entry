@@ -1,0 +1,123 @@
+<template>
+    <lightning-card title="Invoice Status Management" icon-name="utility:money">
+        <div class="main_container">
+        <!-- Grand Total -->
+        <div class="summary-box grand-total">
+            <span class="summary-title">Grand Total</span>
+            <div class="grand-total-display">
+                <span class="summary-count">
+                    <template if:true={showGrandTotal}>₹ {formattedGrandTotal}</template>
+                    <template if:false={showGrandTotal}>₹ {maskedGrandTotal}</template>
+                </span>
+                <lightning-button-icon 
+                    icon-name={eyeIcon} 
+                    alternative-text="Toggle Visibility" 
+                    onclick={toggleGrandTotal}
+                    variant="bare-inverse"
+                    class="eye-button">
+                </lightning-button-icon>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <lightning-tabset variant="scoped" class="slds-p-around_medium">
+
+            <!-- Initiated Tab -->
+            <lightning-tab label="Initiated" icon-name="standard:document">
+                <div class="summary-row">
+                    <div class="summary-box small">
+                        <span class="summary-title">Total Initiated</span>
+                        <span class="summary-count">{initiatedCount}</span>
+                    </div>
+                    <div class="summary-box small">
+                        <span class="summary-title">Initiated Amount</span>
+                        <span class="summary-count">₹ {initiatedTotal}</span>
+                    </div>
+                </div>
+                <template if:true={initiatedInvoices}>
+                    <div class="dashboard-container">
+                        <template for:each={initiatedInvoices} for:item="inv">
+                            <div key={inv.Id} class="project-item">
+
+                                <!-- Left: Invoice Id with link -->
+                                <div class="project-name">
+                                    <lightning-icon icon-name="standard:document" size="small"></lightning-icon>
+                                    <a href={inv.recordUrl} target="_blank" class="inv-link">{inv.Name}</a>
+                                </div>
+
+                                <!-- Middle: Amount -->
+                                <div class="amount">₹ {inv.GST_Total_Amount__c}</div>
+
+                                <!-- Right: Date -->
+                                <lightning-badge label={inv.formattedDate}></lightning-badge>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </lightning-tab>
+
+            <!-- Pending Tab -->
+            <lightning-tab label="Pending" icon-name="standard:record">
+                <div class="summary-row">
+                    <div class="summary-box small">
+                        <span class="summary-title">Total Pending</span>
+                        <span class="summary-count">{pendingCount}</span>
+                    </div>
+                    <div class="summary-box small">
+                        <span class="summary-title">Pending Amount</span>
+                        <span class="summary-count">₹ {pendingTotal}</span>
+                    </div>
+                </div>
+                <template if:true={pendingInvoices}>
+                    <div class="dashboard-container">
+                        <template for:each={pendingInvoices} for:item="inv">
+                            <div key={inv.Id} class="project-item">
+
+                                <div class="project-name">
+                                    <lightning-icon icon-name="standard:record" size="small"></lightning-icon>
+                                    <a href={inv.recordUrl} target="_blank" class="inv-link">{inv.Name}</a>
+                                </div>
+
+                                <div class="amount">₹ {inv.GST_Total_Amount__c}</div>
+
+                                <lightning-badge label={inv.formattedDate}></lightning-badge>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </lightning-tab>
+
+            <!-- Realised Tab -->
+            <lightning-tab label="Released" icon-name="standard:opportunity">
+                <div class="summary-row">
+                    <div class="summary-box small">
+                        <span class="summary-title">Total Realised</span>
+                        <span class="summary-count">{realisedCount}</span>
+                    </div>
+                    <div class="summary-box small">
+                        <span class="summary-title">Realised Amount</span>
+                        <span class="summary-count">₹ {realisedTotal}</span>
+                    </div>
+                </div>
+                <template if:true={realisedInvoices}>
+                    <div class="dashboard-container">
+                        <template for:each={realisedInvoices} for:item="inv">
+                            <div key={inv.Id} class="project-item">
+
+                                <div class="project-name">
+                                    <lightning-icon icon-name="standard:opportunity" size="small"></lightning-icon>
+                                    <a href={inv.recordUrl} target="_blank" class="inv-link">{inv.Name}</a>
+                                </div>
+
+                                <div class="amount">₹ {inv.GST_Total_Amount__c}</div>
+
+                                <lightning-badge label={inv.formattedDate}></lightning-badge>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </lightning-tab>
+        </lightning-tabset>
+        </div>
+    </lightning-card>
+</template>

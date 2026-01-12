@@ -1,0 +1,57 @@
+<template>
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Chat</h2>
+                <span class="new-badge">NEW</span>
+            </div>
+            <ul class="chat-list">
+                <template for:each={decoratedChats} for:item="chat">
+                    <li key={chat.id} 
+                        class={chat.cssClass}
+                        data-id={chat.id}
+                        onclick={handleChatClick}>
+                        <lightning-icon icon-name="standard:user" size="small" class="avatar"></lightning-icon>
+                        <div class="chat-info">
+                            <h3>{chat.name}</h3>
+                            <p>{chat.message}</p>
+                        </div>
+                        <div class="chat-meta">
+                            <span>{chat.time}</span>
+                            <template if:true={chat.unread}>
+                                <span class="badge">{chat.unread}</span>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+
+        <!-- Chat Window -->
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="header-info">
+                    <lightning-icon icon-name="standard:user" size="small" class="avatar"></lightning-icon>
+                    <h3>{activeChat.name}</h3>
+                </div>
+            </div>
+
+            <div class="messages">
+                <template for:each={decoratedMessages} for:item="msg">
+                    <div key={msg.id} class={msg.cssClass}>
+                        <template if:true={msg.incoming}>
+                            <lightning-icon icon-name="standard:user" size="x-small" class="avatar"></lightning-icon>
+                        </template>
+                        <p>{msg.text}</p>
+                    </div>
+                </template>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" placeholder="Type your message..." value={newMessage} oninput={handleInput}/>
+                <button onclick={sendMessage}>➤</button>
+            </div>
+        </div>
+    </div>
+</template>

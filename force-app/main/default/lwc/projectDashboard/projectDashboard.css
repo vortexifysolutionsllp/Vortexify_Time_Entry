@@ -1,0 +1,190 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.mainDiv{
+    padding: 0;
+    margin:0;
+}
+.query-div{
+    position: sticky;
+    padding: 0;
+    display: flex;
+    background-color: #f4f6f9;
+    /* background-color:#00A1E0; */
+    justify-content:space-around;
+    align-items: left;
+    padding:10px;
+    border: 3px solid #ddd;
+    z-index: 2000; /* Ensure the header stays on top */
+}
+.container {
+    display: flex;
+    background-color: #f4f6f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leftDiv {
+    max-height:100vh;
+    width: 20%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+.dataValueSpan{
+    margin-left:5px;
+    font-weight:700;
+}
+
+.rightDiv {
+    max-height:100vh;
+    width: 80%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.projectData {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+}
+
+.projectData>* {
+    flex: 1 1 auto;
+   
+}
+.box {
+    flex: 1 1 calc(33.333% - 40px); /* Subtracting padding and gap */
+    background-color: var(--lwc-colorBackgroundAlt, #f4f4f4);
+    border: 1px solid var(--lwc-colorBorder, #ddd);
+    padding: 10px;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    text-align: left;
+}
+
+.modulesBox{
+    /* width: 40%; */
+}
+
+.emailBox{
+    /* width: 40%; */
+}
+
+.health-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    padding: 0.5rem;
+    border-top: 1px solid #ddd;
+}
+.projectHeading h1{
+    margin-right: 30%;
+    margin-left: 30%;
+    color: black;
+    font-size: 1.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+
+}
+
+.box:hover {
+    /* transform: scale(1.05); */
+}
+
+.box h2 {
+    margin-bottom: 10px;
+    color: var(--lwc-colorTextBrand, #1a73e8); /* Salesforce brand blue */
+    font-size: 1.2em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--lwc-colorBorderBrand, #1a73e8);
+    padding-bottom: 5px;
+}
+
+.box p {
+    color: var(--lwc-colorTextDefault, #666);
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+
+@media (max-width: 900px) {
+    .box {
+        flex: 1 1 calc(50% - 40px);
+    }
+}
+
+@media (max-width: 600px) {
+    .box {
+        flex: 1 1 100%;
+    }
+}
+
+
+
+.projectItem {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.projectItem {
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #00A1E0;; /* Salesforce blue */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.green{
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #27e139; /* Salesforce blue */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.projectItem:hover {
+    background-color: #005fb2;
+    transform: scale(1.05);
+}
+
+.projectName {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+
+
+
+/* .projectExpectedData, .projectActualData {
+    margin-bottom: 20px;
+}
+.projectExpectedData .dataRow{
+	display: flex;
+	flex-direction:row;
+} */
+
+.dataRow {
+	display: flex;
+	flex-direction: row;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

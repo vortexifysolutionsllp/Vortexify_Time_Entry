@@ -1,0 +1,171 @@
+.slds-scrollable {
+    overflow-y: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table th, .custom-table td {
+    border: 1px solid #d8dde6;
+    padding: 8px;
+    text-align: left;
+}
+
+.custom-table th {
+    background-color: #f4f6f9;
+    font-weight: bold;
+}
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.bold-task-name {
+    font-weight: bold;
+}
+
+.word-wrap {
+    word-wrap: break-word; /* Break long words */
+    width: 20%;
+}
+
+.child-table-padding {
+    padding: 0.6% !important; /* Adjust as needed for the desired padding */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        color: red;
+    }
+    50% {
+        transform: scale(1.1);
+        color: darkred;
+    }
+    100% {
+        transform: scale(1);
+        color: red;
+    }
+}
+
+.actual-efforts-over {
+    color: red;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+    text-align: center !important;
+}
+
+.child-table-header {
+    background-color: #f4f6f9;
+    font-weight: 700;
+    padding: 8px;
+}
+
+.No-TimeEntry {
+    padding: 0.6%;
+    color: red;
+    font-size: large;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+}
+
+.child-TimeEntry {
+    margin-left: 0.3%;
+}
+
+.JiraTask-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    background-color: #AED6F1;
+    border-radius: 5px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    width: 4%;
+    justify-content: space-between;
+}
+
+.header-right {
+    margin-left: auto;
+    margin-right: 1%;
+}
+
+.team-member-name {
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+/* Button CSS */
+.button-85 {
+    padding: 0.6em 2em;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-85:before {
+    content: "";
+    background: linear-gradient(
+        45deg,
+        #ff0000,
+        #ff7300,
+        #fffb00,
+        #48ff00,
+        #00ffd5,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #ff0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing-button-85 20s linear infinite;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+@keyframes glowing-button-85 {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.button-85:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #222;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}

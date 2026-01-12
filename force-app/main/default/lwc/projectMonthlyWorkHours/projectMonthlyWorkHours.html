@@ -1,0 +1,52 @@
+<template>
+    <lightning-card title="Project Management Dashboard" icon-name="standard:timesheet">
+        <div class="slds-p-around_medium">
+
+            <!-- Month Selector -->
+            <lightning-combobox
+                name="month"
+                label="Select Month"
+                value={selectedMonth}
+                placeholder="Select a Month"
+                options={monthOptions}
+                onchange={handleMonthChange}>
+            </lightning-combobox>
+
+            <!-- Tabset for Hours & Tasks -->
+            <lightning-tabset class="slds-m-top_medium">
+
+                <!-- Working Hours Tab -->
+                <lightning-tab label="Working Hours" icon-name="standard:timesheet">
+                    <div class="summary-box">
+                        <span class="summary-title">Total Working Hours</span>
+                        <span class="summary-count">{totalHours}</span>
+                    </div>
+                </lightning-tab>
+
+                <!-- Tasks Tab -->
+                <lightning-tab label="Tasks" icon-name="standard:task">
+                    <div class="summary-box">
+                        <span class="summary-title">Total Tasks</span>
+                        <span class="summary-count">{taskCount}</span>
+                    </div>
+
+                    <template if:true={tasks}>
+                        <div class="dashboard-container">
+                            <template for:each={tasks} for:item="t">
+                                <div key={t.id} class="project-item slds-m-vertical_x-small">
+                                    <lightning-icon icon-name="standard:task" size="small"></lightning-icon>
+                                    <span class="slds-m-left_small">{t.name} - {t.status}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </lightning-tab>
+            </lightning-tabset>
+
+            <!-- Loader -->
+            <template if:true={loading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>

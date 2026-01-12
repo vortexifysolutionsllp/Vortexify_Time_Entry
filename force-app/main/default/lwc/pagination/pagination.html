@@ -1,0 +1,19 @@
+<template>
+    <div class="pagination" >
+
+        <button class="slds-button slds-button_neutral" disabled={isFirstPage} onclick={handleFirst}>
+            First
+        </button>
+        <button class="slds-button slds-button_neutral" disabled={isFirstPage} onclick={handlePrevious}>
+            Previous
+        </button>
+        <span style="margin: 7px;">Page {pageNumber} of {totalPages}</span>
+        <button class="slds-button slds-button_neutral" disabled={isLastPage} onclick={handleNext}>
+            Next
+        </button>
+        <button class="slds-button slds-button_neutral" disabled={isLastPage} onclick={handleLast}>
+            Last
+        </button>
+
+    </div>
+</template>

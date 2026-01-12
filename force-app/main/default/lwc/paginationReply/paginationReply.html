@@ -1,0 +1,14 @@
+<template>
+    <div class="slds-align_absolute-center slds-m-top_large css">
+        <p class='slds-m-right_small' style="color:#969492;float:left;margin-right:5rem">Showing {pageParam} of {totalRecords} rows</p>
+        <lightning-icon icon-name='utility:back' alternative-text='back' size='medium' title='back' disabled={disablePrev} onclick={handlePrev} style="cursor:pointer"></lightning-icon>
+        <span style="font-weight:bold;margin: 0px 20px 0px 10px;">Prev</span>
+        <template if:true={pageOptionsLoaded}>
+            <template for:each={pageOptions} for:item="pageOption">
+                <li key={pageOption.value} data-value={pageOption.value} class="slds-button slds-button_neutral slds-m-around_x-small" onclick={handlePageChange} style={pageOption.className}>{pageOption.label}</li>
+            </template>
+        </template>
+        <span style="font-weight:bold;margin: 0px 10px 0px 10px;">Next</span>
+        <lightning-icon icon-name='utility:forward' alternative-text='forward' size='medium' title='forward' disabled={disableNext} onclick={handleNext} style="cursor:pointer"></lightning-icon>
+    </div>
+</template>

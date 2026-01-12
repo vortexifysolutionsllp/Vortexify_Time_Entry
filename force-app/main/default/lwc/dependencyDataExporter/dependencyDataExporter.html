@@ -1,0 +1,22 @@
+<template>
+	<div class="slds-m-around_smal">
+		<lightning-button variant="brand" label="Export Data" title="Export Data Into CSV" icon-name="utility:download"
+			onclick={clickHandler} disabled={checkRecord}>
+		</lightning-button>
+	</div>
+	<lightning-card title="Reports" icon-name="custom:custom14">
+		<template if:true={records}>
+			<lightning-datatable data={pagedRecords} columns={columns} key-field="Id"
+				class="data-table">
+			</lightning-datatable>
+			<div class="pagination">
+				<lightning-button label="Previous" onclick={handlePrevious} class="slds-m-right_small"
+					disabled={isPreviousDisabled}>
+				</lightning-button>
+				<span class="pageNum">Page {currentPage} of {totalPages}</span>
+				<lightning-button label="Next" onclick={handleNext} class="slds-m-left_small" disabled={isNextDisabled}>
+				</lightning-button>
+			</div>
+		</template>
+	</lightning-card>
+</template>

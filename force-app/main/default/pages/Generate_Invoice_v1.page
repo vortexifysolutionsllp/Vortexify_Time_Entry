@@ -1,0 +1,219 @@
+<apex:page showHeader="false" sidebar="false" docType="html-5.0" applyBodyTag="false" renderAs="pdf" applyHtmlTag="false" controller="Generate_Invoice_Controller" >
+    
+    <html>
+        <head>
+            <style>
+                
+                @page {
+                margin-top: 1cm;
+                margin-right:1cm;
+                margin-bottom: 3cm;
+                
+                @bottom-center {
+                content: element(footer);
+                }
+                }
+                
+                div.footer {
+                position: running(footer);
+                width : 100%
+                }
+                
+                
+            </style>
+        </head>
+        <apex:stylesheet value="{!$Resource.PDF}"/>
+        
+        <body style="font-family: sans-serif;">
+            <div style= "width:100%">
+                <div class="container"> 
+                    <div style="float: left; width: 49%;font-size:small;line-height: 290%;"> 
+                        <span style="font-size:xx-large;font-weight: bold;color:#F48000;margin-top:-1px;">TAX INVOICE</span><br/> 
+                        <b>Invoice Number:&nbsp;&nbsp;{!accountDetails.invoices__r[0].name}&nbsp; <apex:outputText value="{0,date,(d MMM,YYYY)}"> <apex:param value="{!generationDate}" /> </apex:outputText></b>
+                    </div>
+                    <div style="float: right; width: 49%;text-align:right;margin-top:-16px;"> 
+                        <apex:image url="{!$Resource.UtilLabs_Logo01}" width="300" height="80" />
+                    </div>
+    			</div>  
+                
+                <div style="float:left;display:inline-block">
+                    
+                    <p style="font-weight: bold;text-align:left;font-size:small;"><b>COMPANY DETAILS</b></p>
+                    <div style="float:left;margin-top:-9px;font-size:small;line-height: 150%;">
+                        
+                        Company PAN:<br/>
+                        Company TAN:<br/>
+                        GST Reg.No:<br/>
+                        SAC Code:<br/>
+                        Place of Supply:<br/>
+                        
+                    </div>
+                    <div style="float:right;padding-left: 30px;margin-top:-9px;font-size:small;line-height: 150%;">
+                        
+                        {!invDetails.Company_PAN__c}<br/>
+                        {!invDetails.Company_TAN__c}<br/>
+                        <apex:outputPanel rendered="{!accountDetails.Banglore_GSTIN_applicable__c}">
+                            {!invDetails.GST_Reg_No__c}
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!accountDetails.Banglore_GSTIN_applicable__c == false}">
+                            {!invDetails.Faridabad_GST_Reg_no__c}
+                        </apex:outputPanel><br/>
+                        {!invDetails.SAC_Code__c}<br/>
+                        {!accountDetails.BillingState}--<br/>
+                        
+                    </div>
+                </div>
+                
+                <div style="float:left;display:inline-block;padding-top:66px;padding-left: 8em;">
+                    <div style="float:left;font-size:small;margin-top:-15px;line-height: 150%;">
+                        Account Number:<br/>
+                        Bank Name:<br/>
+                        Bank IFSC Code:<br/>
+                        Bank Swift Code:<br/>
+                    </div>
+                    <div style="float:right;padding-left: 30px;font-size:small;margin-top:-15px;line-height: 150%;">
+                        {!invDetails.Account_Number__c}<br/>
+                        {!invDetails.Bank_Name__c}<br/>
+                        {!invDetails.Bank_IFSC_Code__c}<br/>
+                        {!invDetails.Bank_Swift_Code__c}<br/> 
+                    </div>
+    </div>
+                
+                <div style="padding-bottom: 0.6em;" > 
+                    <div style="margin-top:7px;float: left; width: 48%;background-color:#EBEDEF ;padding-left:10px; border-radius: 10px;">
+                        <p style="font-size:large;font-weight: bold;color:#F48000;">Invoice By:</p> 
+                        <p style="font-size:small;font-weight: bold;">{!invDetails.Company_Name__c}</p> 
+                        <p style="font-size:small;">{!invDetails.Address__c}</p> 
+                        <p style="font-size:small;font-weight: bold;">PHONE:{!invDetails.Phone__c}</p>   
+                    </div>
+                    <div style="margin-top:7px;float: right; width: 48%;background-color:#EBEDEF ;"> 
+                        <p style="color:#F48000;font-weight: bold;font-size:large;padding-left:10px;">Invoice To:</p>
+                        <p style="font-weight: bold;font-size:small;padding-left:10px;">{!accountDetails.Name}</p>
+                        <p style="font-size:small;padding-left:10px;">
+                            {!accountDetails.Billingstreet}<br/> 
+                            {!accountDetails.Billingcity}                                                    
+                            {!accountDetails.BillingState}&nbsp;&nbsp;{!accountDetails.BillingPostalCode}<br/>                               
+                        </p>
+                        <p style="font-size:small;font-weight: bold;padding-left:10px;"><b>GSTIN:</b> {!accountDetails.GSTIN__c} </p>
+                    </div>
+    </div> 
+                
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                
+                <div  class="container">
+                    <table style="width: 100%;text-align:center;">
+                        <caption style="text-align: left;margin-top:15px;font-weight: bold;font-size:small;padding-bottom: 0.6em;">PROJECT DETAILS</caption>
+                        <tr>
+                            <th style="color:white;background-color:#F48000;text-align: left;padding:6px;font-weight: bold;font-size:small">Resource Name</th>
+                            <th style="color:white;background-color:#F48000;text-align: center;padding:6px;padding-right: 8.5em;font-weight: bold;font-size:small;">Invoice Period</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px;text-align: left;background-color:#EBEDEF;font-size:small">{!accountDetails.invoices__r[0].Resource_Name__c}</td>
+                            <td style="padding: 6px;text-align: center;background-color:#EBEDEF;font-size:small;padding-right: 3.5em;"><apex:outputText value="{0,date,d MMM,YYYY}"> <apex:param value="{!accountDetails.invoices__r[0].Start_Date__c}" /> </apex:outputText> &nbsp; - &nbsp;<apex:outputText value="{0,date,d MMM,YYYY}"> <apex:param value="{!accountDetails.invoices__r[0].End_Date__c}" /> </apex:outputText></td>
+                        </tr>
+                    </table>
+                </div>
+                <br/><br/>
+                <div style="width : 100%">
+                <apex:variable var="count" value="{!0}"/>
+                
+                <!---InvoiceLineItem Open-->
+                <apex:outputText rendered="{!invLineitems.size !=0 }">
+                    
+                        <table style="width: 100%;text-align:center;font-size:small;padding-top: 1em;">
+                            <tr>
+                                <th style="color:white;background-color:#F48000;text-align: center;padding:6px;font-weight: bold;">Sr.No.</th>
+                                <th style="color:white;background-color:#F48000;text-align: left;padding:6px;font-weight: bold;">Description</th>
+                                <th style="color:white;background-color:#F48000;text-align: center;padding:6px;font-weight: bold;">Time(Hr)</th>
+                                <th style="color:white;background-color:#F48000;text-align: center;padding:6px;font-weight: bold;">Rate</th>
+                                <th style="color:white;background-color:#F48000;text-align: center;padding:6px;font-weight: bold;">Total Price</th>
+                            </tr>
+                            <apex:repeat value="{!invLineitems}" var="inv">
+                                <apex:variable var="count" value="{!count+1}"/>
+                                <tr>
+                                    <td style="text-align: center;padding:6px;background-color:#EBEDEF;"><apex:outputText value="{!count}"></apex:outputText></td>
+                                    <td style="text-align: left;padding:6px;background-color:#EBEDEF;">{!inv.Description__c}</td>
+                                    <td style="text-align: center;padding:6px;background-color:#EBEDEF;">{!inv.Time_Hr__c}</td>
+                                    <td style="text-align: center;padding:6px;background-color:#EBEDEF;">{!inv.Rate__c}</td>
+                                    <td style="text-align: center;padding:6px;background-color:#EBEDEF;">{!inv.Total_Price__c}</td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                    
+                </apex:outputText>
+                    </div>
+                <!---InvoiceLineItem CLose-->
+                
+                <br/><br/>
+                <div>
+                    <div style="float: left; width: 45%;text-align:left;padding-top: 50px;padding-left: 50px;"> 
+                        <apex:image url="{!$Resource.CompanySeal}" width="120" height="120" />
+                    </div>
+                    <div style="float:right;display:inline-block; width: 45%;">
+                        
+                        <div style="float:left;font-size:small;line-height: 150%;">
+                            Total Price (Inclusive Of Tax)<br/>
+                            Sub Total <br/>
+                            Discount(%)<br/>
+                            Sub Total Less Discount<br/>
+                            <apex:outputPanel rendered="{!isStateTaxApplicable}">
+                                CGST (9%)<br/>
+                                SGST (9%)<br/>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!isInterStateTaxApplicable}">
+                                IGST (18%)<br/>
+                            </apex:outputPanel>    
+                            
+                            <span style="font-weight: bold">
+                                Balance Due
+                            </span>
+                            <br/>
+                            <span style="font-weight: bold">
+                                Due Date
+                            </span> 
+                            
+                        </div>
+                        <div style="float:right;padding-left: 12px;text-align: right;font-size:small;line-height: 150%;">
+                            {!accountDetails.invoices__r[0].Total_Amount__c}<br/>
+                            {!accountDetails.invoices__r[0].Sub_Total__c}<br/>
+                            {!accountDetails.invoices__r[0].Discount__c}<br/>
+                            {!accountDetails.invoices__r[0].Sub_Total_Less_Discount__c}<br/>
+                            <apex:outputPanel rendered="{!isStateTaxApplicable}">
+                                {!accountDetails.invoices__r[0].CGST__c}<br/>
+                                {!accountDetails.invoices__r[0].SGST__c}<br/>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!isInterStateTaxApplicable}">
+                                {!accountDetails.invoices__r[0].IGST__c}<br/>
+                            </apex:outputPanel>
+                            <span style="font-weight: bold;text-align:right;margin-right: -5px;">
+                                {!accountDetails.Client_Currency__c} &nbsp;&nbsp;&nbsp; {!accountDetails.invoices__r[0].Balance_Due__c}
+                            </span>
+                            <br/>
+                            <span style="font-weight: bold;">
+                                <!--<apex:outputText value="{0,date,(d MMM,YYYY)}"> <apex:param value="{!generationDate}" /> </apex:outputText>-->
+                                <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!accountDetails.invoices__r[0].Due_Date__c}" /> </apex:outputText>
+                            </span>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/ -->
+                
+                
+            </div>  
+            <div style="position: running(footer) !important;width : 100% !important;border: solid 1px white;">
+                <hr width="100% !important"/>
+                
+                <p style="text-align: center;margin-top:-5px;font-size:small;">
+                    For any queries,write to us at <b>finance.util@utilitarianlabs.com</b>     
+                </p>
+            </div>  
+            
+            
+            
+        </body> 
+    </html>
+    
+</apex:page>

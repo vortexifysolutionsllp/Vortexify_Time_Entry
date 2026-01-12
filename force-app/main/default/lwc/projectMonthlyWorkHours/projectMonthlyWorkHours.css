@@ -1,0 +1,59 @@
+/* Summary box styling */
+.summary-box {
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0070d2, #00bfa5);
+    padding: 1.2rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    margin-bottom: 1rem;
+    transition: transform .2s ease-in-out;
+}
+.summary-box:hover {
+    transform: scale(1.03);
+}
+
+/* Title inside summary */
+.summary-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+/* Big count text */
+.summary-count {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Container for task list */
+.dashboard-container {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: #f4f6f9;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Individual task items */
+.project-item {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: background 0.2s;
+}
+.project-item:hover {
+    background: #f0f8ff;
+}
+
+/* Task text */
+.project-item span {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+}

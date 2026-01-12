@@ -1,0 +1,108 @@
+<template>
+    <lightning-card title="Employee Management Dashboard" icon-name="utility:summary">
+        <!-- Month Selector -->
+        <div class="slds-p-around_medium">
+            <lightning-combobox name="month" label="Select Month" value={selectedMonth} placeholder="Select a Month"
+                options={monthOptions} onchange={handleMonthChange}>
+            </lightning-combobox>
+        </div>
+
+        <!-- Error -->
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-p-around_small">{error}</div>
+        </template>
+
+        <!-- Tabs for Sections -->
+        <lightning-tabset variant="scoped" class="slds-p-around_medium">
+
+            <!-- Tasks Tab -->
+            <lightning-tab label="Tasks" icon-name="standard:task" class="custom-tab">
+                <div class="summary-box">
+                    <span class="summary-title">Total Tasks</span>
+                    <span class="summary-count">{taskCount}</span>
+                </div>
+                <template if:true={tasks}>
+                    <div class="dashboard-container">
+                        <template for:each={tasks} for:item="t">
+                            <div key={t.id} class="project-item" style="width:100%">
+                                <div class="project-name" style="width:80%">
+                                    <lightning-icon icon-name="standard:task" size="small"></lightning-icon>
+                                    <span style="margin-right:10%;">{t.name}</span> <span>{t.status}</span>
+                                </div>
+                                <lightning-badge label={t.Date} class="count-badge" style="20%"></lightning-badge>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </lightning-tab>
+
+            <!-- Attendance Tab -->
+            <lightning-tab label="Attendance" icon-name="standard:service_appointment" class="custom-tab">
+                <div class="summary-box">
+                    <span class="summary-title">Days Present</span>
+                    <span class="summary-count">{attendanceCount}</span>
+                </div>
+                <template if:true={attendance}>
+                    <!-- <div class="dashboard-container">
+                        <template for:each={attendance} for:item="a">
+                            <div key={a.id} class="project-item">
+                                <lightning-icon icon-name="standard:employee_contact" size="small"></lightning-icon>
+                                <span class="slds-m-left_small">{a.date} - {a.status}</span>
+                            </div>
+                        </template>
+                    </div> -->
+                    <div class="dashboard-container">
+                        <template for:each={attendance} for:item="a">
+                            <div key={a.id} class="project-item" style="width:100%">
+                                <div class="project-name" style="width:80%">
+                                    <lightning-icon icon-name="standard:employee_contact" size="small"></lightning-icon>
+                                    <span style="margin-right:10%;">{a.name}</span>
+                                     <!-- <span>Check In - {a.time}</span> -->
+                                     <span>Check-In : {a.time}</span>
+                                </div>
+                                <lightning-badge label={a.date} class="count-badge" style="20%"></lightning-badge>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </lightning-tab>
+
+            <!-- Working Hours Tab -->
+            <lightning-tab label="Hours" icon-name="standard:timesheet" class="custom-tab">
+                <div class="summary-box">
+                    <span class="summary-title">Total Hours</span>
+                    <span class="summary-count">{totalHours}</span>
+                </div>
+                <!--template if:true={workingHours}>
+                    <div class="dashboard-container">
+                        <template for:each={workingHours} for:item="w">
+                            <div key={w.id} class="project-item">
+                                <lightning-icon icon-name="standard:timesheet" size="small"></lightning-icon>
+                                <span class="slds-m-left_small">{w.date} - {w.hours} hrs</span>
+                            </div>
+                        </template>
+                    </div>
+                </template-->
+            </lightning-tab>
+
+            <!-- Holidays Tab -->
+            <lightning-tab label="Holidays" icon-name="standard:event" class="custom-tab">
+                <div class="summary-box">
+                    <span class="summary-title">Total Holidays</span>
+                    <span class="summary-count">{holiCount}</span>
+                </div>
+                <template if:true={holidays}>
+                    <div class="dashboard-container">
+                        <template for:each={holidays} for:item="h">
+                            <div key={h.id} class="project-item">
+                                <lightning-icon icon-name="standard:event" size="small"></lightning-icon>
+                                <span class="slds-m-left_small">{h.startDate} - {h.endDate} ({h.reason})</span>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </lightning-tab>
+
+        </lightning-tabset>
+    </lightning-card>
+</template>

@@ -1,0 +1,30 @@
+<template>
+    <div class="slds-is-relative container" style={maxWidth}>
+        <template for:each={slidesData} for:item="slide">
+            <div key={slide.index} class={slide.slideClass} onmouseover={handleMouseOver} onmouseout={handleMouseOut} style="background: black;">
+                <template if:true={slide.isVideo}>
+                    <div style="width:40%;margin: 0 auto;">
+                        <video controls style="max-width: 100%;" onclick={showImageSlider}>
+							<source src={slide.url} type="video/mp4"/>
+						</video>
+                        <!-- <iframe src={slide.url} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe> -->
+                    </div>
+                </template>
+                <template if:false={slide.isVideo}>
+                    <img src={slide.url} alt={slide.description} style={maxHeight} />
+                </template>
+                <div if:false={hideSlideText} class="text-section slds-p-around_medium">
+                    <h3 class="slds-text-heading_large">{slide.heading}</h3>
+                    <div class="slds-text-heading_small">{slide.description}</div>
+                </div>
+            </div>
+        </template>
+        <a if:false={hideNavigationButtons} class="prev" onclick={slideBackward}>&#10094;</a>
+        <a if:false={hideNavigationButtons} class="next" onclick={slideForward}>&#10095;</a>
+    </div>
+    <div if:false={hideNavigationDots} class="slds-text-align_center slds-p-around_medium">
+        <template for:each={slidesData} for:item="slide">
+            <span key={slide.index} class={slide.dotClass} data-id={slide.index} onclick={showSlide}></span>
+        </template>
+    </div>
+</template>

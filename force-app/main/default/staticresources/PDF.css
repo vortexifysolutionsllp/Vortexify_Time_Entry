@@ -1,0 +1,136 @@
+@page {
+    size: A4;
+    
+    margin-bottom: 3cm;
+    margin-left: 1cm;
+    margin-right: 1cm;
+    
+    @top-center {
+        content: element(header);
+    }
+    
+  }
+div.header {
+    position: running(header);
+    
+}
+
+.pagenumber:before {
+    content: counter(page);
+}
+.pagecount:before {
+    content: counter(pages);
+}
+.content{
+    margin-top:25px;
+}
+table,tr,th,td{
+      border-collapse: collapse;
+}
+td{
+    vertical-align:top;
+
+}
+.quotation-table{
+    width:100%;
+}
+.quotation-table>tbody> tr>td,.Quote-items>tbody> tr>td{
+    border:1px solid black;
+    font-size:13px;
+}
+
+.organization-details{
+    max-width:60%;
+}
+.organization{
+    margin:undet;
+}
+address{
+      font-style: normal;
+}
+.header-text{
+    margin:unset !important;
+}
+
+.to-address>td:first-child{
+    width:50%;
+    padding:5px;
+}
+.Quote-items>tbody> tr>td{
+    border:1px solid black;
+    font-size:13px;
+}
+.Quote-items{
+    width:100%;
+}
+.Quote-items>tr>th{
+    padding:5px;
+    background:#E7E9EB;
+    text-align:center;
+    border:1px solid black;
+    border-collapse: collapse;
+}
+.quote-header{
+    border:1px solid black;
+}
+.item-details>td{
+    padding:2px;
+    border:1px solid black ;
+    font-size:13px;
+}
+.total{
+    text-align:right;
+}
+.terms-and-condition{
+    width:100%;
+}
+.notes{
+     font-size:13px;
+}
+.terms-and-condition>*,.notes>*{
+    font-size:13px;
+}
+.signature-content{
+    width:100%;
+    margin-top:50px;
+    display:flex;
+}
+.signature-content>table{
+    width:100%;
+    font-size:13px;
+}
+.signature-details,.organization-signature{
+    max-width:50%;
+    
+}
+
+.footer-table{
+    width:100%;
+}
+.footer-table>*{
+    font-size:13px;
+}
+.number{
+    float:right;
+    font-size:10px;
+}
+.payment-term{
+    width:100%;
+   
+}
+.fa-envelope:before {
+    content: "\f003";
+    color: #212529;
+
+}
+
+.payment-term> tr>td,.payment-term>tr>th{
+    border:1px solid black;
+    font-size:13px;
+}
+.computer-generated
+{
+    width:75%;
+    text-align:center;
+    font-size:13px;
+}

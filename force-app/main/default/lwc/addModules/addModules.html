@@ -1,0 +1,76 @@
+<template>
+    <div style="margin:2%">
+        <lightning-dual-listbox name="multipleOptions" 
+                                label="Availiable Module" 
+                                source-label="Available" 
+                                selected-label="Selected" 
+                                options={preDefinedmodules} 
+                                value={selectedValue} 
+                                onchange={handleChange}>
+        </lightning-dual-listbox>
+
+        <div class="slds-float_right">
+            <div class="slds-align_absolute-center slds-p-top_small">
+                <lightning-button variant="brand" label="Add Modules" title="Brand action" onclick={showModuleComp}></lightning-button>
+            </div>
+        </div>
+        <br/>
+
+        <template if:true={showAddModule}>
+            <lightning-card title="Manage Modules for This Project!!">
+                <div style="margin:2%">
+                    <div class="slds-float_right slds-p-bottom_small">
+                        <h1 class="slds-page-header__title">Add Row 
+                            <lightning-button-icon icon-name="utility:add" size="large" variant="bare" alternative-text="Add" onclick={addRow}></lightning-button-icon>
+                        </h1>
+                    </div>
+                    <div class="container-fluid">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate">Sr. No</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Module Name">Module Name</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Module Description">Module Description</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Total Estimated Efforts">Actual Estimated Efforts</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={moduleList} for:item="mdl" for:index="index">
+                                    <tr key={mdl.Id}>
+                                        <!-- <td>{index + 1}</td> -->
+                                        <td>
+                                            <lightning-input name="mdlName" type="text" maxlength="50" value={mdl.Name}></lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input name="mdlDescription" type="text" value={mdl.Module_Description__c}></lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input name="mdl" type="text" value={mdl.Actual_Estimated_Efforts__c}></lightning-input>
+                                        </td>
+                                        <td>
+                                            <a onclick={removeRecord} data-record={index}>
+                                                <lightning-icon icon-name="utility:delete" size="small" alternative-text="Delete"></lightning-icon>
+                                                <span class="slds-assistive-text">Delete</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <div class="slds-align_absolute-center slds-p-top_small">
+                            <lightning-button variant="brand" label="Submit" title="Brand action" onclick={saveModule}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </lightning-card>
+        </template>
+    </div>
+</template>

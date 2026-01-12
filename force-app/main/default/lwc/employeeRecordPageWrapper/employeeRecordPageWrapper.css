@@ -1,0 +1,15 @@
+.custom-layout {
+    min-height: 100%;
+}
+.left-section {
+    padding: 0.5rem;
+    background: #ffffff;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.right-section {
+    padding: 0.5rem;
+    background: #f9f9f9;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

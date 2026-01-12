@@ -1,0 +1,219 @@
+<apex:page controller="KendoChartController" >
+    <apex:includeScript value="https://cdn.jsdelivr.net/npm/chart.js"></apex:includeScript>
+    <apex:includeScript value="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></apex:includeScript>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchProjectData();
+        });
+
+        function fetchProjectData() {
+            KendoChartController.getProjectData(function(result, event) {
+                if (event.status) {
+                    console.log('Data fetched successfully');
+                    renderChart(result);
+                } else {
+                    console.error('Error fetching data: ' + event.message);
+                }
+            });
+        }
+
+        function renderChart(data) {
+            var categories = data.map(item => item.category);
+
+            var req_actual = data.map(item => item.req_actual);
+            var brd_actual = data.map(item => item.brd_actual);
+            var dev_actual = data.map(item => item.dev_actual);
+            var uat_actual = data.map(item => item.uat_actual);
+            var deploy_actual = data.map(item => item.deploy_actual);
+            var migration_actual = data.map(item => item.migration_actual);
+
+            var req_exp = data.map(item => item.req_exp);
+            var brd_exp = data.map(item => item.brd_exp);
+            var dev_exp = data.map(item => item.dev_exp);
+            var uat_exp = data.map(item => item.uat_exp);
+            var deploy_exp = data.map(item => item.deploy_exp);
+            var migration_exp = data.map(item => item.migration_exp);
+
+            var req_expected_start = data.map(item => item.req_exp_date);
+            var req_actual_start = data.map(item => item.req_actual_date);
+            var brd_expected_start = data.map(item => item.brd_exp_date);
+            var brd_actual_start = data.map(item => item.brd_actual_date);
+            var dev_expected_start = data.map(item => item.dev_exp_date);
+            var dev_actual_start = data.map(item => item.dev_actual_date);
+            var uat_expected_start = data.map(item => item.uat_exp_date);
+            var uat_actual_start = data.map(item => item.uat_actual_date);
+            var deploy_expected_start = data.map(item => item.deploy_exp_date);
+            var deploy_actual_start = data.map(item => item.deploy_actual_date);
+
+            var extendedCategories = [];
+            for (var i = 0; i < categories.length; i++) {
+                extendedCategories.push(categories[i] + ' Expected');
+                extendedCategories.push(categories[i] + ' Actual');
+            }
+
+            var req_gathe = [];
+            var brd = [];
+            var dev = [];
+            var uat = [];
+            var deployment = [];
+            var migration = [];
+
+            for (var i = 0; i < categories.length; i++) {
+                req_gathe.push(req_exp[i]);
+                req_gathe.push(req_actual[i]);
+
+                brd.push(brd_exp[i]);
+                brd.push(brd_actual[i]);
+
+                dev.push(dev_exp[i]);
+                dev.push(dev_actual[i]);
+
+                uat.push(uat_exp[i]);
+                uat.push(uat_actual[i]);
+
+                deployment.push(deploy_exp[i]);
+                deployment.push(deploy_actual[i]);
+
+                migration.push(migration_exp[i]);
+                migration.push(migration_actual[i]);
+            }
+
+            var predefinedTexts = [
+                "Text 1", "Text 2", "Text 3", "Text 4", "Text 5", 
+                "Text 6", "Text 7", "Text 8", "Text 9", "Text 10"
+            ];
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: extendedCategories,
+                    datasets: [
+                        {
+                            label: 'Requirement Gathering',
+                            data: req_gathe,
+                            backgroundColor: '#8ecae6', //'rgba(255, 0, 44, 0.7)',
+                            stack: 'combined'
+                        },
+                        {
+                            label: 'BRD & SDD',
+                            data: brd,
+                            backgroundColor: '#219ebc', //'rgba(106, 90, 205, 0.7)',
+                            stack: 'combined'
+                        },
+                        {
+                            label: 'Development',
+                            data: dev,
+                            backgroundColor: '#023047', //'rgba(89, 198, 127, 0.7)',
+                            stack: 'combined'
+                        },
+                        {
+                            label: 'UAT',
+                            data: uat,
+                            backgroundColor: '#ffb703', //'rgba(255, 201, 0, 0.7)',
+                            stack: 'combined'
+                        },
+                        {
+                            label: 'Deployement & Migration',
+                            data: deployment,
+                            backgroundColor: '#fb8500', //'rgba(11, 216, 212, 0.7)',
+                            stack: 'combined'
+                        },
+                        /*{
+                            label: 'Data Migration',
+                            data: migration,
+                            backgroundColor: 'rgba(230, 118, 255, 0.7)',
+                            stack: 'combined'
+                        }*/
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            categoryPercentage: 10.0,  // Adjusts the width of the bar groups
+                            barPercentage: 10.0,  // Adjusts the width of individual bars within the group
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    if (index % 2 === 0) {
+                                        return categories[Math.floor(index / 2)];
+                                    } else {
+                                        return '';
+                                    }
+                                }
+                            }
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var index = context.dataIndex;
+                                    var year = index % 2 === 0 ? 'Expected' : 'Actual';
+                                    var phase = context.dataset.label;
+                                    return phase + ' ' + year + ': ' + context.raw;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            display: true,
+                            align: 'center',
+                            anchor: 'center',
+                            color: 'white',
+                            font: {
+                                size: 10
+                            },
+                            formatter: function(value, context) {
+                                var index = context.dataIndex;
+                                var phase = context.dataset.label;
+
+                                if (phase === 'Requirement Gathering') {
+                                    if (index % 2 === 0) {
+                                        return req_expected_start[Math.floor(index / 2)];
+                                    } else {
+                                        return req_actual_start[Math.floor(index / 2)];
+                                    }
+                                } else if (phase === 'BRD & SDD') {
+                                    if (index % 2 === 0) {
+                                        return brd_expected_start[Math.floor(index / 2)];
+                                    } else {
+                                        return brd_actual_start[Math.floor(index / 2)];
+                                    }
+                                } else if (phase === 'Development') {
+                                    if (index % 2 === 0) {
+                                        return dev_expected_start[Math.floor(index / 2)];
+                                    } else {
+                                        return dev_actual_start[Math.floor(index / 2)];
+                                    }
+                                } else if (phase === 'UAT') {
+                                    if (index % 2 === 0) {
+                                        return uat_expected_start[Math.floor(index / 2)];
+                                    } else {
+                                        return uat_actual_start[Math.floor(index / 2)];
+                                    }
+                                } else if (phase === 'Deployement & Migration') {
+                                    if (index % 2 === 0) {
+                                        return deploy_expected_start[Math.floor(index / 2)];
+                                    } else {
+                                        return deploy_actual_start[Math.floor(index / 2)];
+                                    }
+                                } else {
+                                    return '';
+                                }
+                            }
+                        }
+                    }                    
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+    </script>
+
+    <div style="width:90%; margin: auto;">
+        <canvas id="myChart"></canvas>
+    </div>
+</apex:page>

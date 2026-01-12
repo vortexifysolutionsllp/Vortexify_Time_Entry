@@ -1,0 +1,38 @@
+<template>
+    <lightning-card icon-name="standard:event">
+        <!-- Custom title row -->
+         
+        <div slot="title" class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+            <div class="slds-text-heading_small">Task Calendar</div>
+            <div class="slds-text-heading_small slds-text-align_center" style="flex: 1;">
+                <strong style="margin-left:10px;"> ( {selectedMonth} - {selectedYear} )</strong>
+            </div>
+            
+        </div>
+    <div class="slds-col" style="display: flex; justify-content: center; align-items: center;border-top:2px solid rgb(214, 214, 214);">
+        <lightning-icon class="leftrightstyle" icon-name="utility:left" size="large"
+           id="decrement" onclick={handlePrevClicked}>
+        </lightning-icon>
+        <template for:each={dateList} for:item="item">
+            <div key={item.date} class="circle-wrapper">
+                <template if:true={item.selected}>
+                    <div key={item.date} style="margin:20px;">
+                        <!-- <h3 style="margin-bottom: 10px;">{item.day}</h3> -->
+                        <div key={item.date} class="circleSelected" onclick={ondatechoosedhandler} data-id={item.fDate}>
+                            {item.date}- {item.day}</div>
+                    </div>
+                </template>
+                <template if:false={item.selected}>
+                    <div key={item.date} style="margin:20px;">
+                        <!-- <h3 style="margin-bottom: 10px;">{item.day}</h3> -->
+                        <div key={item.date} class="circle" onclick={ondatechoosedhandler} data-id={item.fDate}>
+                            {item.date}- {item.day}</div>
+                    </div>
+                </template>
+            </div>
+        </template>
+        <lightning-icon class="leftrightstyle" icon-name="utility:right" size="large" style="cursor:pointer;" id="increment"
+            onclick={handleNextClicked}></lightning-icon>
+    </div>
+</lightning-card>
+</template>

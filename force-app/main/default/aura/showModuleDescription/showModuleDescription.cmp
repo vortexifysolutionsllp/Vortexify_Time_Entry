@@ -1,0 +1,58 @@
+<aura:component >
+    
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="isEditable" type="boolean" default="true"/>
+    <aura:attribute name="filledDescription" type="string" default=""/>
+    <aura:attribute name="jiraTaskName" type="string" default=""/>
+    <aura:attribute name="jiraTaskProjectName" type="string" default=""/>
+    <aura:attribute name="ModuleName" type="string" default=""/>
+    <aura:attribute name="AssingedBy" type="string" default=""/>
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="slds-m-around_xx-large">
+        <aura:if isTrue="{!v.isModalOpen}">
+            <!-- Modal/Popup Box starts here-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <div class="componentClass" style="display:inline;box-shadow: 6px 2px 4px rgba(0, 0, 0, 0.4);">
+                            <h3 style="margin: 1px; font-size: 18px; font-weight: bold;">Project Name</h3>
+                            <h3 style="margin: 10px; font-size: 18px; font-weight: bold;">Module Name</h3>
+                            <h3 style="margin: 10px; font-size: 18px; font-weight: bold;">Assigned by</h3>
+                            <h3 style="margin: 5x; font-size: 18px; font-weight: bold;">Task</h3>
+                        </div><br></br>
+                        <div class="componentClass" style="display:inline;">
+                            <h3 style="margin: 10px; font-size: 18px; font-weight: bold; box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.4);">{!v.jiraTaskProjectName}</h3>
+                            <h3 style="margin: 10px; font-size: 18px; font-weight: bold; box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.4);">{!v.ModuleName}</h3>
+                            <h3 style="margin: 10px; font-size: 18px; font-weight: bold; box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.4);">{!v.AssingedBy}</h3>
+                            <h3 style="margin: 10px; font-size: 18px; font-weight: bold; box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.4);">{!v.jiraTaskName}</h3>
+                        </div>
+                        <div>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                        <br/>
+                        <lightning:inputRichText   value="{!v.filledDescription}" disabled="{!v.isEditable}"/>
+                        
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </div>
+</aura:component>

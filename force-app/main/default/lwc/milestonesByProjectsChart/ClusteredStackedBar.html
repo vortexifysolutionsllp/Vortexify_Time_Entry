@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.3.913/styles/kendo.default-ocean-blue.min.css" />
+
+    <script src="https://kendo.cdn.telerik.com/2022.3.913/js/jquery.min.js"></script>
+    
+    
+    <script src="https://kendo.cdn.telerik.com/2022.3.913/js/kendo.all.min.js"></script>
+    
+    
+
+</head>
+<body>
+    <div id="example">
+    <div class="demo-section wide">
+        <div id="chart"></div>
+    </div>
+    <script>
+        function createChart() {
+            $("#chart").kendoChart({
+                title: {
+                    text: "Practice Versoon"
+                },
+                legend: {
+                    visible: false
+                },
+                seriesDefaults: {
+                    type: "column"
+                },
+                series: [{
+                    name: "Auto",
+                    stack: "2021",
+                    data: [1, 32, 34, 36, 45, 33, 34, 83, 36, 37, 44, 37, 35, 36, 46],
+                }, {
+                    name: "Silver Medals",
+                    stack: "2021",
+                    data: [19, 25, 21, 26, 28, 31, 35, 60, 31, 34, 32, 24, 40, 38, 29],
+                },{
+                    name: "Auto",
+                    stack: "2021",
+                    data: [10, 32, 34, 36, 45, 33, 34, 83, 36, 37, 44, 37, 35, 36, 46],
+                },
+                 {
+                    name: "Auto",
+                    stack: "2020",
+                    data: [1, 30, 34, 36, 45, 33, 34, 83, 36, 37, 44, 37, 35, 36, 46],
+                }, {
+                    name: "Silver Medals",
+                    stack: "2020",
+                    data: [19, 20, 21, 26, 28, 31, 35, 60, 31, 34, 32, 24, 40, 38, 29],
+                },{
+                    name: "Gold Medals",
+                    stack: "2020",
+                    data: [10, 34, 38, 41, 45, 33, 34, 83, 36, 37, 44, 37, 35, 36, 46],
+                }],
+                valueAxis: {
+                    line: {
+                        visible: false
+                    }
+                    
+                },
+                categoryAxis: {
+                    categories: [1952, 1956, 1960, 1964, 1968, 1972, 1976, 1984, 1988, 1992, 1996, 2000, 2004, 2008, 2012],
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    template: "#= series.name #: #= value #"
+                }
+            });
+        }
+
+        $(document).ready(createChart);
+        $(document).bind("kendo:skinChange", createChart);
+    </script>
+</div>
+
+
+
+</body>
+</html>

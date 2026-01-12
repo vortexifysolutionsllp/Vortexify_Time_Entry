@@ -1,0 +1,43 @@
+<template>
+	<div class="slds-boxx slds-scrollable">
+		<template if:true={isShowMemberCardComp}>
+			<div class="slds-float_left slds-m-bottom_small">
+				<lightning-icon icon-name='utility:back' alternative-text='back' variant='error' size='medium'
+					title='back' onclick={backAction}></lightning-icon>
+			</div>
+		</template>
+		<template if:true={isShowModuleComp}>
+			<template if:true={modulesHealthWrapperList}>
+				<template for:each={modulesHealthWrapperList} for:item="module">
+					<div key={module.moduleId} class="module-item" data-id={module.moduleId}
+						>
+						<div class="module-header">
+							<h2 class="module-name">{module.moduleName}</h2>
+							<p class="module-stage">{module.moduleStage}</p>
+						</div>
+						<div class="module-body">
+							<p class="milestone-name">Milestone: <strong>{module.milestoneName}</strong></p>
+							<p class="expected-hours">Expected Hours: <strong>{module.ExpectedHours}</strong></p>
+							<p class="consumed-hours">Consumed Hours: <strong>{module.ConsumedHours}</strong></p>
+							<template if:true={module.delayRate}>
+								<p class="delay-rate">Delay Rate: <strong>{module.delayRate}%</strong></p>
+							</template>
+						</div>
+						<div class="module-footer">
+							<p class={module.delayRateFlagColor}></p>
+							<lightning-icon icon-name='utility:picklist_type' alternative-text='picklist_type'
+								size='small' title='picklist_type' data-id={module.moduleId}
+								onclick={viewMemeberCardComp}></lightning-icon>
+						</div>
+					</div>
+				</template>
+			</template>
+			<template if:false={modulesHealthWrapperList}>
+				<p>No modules available</p>
+			</template>
+		</template>
+		<template if:true={isShowMemberCardComp}>
+			<c-jira-task-dashboard module-id={selectedModuleId}></c-jira-task-dashboard>
+		</template>
+	</div>
+</template>

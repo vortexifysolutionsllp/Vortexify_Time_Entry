@@ -1,0 +1,43 @@
+<apex:page controller="RazorpayController">
+    <apex:form id="razorpayForm">
+        <apex:pageBlock title="Razorpay Payment">
+            <apex:pageBlockSection >
+                <apex:inputText value="{!amount}" label="Amount (INR)" required="true"/>
+                <apex:commandButton value="Create Order" action="{!createOrder}" rerender="razorpayButton, paymentSection"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        
+        <apex:outputPanel id="paymentSection">
+            <apex:outputPanel rendered="{!NOT(ISNULL(paymentUrl))}">	
+                <p><strong>Payment Link: </strong> 
+                    <apex:outputLink value="{!paymentUrl}" target="_blank">{!paymentUrl}</apex:outputLink>
+                </p>
+            </apex:outputPanel>	
+        </apex:outputPanel>
+        
+        
+        <apex:outputPanel id="razorpayButton">
+            <apex:outputText value="{!orderId}" rendered="{!NOT(ISNULL(orderId))}" id="orderIdField"/>
+            <apex:outputPanel rendered="{!NOT(ISNULL(orderId))}">
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                <script>
+                    function openRazorpayCheckout() {
+                    var options = {
+                        "key": "rzp_test_ehfY7CBJbeUhYb", // Replace with your Razorpay Key ID
+                        "amount": {!amount} * 100,
+                        "currency": "INR",
+                        "order_id": "{!orderId}",
+                        "handler": function(response) {
+                            alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
+                        }
+                    };
+                    var rzp = new Razorpay(options);
+                    rzp.open();
+                }
+                </script>
+                <apex:commandButton value="Pay Now" onclick="openRazorpayCheckout(); return false;"/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

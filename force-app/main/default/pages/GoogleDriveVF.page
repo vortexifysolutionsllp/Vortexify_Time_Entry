@@ -1,0 +1,41 @@
+<apex:page controller="GoogleDriveController">
+    <apex:form enctype="multipart/form-data">
+        <apex:pageBlock title="Upload File to Google Drive">
+            <apex:pageBlockSection >
+                <apex:outputLabel value="Select File:"/>
+                <apex:inputFile value="{!fileBlob}" filename="{!fileName}" id="fileUpload"/>
+                <apex:commandButton value="Upload" action="{!handleFileUpload}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock title="Upload Status">
+            <apex:outputText value="{!uploadResponse}" rendered="{!NOT(ISNULL(uploadResponse))}" id="uploadStatus"/>
+        </apex:pageBlock>
+    </apex:form>
+        
+    <apex:form >
+        <apex:pageBlock title="Files in Google Drive in salesforce updated data folder">
+            <apex:commandButton value="Fetch Files" action="{!fetchFiles}" reRender="fileList, uploadStatus"/>
+            <apex:pageBlockTable value="{!driveFiles}" var="file" id="fileList">
+                <apex:column headerValue="File Name">
+                    <apex:outputLink value="https://drive.google.com/file/d/{!file.id}/view" target="_blank">
+                        {!file.name}
+                    </apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="Download">
+                    <apex:outputLink value="https://drive.google.com/uc?export=download&id={!file.id}" target="_blank">
+                        Download
+                    </apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="File ID">
+                    <apex:outputText value="{!file.id}"/>
+                </apex:column>
+                
+                <apex:column headerValue="Delete">
+                    <apex:commandButton value="Delete" action="{!deleteFile}" reRender="fileList, uploadStatus">
+                        <apex:param name="fileId" value="{!file.id}" assignTo="{!fileId}" />
+                    </apex:commandButton>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

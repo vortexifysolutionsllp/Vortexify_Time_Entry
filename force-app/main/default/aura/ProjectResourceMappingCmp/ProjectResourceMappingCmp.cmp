@@ -1,0 +1,115 @@
+<aura:component controller="PRMCmpController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    
+    <aura:html tag="style">
+        .slds-modal__container{
+        max-width: 65rem !important;
+        width:105% !important;
+        }
+    </aura:html>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="sObject" type="String" default="Contact" required="true"/>
+    <aura:attribute name="conList" type="Map[]"/>
+    <aura:attribute name="prmList" type="Project_Resource_Mapping__c[]"/> 
+    <aura:attribute name="roles" type="String[]" default="Developer,Lead,Project Manager"/>
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    
+    <div class="slds-m-around_xx-large">
+        <aura:if isTrue="{!v.isModalOpen}">
+            <!-- Modal/Popup Box starts here-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="width: 80% ">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">ADD TEAM MEMBERS..🧑‍💻🧑‍💻</h2>
+                    </header>
+                    
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning:card>
+                            <div class="slds-float_right slds-m-around_small slds-icon_container slds-icon-utility-add" >
+                                <h1 class="slds-page-header__title">Add Row
+                                    <lightning:buttonIcon iconName="utility:add"  size="large" variant="bare" alternativeText="Add" onclick="{!c.handleAddRow}"/>
+                                </h1>
+                            </div>
+                            
+                            <div style = "border-style: solid;margin :1%">
+                                <table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+                                    <thead>
+                                        <tr class="slds-text-title_caps">
+                                            <th scope="col" style="margin-left: 6%;">
+                                                <div class="slds-truncate" title="First Name">Resource*..🧑‍💻🧑‍💻</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-truncate" title="Last Name">Project*..💻💻</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-truncate" title="Phone">Role*..⚒️⚒️</div>
+                                            </th>
+                                        </tr>
+                                    </thead>   
+                                    <tbody>     
+                                        <aura:iteration items="{!v.prmList}" var="item" indexVar="index">
+                                            <tr id ="{!index}"> 
+                                                <td>
+                                                    <aura:if isTrue="{!!not(empty(item.Id))}">
+                                                        <c:CustomLookupComponent Message="{!v.ProjectId}" selectedRecord ="{!item.Contact__c}"/>
+                                                        <aura:set attribute="else">
+                                                            <lightning:input type="text" name="Team Member"  disabled="true" value="{!item.Team_Member_Name__c}" />
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>
+                                                <td>
+                                                    <aura:if isTrue="{!!not(empty(item.Id))}">
+                                                        <c:JiraTaskManagerView value="{!item.Project__c}" objectName="Project__c" fieldName="Name" iconName="standard:partner_fund_claim" placeholder="Select Project" />
+                                                        <aura:set attribute="else">
+                                                            <lightning:input type="text" name="Team Member"  disabled="true" value="{!item.Project_Name__c}" />
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>    
+                                                <td>
+                                                    
+                                                    <aura:if isTrue="{!!not(empty(item.Id))}">
+                                                        <lightning:select name="Role" value="{!item.Type__c}">
+                                                            <option value="">-- None --</option>
+                                                            <aura:iteration items="{!v.roles}" var="role">
+                                                                <option value="{!role}" text="{!role}"></option>
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        <aura:set attribute="else">
+                                                            <lightning:input type="text" name="Team Member"  disabled="true" value="{!item.Type__c}" />
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br/>
+                            <button class="slds-button slds-button_brand" onclick="{!c.Save}">Save</button>
+                        </lightning:card>
+                    </div>
+                    
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </div>
+    
+    
+    
+    
+</aura:component>

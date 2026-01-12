@@ -1,0 +1,33 @@
+<!-- <template>
+    <template lwc:if={showInitialContent}>
+        Sending....
+    </template>
+</template> -->
+
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading" >
+    <template if:true={isModalOpen}>
+        
+                <!-- Modal Header --> 
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading" class="slds-text-heading_medium slds-hyphenate">Send Email</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input label="From" value={fromEmail}  disabled></lightning-input>
+                    <lightning-input label="To" value={supplierEmail} disabled></lightning-input>
+                    <lightning-input label="Subject" value={subject} onchange={handleSubjectChange}></lightning-input>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="rich-text-body">Body</label>
+                        <lightning-input-rich-text id="rich-text-body" value={body} onchange={handleBodyChange}></lightning-input-rich-text>
+                    </div>
+                </div>
+
+                <footer class="slds-modal__footer">
+                     <lightning-button variant="neutral" label="Close" onclick={handleClose}></lightning-button> 
+                    <lightning-button variant="brand" label="Send" onclick={handleSend} class="slds-m-left_medium"></lightning-button>
+                </footer>
+       
+    </template>
+</section>
+</template>

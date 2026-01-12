@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="Employee Project Dashboard">
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-p-around_small">{error}</div>
+        </template>
+        <div class="summary-box">
+            <span class="summary-title">Total Projects</span>
+            <span class="summary-count">{projectCount}</span>
+        </div>
+        <div>
+        <template if:true={projects}>
+            <div class="dashboard-container">
+                <template for:each={projects} for:item="proj">
+                    <div key={proj.id} class="project-item">
+                        <div class="project-name">
+                            <lightning-icon 
+                                icon-name="standard:work_order" 
+                                size="small" 
+                                alternative-text="Project">
+                            </lightning-icon>
+                            <span>{proj.name}</span> <!-- 👈 Now shows the project name -->
+                        </div>
+                        <lightning-badge label={proj.createdDate} class="count-badge"></lightning-badge>
+                    </div>
+                </template>
+            </div>
+        </template>
+        </div>
+    </lightning-card>
+</template>

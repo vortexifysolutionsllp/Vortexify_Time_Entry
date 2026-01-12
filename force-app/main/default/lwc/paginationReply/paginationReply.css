@@ -1,0 +1,52 @@
+.dummy{
+	color : black;
+}
+
+.slds-align_absolute-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.page-info {
+    color: #969492;
+    float: left;
+    margin-right: 5rem;
+}
+
+.navigation-icon {
+    cursor: pointer;
+}
+
+.page-label {
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.selected-page {
+    background-color: #1589EE;
+    color: white;
+    height: 30px;
+    width: 30px;
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+    margin-right: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    color: black;
+    height: 30px;
+    width: 30px;
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+    margin-right: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

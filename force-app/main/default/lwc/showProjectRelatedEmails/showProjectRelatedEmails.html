@@ -1,0 +1,125 @@
+<template>
+  	<!-- <lightning-quick-action-panel header="Client Emails"> -->
+	<div class="slds-timeline__item_expandable slds-timeline__item_email slds-is-open">
+     	<template for:each={currentEmailListToDisplay} for:item="em">
+			<div key={em.Subject}>
+        <span class="slds-assistive-text">email</span>
+        <div class="slds-media">
+          <div class="slds-media__figure">
+            <button class="slds-button slds-button_icon" title="Toggle details for Re: Mobile conversation on Monday with the new global team" aria-controls="email-item-narrow-95" aria-expanded="true">
+              <svg class="slds-button__icon slds-timeline__details-action-icon" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+              </svg>
+              <span class="slds-assistive-text">Toggle details for Re: Mobile conversation on Monday with the new global team</span>
+            </button>
+            <div class="slds-icon_container slds-icon-standard-email slds-timeline__icon" title="email">
+				<lightning-icon size="small" icon-name="standard:email" alternative-text="Email" title="Email"></lightning-icon>
+              <!-- <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#email"></use>
+              </svg> -->
+            </div>
+          </div>
+          <div class="slds-media__body">
+            <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
+              <div class="slds-grid slds-grid_vertical-align-center slds-truncate_container_75 slds-no-space">
+                <h3 class="slds-truncate" title="Re: Mobile conversation on Monday with the new global team">
+                  <a href="#">
+                    <!-- <strong>Re: Mobile conversation on Monday with the new global teamss</strong> -->
+                    <strong>{em.Subject}</strong>
+                  </a>
+                </h3>
+                <div class="slds-no-flex">
+                  <span class="slds-icon_container slds-icon-utility-groups" title="Group email">
+                    <svg class="slds-icon slds-icon_xx-small slds-icon-text-default slds-m-left_x-small" aria-hidden="true">
+                      <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#groups"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Group email</span>
+                  </span>
+                  <span class="slds-icon_container slds-icon-utility-attach" title="Has attachments">
+                    <svg class="slds-icon slds-icon_xx-small slds-icon-text-default slds-m-left_x-small" aria-hidden="true">
+                      <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Has attachments</span>
+                  </span>
+                </div>
+              </div>
+              <div class="slds-timeline__actions slds-timeline__actions_inline">
+                <p class="slds-timeline__date">{em.MessageDate}</p> <!-- 10:00am | 3/24/17-->
+                <!-- <button class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small" aria-haspopup="true" title="More Options for this item"> 
+                  <svg class="slds-button__icon" aria-hidden="true">
+                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                  </svg>
+                  <span class="slds-assistive-text">More Options for this item</span>
+                </button>-->
+              </div>
+            </div>
+            <p class="slds-m-horizontal_xx-small">
+              <strong> <Span class="email-Text">{em.FromAddress}</span> sent an email to <Span class="email-Text">{em.ToAddress}</span></strong>
+              <!-- <a href="#">You</a> emailed
+              <a href="#">Lea Chan</a> -->
+            </p>
+            <article class="slds-box slds-timeline__item_details slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium" id="email-item-narrow-95">
+              <!--ul class="slds-list_horizontal slds-wrap">
+                <li class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small">
+                  <span class="slds-text-title slds-p-bottom_x-small">From Address</span>
+                  <span class="slds-text-body_medium slds-truncate" title="Jackie Dewar">
+                    <strong> {em.FromAddress}</strong>
+                  </span>
+                </li>
+                <li class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small">
+                  <span class="slds-text-title slds-p-bottom_x-small">To Address</span>
+                  <span class="slds-text-body_medium slds-truncate" title="Lea Chan">
+                    <strong>{em.ToAddress}</strong>
+                  </span>
+                </li>
+              </ul-->
+              <div>
+               
+                <!--start add Show More & Show Less-->
+                
+                  <span class="slds-text-title">Text Body</span>
+									<template if:true={em.showFullText}>
+										<p class="slds-p-top_x-small">{em.TextBody}</p>
+										<template if:true={em.showToggle}>
+											<a href="javascript:void(0);" data-id={em.Id} onclick={toggleShowMore}>Read Less</a>
+										</template>
+									</template>
+									<template if:false={em.showFullText}>
+										<p class="slds-p-top_x-small">{em.truncatedText}</p>
+										<template if:true={em.showToggle}>
+											<a href="javascript:void(0);" data-id={em.Id} onclick={toggleShowMore}>Read More</a>
+										</template>
+									</template>
+                 <!-- everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.</p> -->
+              </div>
+              <!-- <button class="slds-button slds-button_neutral slds-m-top_small">
+                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                  <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#world"></use>
+                </svg>Public Sharing</button> -->
+            </article>
+          </div>
+        </div>
+			</div>
+     	</template>
+      </div>
+      <c-custom-pagination class="jobPagination" list={emailList}
+                        onpagechanged={jobPaginationCallback}></c-custom-pagination>
+	<!--lightning-quick-action-panel header="Emails">
+		<template for:each={emailList} for:item="em">
+			<div key={em.Subject}>
+				<lightning-accordion class="example-accordion" active-section-name={em.Subject}
+					onsectiontoggle={handleToggleSection}>
+
+					<lightning-accordion-section key={em.Subject} name={em.Subject} label={em.Subject}>
+					  From Address <br/> {em.FromAddress} <br/>Text Body <br/>{em.TextBody}
+                    </lightning-accordion-section>
+				</lightning-accordion>
+			</div>
+
+		</template>
+		<div slot="footer">
+			<lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+		</div>
+	</lightning-quick-action-panel-->
+	<!-- </lightning-quick-action-panel> -->
+</template>

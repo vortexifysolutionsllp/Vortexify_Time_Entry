@@ -1,0 +1,52 @@
+<apex:page controller="LinkedInOAuthController" lightningStylesheets="true" showHeader="false" sidebar="false">
+<html>
+<head>
+            <c:libraries ></c:libraries>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"/>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"/>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.js">
+            </script>
+        </head>
+
+        <body>
+           <div ng-app="myApp1" ng-controller="myController1">
+           </div>
+
+           <script>
+            var app = angular.module('myApp1', []);
+            app.controller('myController1', function($scope) {
+                function getQueryParam(param) {
+                    var urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(param);
+                }
+        
+                $scope.linkedinAuthCode = getQueryParam('code');
+                console.log('LinkedIn Auth Code:', $scope.linkedinAuthCode);
+        
+                if ($scope.linkedinAuthCode) {
+                    debugger;
+                    LinkedInOAuthController.fetchRefreshToken($scope.linkedinAuthCode, function(result, event) {
+                        if (event.status) {
+                            console.log('Response from Apex:', result);
+                        } else {
+                            console.error('Error fetching refresh token:', event.message);
+                        }
+                    });
+                }
+        
+                // LinkedInOAuthController.getSalesforceBaseURL(function(result, event) {
+                //     debugger;
+                //     if (event.status) {
+                //         console.log('Salesforce Base URL:', result);
+                //         window.location.href = result + '/lightning/page/home';
+                //     } else {
+                //         console.error('Error fetching Salesforce URL:', event.message);
+                //     }
+                // });
+            });
+        </script>
+        
+        </body>
+</html>
+</apex:page>

@@ -1,0 +1,252 @@
+<template> 
+    <div class="slds-card">
+
+        <!-- Month Header Navigation -->
+        <div
+            class="slds-grid slds-grid_align-space slds-grid_vertical-align-center
+                   slds-p-around_medium slds-border_bottom slds-theme_default
+                   calendar-header"
+            style="border-radius: 0.75rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: #ffffff;">
+            
+            <div class="slds-grid slds-grid_vertical-align-center slds-gutter_small">
+                <lightning-button-icon icon-name="utility:chevronleft" alternative-text="Previous" variant="brand" class="custom-nav-btn" onclick={handlePrev}></lightning-button-icon>
+                <lightning-button label={monthYearLabel} variant="brand" class="custom-today-btn" onclick={handleToday}></lightning-button>
+                <lightning-button-icon icon-name="utility:chevronright" alternative-text="Next" variant="brand" class="custom-nav-btn" onclick={handleNext}></lightning-button-icon>
+            </div>
+
+            <!-- Legend -->
+            <div class="slds-grid slds-grid_vertical-align-center" style="max-width:300px !important;margin-right:25%;">
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <span style="background-color: #e74c3c; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px;"></span>
+                    <span class="slds-text-body_regular">Less than 2</span>
+                </div>
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <span style="background-color: #f1c40f; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px;"></span>
+                    <span class="slds-text-body_regular">2 to 4</span>
+                </div>
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <span style="background-color: #2ecc71; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px;"></span>
+                    <span class="slds-text-body_regular">More than 4</span>
+                </div>
+            </div>
+
+           <template if:false={isBlockedRole}> 
+                <div class="lookup-container">
+                    <c-custom-lookup 
+                        object-api-name="Contact"
+                        placeholder="Search Employee"
+                        onrecordselect={handleEmployeeChange}
+                        selected-id={selectedEmployeeId}
+                        selected-name={selectedEmployeeName}>
+                    </c-custom-lookup>
+                </div>
+           </template> 
+
+            <!-- Month Label -->
+            <!-- <div class="month-year-display">
+                <lightning-icon icon-name="utility:event" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                <span>{monthYearLabel}</span>
+            </div> -->
+        </div>
+
+        <!-- Calendar Days and Cells -->
+        <div class="slds-p-around_small calendar-body" style="overflow-y:scroll;height:500px;">
+            <div class="slds-grid slds-wrap slds-text-title_bold slds-border_top slds-border_bottom">
+                <template for:each={dayNames} for:item="day">
+                    <div key={day} class="slds-col slds-size_1-of-7 slds-text-align_center slds-p-vertical_xx-small">
+                        {day}
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-grid slds-wrap slds-border_bottom">
+                <template for:each={preparedCells} for:item="cell">
+                    <div key={cell.key} class="slds-p-around_small slds-col slds-size_1-of-1 slds-medium-size_1-of-7 slds-border_right slds-border_bottom">
+                        <div class="task-grid">
+                            <div class="custom-card" style="padding: 5px 15px; height:115px; border:1px solid #ddd; border-radius:20px;">
+                                <div class="card-header">
+                                    <span class="icon">📅</span>
+                                    <span class="title">{cell.dateLabel}</span>
+                                </div>
+
+                                <div class="row" style="margin-bottom:10px;text-align:center;">
+                                    <template if:true={cell.hasVisits}>
+                                        <p><strong>Tasks Count: </strong>{cell.tasks.length}</p>
+                                    </template>
+                                    <template if:false={cell.hasVisits}>
+                                        <p>No Task Assigned</p>
+                                    </template>
+                                </div>
+
+                                <template if:true={cell.hasVisits}>
+                                    <div class="buttoncls" style="text-align:center;margin-top:0px;">
+                                        <div class="slds-box slds-badge slds-radius_medium"
+                                            style={cell.buttonColorStyle}
+                                            data-date={cell.date}
+                                            onclick={handleClick}
+                                            onmouseover={handleHover}
+                                            onmouseout={handleUnhover}>
+                                            {cell.visitLabel}
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <template if:true={showModal}>
+            <section role="dialog" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="max-height: 90%; max-width: 90%;">
+
+                    <header class="slds-modal__header slds-theme_info">
+                        <h2 class="slds-text-heading_medium">Jira Tasks for {selectedDate}</h2>
+                        <button class="slds-button slds-button_icon slds-modal__close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                        </button>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium" style="max-height: 400px; overflow-y: auto;">
+                        <template if:true={selectedTasks.length}>
+                            <lightning-datatable
+                                key-field="id"
+                                data={selectedTasks}
+                                columns={columns}
+                                hide-checkbox-column
+                                show-row-number-column
+                                onrowaction={handleRowAction}
+                                >
+                            </lightning-datatable>
+                        </template>
+                        <template if:false={selectedTasks.length}>
+                            <p>No tasks found for this date.</p>
+                        </template>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" onclick={closeModal}></lightning-button>
+                    </footer>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- Global Spinner -->
+        <template if:true={isLoading}>
+            <div class="spinner-overlay">
+                <lightning-spinner size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- READ-ONLY TASK DETAILS MODAL -->
+        <!-- READ-ONLY TASK DETAILS MODAL -->
+<template if:true={isReadOnlyModalOpen}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Task Details</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-grid slds-wrap slds-gutters">
+
+                    <!-- TASK NAME -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Task Name"
+                            value={viewTask.name}
+                            disabled>
+                        </lightning-input>
+                    </div>
+
+                    <!-- PROJECT -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Project"
+                            value={viewTask.project}
+                            disabled>
+                        </lightning-input>
+                    </div>
+
+                    <!-- MODULE -->
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input
+                            label="Module"
+                            value={viewTask.module}
+                            disabled>
+                        </lightning-input>
+                    </div>
+
+                    <!-- PRIORITY -->
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input
+                            label="Priority"
+                            value={viewTask.priority}
+                            disabled>
+                        </lightning-input>
+                    </div>
+
+                    <!-- START DATE -->
+                    <!-- <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input
+                            label="Start Date & Time"
+                            value={viewTask.time}
+                            disabled>
+                        </lightning-input>
+                    </div> -->
+
+                    <!-- END TIME -->
+                    <!-- <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input
+                            label="End Time"
+                            value={viewTask.endTime}
+                            disabled>
+                        </lightning-input>
+                    </div> -->
+
+                    <!-- START DATE -->
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input type="datetime" label="Start Date & Time" value={viewTask.time} disabled>
+                        </lightning-input>
+                    </div>
+                    
+                    <!-- END DATE -->
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input type="datetime" label="End Date & Time" value={viewTask.endTime} disabled>
+                        </lightning-input>
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+                    <div class="slds-col slds-size_2-of-2 slds-m-top_medium">
+                        <lightning-textarea
+                            label="Description"
+                            value={viewTask.description}
+                            disabled>
+                        </lightning-textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <footer class="slds-modal__footer">
+                <lightning-button
+                    variant="neutral"
+                    label="Close"
+                    onclick={closeReadOnlyModal}>
+                </lightning-button>
+            </footer>
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+
+    </div>
+</template>

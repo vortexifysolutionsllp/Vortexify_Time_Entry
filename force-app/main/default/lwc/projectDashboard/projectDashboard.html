@@ -1,0 +1,119 @@
+<template>
+	<div class="mainDiv">
+		<div class="query-div">
+			<lightning-input type="date" variant="standard" name="startDate" label="Start Date" placeholder="Start Date"
+				onchange={queryOnchangeHandler}></lightning-input>
+			<lightning-input type="date" variant="standard" name="endDate" label="End Date" placeholder="End Date"
+				onchange={queryOnchangeHandler}></lightning-input>
+			<lightning-input type="search" variant="standard" name="projectName" label="Project Name"
+				placeholder="Project Name" onchange={queryOnchangeHandler}></lightning-input>
+			<lightning-input type="checkbox" variant="standard" name="activeProject" label="Active Project"
+				style="margin-top:1.5rem;" onchange={queryOnchangeHandler}></lightning-input>
+			<lightning-button variant="destructive" label="Clear" title="clear" onclick={handleclearFilter}
+				style="margin-top:1.5rem;"></lightning-button>
+		</div>
+		<div class="container">
+			<div class="leftDiv slds-scrollable">
+				<div class="projectList">
+					<template for:each={allProjectsList} for:item="project">
+						<div key={project.Id} data-id={project.Id} class="projectItem" onclick={handleProjectClick}>
+							<span class="projectName">{project.Name}</span>
+						</div>
+					</template>
+				</div>
+			</div>
+			<div class="rightDiv slds-scrollable">
+				<template if:true={isShowProjectDetails}>
+					<div class="projectHeading">
+						<h1>{selectedProjectName}</h1>
+					</div>
+					<div class="projectData">
+						<div class="box">
+							<h2>Details</h2>
+							<template if:true={selectedProject}>
+								<p>Project Type <span class="dataValueSpan">{selectedProject.Type__c}</span></p>
+								<p>Start Date <span class="dataValueSpan">{selectedProject.Project_Start_Date__c}</span>
+								</p>
+								<p>End Date <span class="dataValueSpan">{selectedProject.Project_End_Date__c}</span></p>
+								<p>Remaining days
+									<span class="dataValueSpan">{selectedProject.remainingDaysCount}</span>
+								</p>
+								<p>Allocated Hours:
+									<span class="dataValueSpan">{selectedProject.Allocated_Hour__c}</span>
+								</p>
+								<p>Allocated Weeks:
+									<span class="dataValueSpan">{selectedProject.Number_Of_Weeks__c}</span>
+								</p>
+							</template>
+						</div>
+						<div class="box">
+							<h2>This Week Stages</h2>
+							<template if:true={selectedProject}>
+								<p>Last
+									Conversation<span class="dataValueSpan">{selectedProject.last_conversation} at {selectedProject.last_conversation_at}</span>
+								</p>
+								<p>Last Conversation By<span class="dataValueSpan"></span></p>
+								<p>Last Task
+									Create<span class="dataValueSpan">{selectedProject.last_jira_task} at {selectedProject.last_jira_task} for {selectedProject.last_jira_task}</span>
+								</p>
+								<p>Current Stage<span class="dataValueSpan">{selectedProject.current_milessrone}</span>
+								</p>
+								<p>Current Status<span class="dataValueSpan"></span></p>
+							</template>
+						</div>
+						<div class="box">
+							<h2>Upcoming events</h2>
+							<p>Next milestones
+							Start<span class="dataValueSpan">{selectedProject.miles_stones_tobe_opned}</span>
+							</p>
+						</div>
+						<div class="box">
+							<h2>Total Resource Onnorded</h2>
+							<template if:true={selectedProject}>
+								<!-- <lightning-button-icon variant="base" size="xx-small" icon-name="utility:down" alternative-text="opne" onclick={showProjectResourceTable} data-id={selectedProject.Id}></lightning-button-icon> -->
+								<lightning-icon icon-name='utility:resource_territory'
+									alternative-text='resource_territory' variant='error' size='medium'
+									title='resource_territory' onclick={showProjectResourceTable}
+									data-id={selectedProject.Id}></lightning-icon>
+								<template if:true={selectedProject}>
+									<div>
+										<c-project-resource-table record-id={selectedProject.Id}>
+										</c-project-resource-table>
+									</div>
+								</template>
+							</template>
+						</div>
+						<!-- <div class="box">
+							<h2>Project Health Overview</h2>
+							<template if:true={selectedProjectHealthWrapper}>
+								<div class="health-box">
+									<p>Total Modules: {selectedProject.totalModules}</p>
+									<p>Total Open Modules: {selectedProject.totalOpenModules}</p>
+									<p>Total Closed Modules: {selectedProject.totalClosedModules}</p>
+									<p>Total Delayed Modules: {selectedProject.totalDelayedModules}</p>
+									<p>
+										Delay Rate:
+										<span class={selectedProject.delayRateColor}>{selectedProject.delayRate}%</span>
+									</p>
+								</div>
+							</template>
+						</div> -->
+						<div class="box emailBox">
+							<template if:true={selectedProject}>
+							<c-show-project-related-emails record-id={selectedProject.Id}>
+							</c-show-project-related-emails>
+							</template>
+						</div>
+						<div class="box modulesBox">
+							<template if:true={selectedProject}>
+								<!-- <c-show-project-related-emails record-id={selectedProjectHealthWrapper.projectId}></c-show-project-related-emails> -->
+								<c-modules-dashboard project-id={selectedProject.Id}>
+								</c-modules-dashboard>
+							</template>
+						</div>
+					</div>
+				</template>
+			</div>
+		</div>
+	</div>
+</template>

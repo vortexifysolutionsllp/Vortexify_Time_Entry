@@ -1,0 +1,38 @@
+.THIS .timeline-wrapper {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+/* Resource column */
+.THIS .resource-col {
+    min-width: 170px;
+    font-weight: 600;
+}
+
+/* Base cell */
+.THIS .task-cell {
+    min-width: 110px;
+    height: 44px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 4px;
+}
+
+/* 🔴 Task Created / In Progress */
+.THIS .task-red {
+    background-color: #fdecea;
+    border: 1px solid #e74c3c;
+}
+
+/* 🟢 Task Completed */
+.THIS .task-green {
+    background-color: #e8f5e9;
+    border: 1px solid #2ecc71;
+}
+
+/* Hover */
+.THIS .task-cell:hover {
+    box-shadow: 0 0 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+}

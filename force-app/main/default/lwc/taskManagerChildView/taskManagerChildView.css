@@ -1,0 +1,214 @@
+.cardselected {
+  background-color: #3466ac;
+  color: #ecf0f1;           /* soft light text */
+  border-radius: 6px;
+}
+.custom-modal-container {
+  height: 100vh; /* or 100vh if preferred */
+  display: flex;
+  flex-direction: column;
+}
+
+.slds-modal__content {
+  flex: 1;
+  overflow: hidden; /* prevent outer scroll */
+  display: flex;
+  flex-direction: column;
+}
+.slds-modal__content1 {
+  background-color: white; /* or any solid color */
+  /* If you want to add a background image here, you can also do that */
+  background-image: none; /* if you're trying to remove it */
+  opacity: 1 !important;
+}
+
+.cardunselected {
+  background-color: #f4f6f9; /* Light neutral background */
+  color: #2c3e50;            /* Dark slate text for readability */
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+.right-panel-scroll {
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.cardunselected:hover {
+  background-color: #d6eaff; /* Soft blue hover (not too bright) */
+  cursor: pointer;
+}
+
+.listViewData{
+  background-color: #F9EAC2;
+  width: 100%;
+  height: 30%;
+}
+
+.line-2 {
+    border-top: 1px solid black;
+  }
+
+.container{
+    display: flex;
+   align-items: center;
+}
+.container h4{
+    font-size: large;
+}
+.container div{
+    padding: 5px;
+    overflow-y: scroll;
+    border-radius: 5px;
+  background-color: rgb(148, 190, 214);
+   
+}
+
+.timercard {
+    width: 200;
+    box-sizing: border-box;
+    padding: 1em;
+    font-family: Ubuntu;
+    border-radius: 10px;
+    color: white;
+    line-height: 21px;
+    box-shadow: 5px 5px 10px #ccc;
+    float: left;
+    
+  }
+  
+  .timercard.purple {
+    background: linear-gradient(150deg, #0163d0, #31c0fd 100%);
+  }
+
+lightning-button.btnorange{
+   
+    --sds-c-button-brand-color-background:rgb(241, 162, 15);
+    --sds-c-button-brand-color-border-hover:rgb(252, 166, 6);
+    --sds-c-button-text-color: #da1d46;
+}
+.small-btn {
+  --slds-c-button-line-height: 1.5rem;
+  --slds-c-button-font-size: 0.75rem;
+  padding: 0.2rem 0.8rem;
+  min-height: 1.5rem;
+   font-weight: 500;
+}
+
+
+.timercard {
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, #7F00FF, #E100FF); 
+  padding: 6px 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+
+.startJob{
+    --slds-c-button-brand-color-background-active: #1ba967;
+ padding : 10px;
+}
+.task-message {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 40px;
+  animation: bounceIn 1s ease;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateY(10px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+.custom-3d {
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.05);
+  border: 0.7px solid #e0e0e0;
+  padding: 3px;
+  transform: perspective(800px) translateZ(0);
+}
+
+/* .content-box {
+  height: 110px;
+  overflow-y: auto;
+  padding: 5px;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+} */
+.content-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 5px;
+  min-height: 0;
+}
+
+
+.custom-3d-card {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #b0b0b0;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255, 247, 204, 0.7),
+    rgba(255, 247, 204, 0.7) 12px,
+    rgba(249, 231, 159, 0.5) 12px,
+    rgba(249, 231, 159, 0.5) 24px
+  );
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.12),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: perspective(1000px) translateZ(0);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card-header,
+.card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-bottom: 12px;
+}
+
+.project-title {
+  font-size: 21px;
+  font-weight: 600;
+  margin-right: 20px;
+  flex: 1;
+}
+
+.jira-id,
+.status {
+  font-size: 17px;
+  font-weight: 500;
+  color: #0a560a;
+  margin-right: 20px;
+}
+
+.break-running {
+  --sds-c-button-brand-color-background: #d9534f; /* red */
+  --sds-c-button-brand-color-border: #d9534f;
+  --sds-c-button-text-color: #ffffff;
+}

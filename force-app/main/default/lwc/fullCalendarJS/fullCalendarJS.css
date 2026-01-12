@@ -1,0 +1,49 @@
+.slds-modal__container{
+    width: 80% !important;
+    max-width: 90% !important;
+    
+}
+.event-card-container {
+    margin-bottom: 1rem;
+}
+
+.event-card {
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.event-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.event-title {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #1a1a1a;
+    white-space: normal;;
+}
+
+.event-info p {
+    font-size: 0.75rem;         /* Smaller text */
+    line-height: 1.2;
+    margin: 0;
+    color: #444;                /* Optional: make it a bit lighter */
+}
+.event-info p strong {
+    font-weight: 500;           /* Slightly less bold */
+    font-size: 0.75rem;         /* Match the body text */
+}
+
+
+.delete-icon lightning-primitive-icon {
+    fill: red !important;        /* Icon fill color */
+    width: 1rem !important;      /* Smaller width */
+    height: 1rem !important;     /* Smaller height */
+}
+
+.delete-icon button {
+    padding: 0.2rem !important;  /* Reduce button padding */
+}

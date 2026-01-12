@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="Setup Audit Trail → package.xml" icon-name="utility:package_org">
+        <div class="card-body">
+
+            <div class="slds-grid slds-grid_align-spread slds-p-around_small">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-combobox name="sections" label="Sections (All)" value={selectedSection}
+                        options={sectionOptions} onchange={handleSectionChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-text-align_right">
+                    <lightning-button variant="brand" label="Add to Package" onclick={handleAddToPackage}>
+                    </lightning-button>
+                </div>
+            </div>
+
+            <div class="slds-p-horizontal_small">
+                <h3 class="slds-text-heading_small">{headerText}</h3>
+            </div>
+
+            <div class="slds-p-around_small">
+                <!-- leave checkbox column visible so user can select rows -->
+                <lightning-datatable key-field="Id" data={data} columns={columns}>
+                </lightning-datatable>
+            </div>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,186 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="LogInPageController">
+    <html>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        
+        <head>
+            <c:libraries ></c:libraries>
+            <style>
+                *{
+                    margin: 0;
+                    padding: 0;
+                }
+                .welcmHeding{
+                font-family: "Times New Roman", Times, serif;
+                font-size: 4.2rem;
+                }
+                .form-group>input {
+                outline: 0;
+                padding: 1.25rem;
+                background: none;
+                border-radius: 1.2rem;
+                border-width:1px;
+                border-color:#1304b3;
+                
+                }
+                
+                input:focus {
+                border-color:#171347;
+                }
+                .form-section{
+                
+                padding: 10%;
+                align-items: center;
+                justify-content: center;
+                
+                }
+                .form-group>label{
+                font-size: 1.9rem;
+                padding-left: 2rem;
+                align-items: center;
+                }
+                .form-group>input{
+                    width: 95%;
+                    align-items: center;
+                    padding-left: 4rem;
+
+                }
+                input, select, textarea{
+                color: rgb(207, 33, 33);
+                padding-left: 4rem;
+                }
+                
+                
+                .loginSection{
+                height:590px;
+                }
+                .logoUtill{
+                width: 222px;   
+                height: 60px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 5em;
+                margin-top: 7rem; */
+                }
+                .robotUtill.{
+                width: 250px;   
+                height: 360px;
+                }
+                
+                
+            </style>
+            <script>
+            
+            debugger;
+            var app = angular.module('myApp', []);
+            app.controller('myController', function ($scope) {
+                $scope.userName;
+                $scope.showSpinner = false;
+                
+                $scope.contactDetails = { Name: "", Email__c: "" };
+                
+                debugger;
+                $scope.loginEmployee = function () {
+                    
+                    $scope.userPassword;
+                    $scope.showSpinner = true;
+                    $scope.loginPage = false;
+                    debugger;
+                    LogInPageController.EmployeeLogIn($scope.userName, $scope.userPassword, function (result, event) {
+                        if (event.status && result != null) {
+                            
+                            debugger;
+                            Swal.fire(
+                                '', 'Logged In Successfully', 'Success'
+                            )
+                            $scope.$apply();
+                            var UrlString = 'https://sales-production--sales.sandbox.my.salesforce-sites.com/TimeEntryModule/EmployeeTaskDetailpage' +'?id='+result;
+                            window.location.replace(UrlString);
+                            debugger;
+                            
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Opps....!',
+                                text: 'Please Enter the Correct Username & Password !'
+                            })
+                        }
+                    }, { escape: false })
+                    $scope.showSpinner = false;
+                    $scope.$apply();
+                }
+                
+                /*$scope.forgotpass = function (flag) {
+                        if(flag=='f'){
+                            $scope.loginPage = true;
+                        }
+                        else
+                        {
+                            $scope.loginPage = false;
+                        }
+                        // $scope.forgotpasswordLink();
+    
+                    }
+    
+                    $scope.forgotpasswordLink = function () {
+                        $scope.userName;
+                        debugger;
+                        ReviewLogInFormController.ForgetPassReviewer($scope.userName, function (result, event) {
+                            debugger;
+                            if (event.status && result != null) {
+                                Swal.fire(
+                                    '',
+                                    'Link has been sent to your Email Id!',
+                                    'success'
+                                )
+                              //  $scope.$apply();
+                            } 
+                        })
+                    }*/
+            });
+            </script>
+        </head>
+        
+        <body ng-app="myApp" ng-controller="myController" >
+            
+            <div class="container-fluid" style="width: 100%;padding: 0px;margin: 0px;">
+                <div  class="col-sm-6 bg-light text-dark" style="height: 100vh;">
+                    <div class="logoUtill d-flex justify-content-center">
+                        <!-- <apex:image url="{!$Resource.logo}"/> -->
+                        <apex:image url="{!$Resource.newUtillLogo}"/>
+                        
+                    </div>
+                    <div class="robotUtill d-flex justify-content-center">
+                        <apex:image url="{!$Resource.LoginLogo}"/>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-white" style="height: 100vh; background-color:#171347;">
+                    
+                    
+                    
+                    <div class="form-section">
+                        
+                        <div>
+                            <h1  class="welcmHeding"  style="text-align:center;">WELCOME</h1>
+                            <div class="form-group" style="margin-top:4rem">
+                                <label for="exampleInputEmail1">Email</label>
+                                <input ng-model="userName" type="email" class="form-control input-lg" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your email" style=" border-radius: 10px;"/>
+                            </div>
+                            
+                            <div class="form-group"  style="margin-top:3rem">
+                                <label for="exampleInputEmail1">Password</label>
+                                <input ng-model="userPassword" type="password" class="form-control input-lg" id="exampleInputEmail1" aria-describedby="emailHelp" style=" border-radius: 10px; " placeholder="*********"/>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" ng-click="loginEmployee()" class="btn btn-lg" style="background-color: rgb(241, 97, 0);color: white;padding-left: 40px;padding-right: 40px;border-radius: 15px; margin-top:3rem;">Login</button>    
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </body>
+        
+    </html>
+    
+</apex:page>

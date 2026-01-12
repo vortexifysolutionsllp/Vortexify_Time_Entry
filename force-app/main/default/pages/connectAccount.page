@@ -1,0 +1,49 @@
+<apex:page controller="ConnectAccountController" action="{!handleOAuthResponse}">
+    <style>
+        .center-align {
+            text-align: center;
+        }
+        .custom-button {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            background-color: #4CAF50; /* Blue */
+        }
+        .connected {
+            background-color: #4CAF50 !important; /* Green */
+        }
+    </style>
+
+    <div class="center-align">
+        <apex:form >
+            <!-- <apex:outputPanel rendered="{!code == ''}">
+                <apex:commandButton styleClass="custom-button" value="Connect To OndeDrive" action="{!redirectToOAuthOneDrive}"/>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputPanel rendered="{!code == ''}">
+                <apex:commandButton styleClass="custom-button" value="Connect To DropBox" action="{!redirectToOAuthDropBox}"/>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputPanel rendered="{!code == ''}">
+                <apex:commandButton styleClass="custom-button" value="Connect To Google" action="{!redirectToOAuthGoogleDrive}"/>
+            </apex:outputPanel>
+            <br/> -->
+            <apex:outputPanel rendered="{!code == ''}">
+                <apex:commandButton styleClass="custom-button" value="Connect To YouTube Account" action="{!redirectToOAuthYoutube}"/>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputPanel rendered="{!code != ''}">
+                <apex:commandButton styleClass="custom-button connected" value="Account Connected" disabled="true"/>
+            </apex:outputPanel>
+            <br/> <!-- Line break -->
+            <apex:outputText value="{!code}" />
+        </apex:form>
+    </div>
+</apex:page>

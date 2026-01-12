@@ -1,0 +1,228 @@
+<aura:component controller = "JiraTaskReportHelper" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    
+    <!-- <ltng:require styles="{!$Resource.sweetalertcss}" scripts="{!$Resource.SweetAlertJS}"/>  -->
+    
+    <!-- for using mouse onhover to show task description -->
+    <aura:attribute name="isTooltip" type="Boolean" default="false"/>
+    
+    
+    <aura:attribute type="Contact[]" name= "conList" />
+    <aura:attribute name="taskValues" type= "List"/>
+    <aura:attribute name="recordId" type="String" default = "003C400000JIQIsIAP"/>
+    <aura:handler name= "init" value="{!this}" action="{!c.fetchTaskMap}"/>
+    <aura:import library="lightning:alert" property="LightningAlert" />
+    <aura:attribute name="showComp" type="boolean" default="true"/>
+    <aura:attribute name="ShowToolTip" type="Boolean" />
+    <aura:attribute name="showTaskInfo" type="boolean" default="false"/>
+    <aura:attribute name="jiraTaskName" type="string" default=""/>
+    <aura:attribute name="filledDescription" type="string" default=""/>
+    <aura:attribute name="TaskProjectName" type="string" default=""/>
+    <aura:attribute name="TaskStatus" type="string" default=""/>
+    <aura:attribute name="ModuleName" type="string" default=""/>
+    <aura:attribute name="AssingedBy" type="string" default=""/>
+    
+    
+    
+    
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    
+    <aura:attribute name="Description" type= "String"/>
+    
+     <!--lightning:button onclick="{! c.refreshBoard }" label="Refresh Board..🔃🔃"/-->
+    
+    <aura:html tag="style">
+        .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        }
+        
+        .tooltip .tooltip-text {
+        visibility: hidden;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        transform-origin: center bottom;
+        opacity: 0;
+        transition: opacity 0.3s;
+        white-space: normal;
+       width:100%;
+        overflow: hidden;
+        word-break: break-word;
+        }
+        .tooltip:hover .tooltip-text {
+        visibility: visible;
+        font-size: 15px;
+        opacity: 1;
+        }
+    </aura:html>
+    
+    
+    
+    <aura:if isTrue="{!v.showComp}">
+        <aura:if isTrue="{!not(empty(v.conList))}">
+            <div class="slds-box slds-scrollable_x" style="padding:2px;border-radius:5px;" >
+                <aura:if isTrue="{!v.showSpinner}">
+                    <div class="exampleHolder">
+                        <lightning:spinner alternativeText="Loading" size="medium" />
+                    </div>
+                </aura:if>
+                <table class="slds-table slds-table_cell-buffer slds-table_header-hidden" style="background-color:#ffffff;border-radius:5px;">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th  scope="col">
+                                <div class="slds-truncate" style="width:fit-content;" title="Time/Resources" onclick="{!c.fetchTaskMap}">
+                                    <ui:message title="Resources 🔃" severity="Warning" />
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="09 - 10 AM">
+                                    <lightning:badge label="09:00 - 10:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="10 - 11 AM">
+                                    <lightning:badge label=" 10:00 - 11:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="11 - 12 PM">
+                                    <lightning:badge label="11:00 - 12:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="12 - 01 PM">
+                                    <lightning:badge label="12:00 - 13:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="01 - 02 PM">
+                                    <lightning:badge label="13:00 - 14:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="02 - 03 PM">
+                                    <lightning:badge label="14:00 - 15:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="03 - 04 PM">
+                                    <lightning:badge label="15:00 - 16:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="04 - 05 PM">
+                                    <lightning:badge label="16:00- 17:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="05 - 06 PM">
+                                    <lightning:badge label="17:00 - 18:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="06 - 07 PM">
+                                    <lightning:badge label="18:00 - 19:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="07 - 08 PM">
+                                    <lightning:badge label="19:00- 20:00"/>
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="08 - 09 PM">
+                                    <lightning:badge label="20:00- 21:00"/>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.conList}" var= "con" indexVar="key">
+                            <tr>
+                                <td  class="" scope="col">
+                                    <div class="slds-truncate" title="Time/Resources">
+                                        <b>
+                                            <lightning:badge label="{!con.key}" iconName="utility:people"/>🧑‍💻
+                                        </b>
+                                    </div>
+                                </td>
+                                <aura:iteration items="{!con.value}" var= "taskValues">
+                                    <aura:if isTrue="{!taskValues.TaskName == ''}">
+                                        <td  class="" scope="col" >
+                                            <ui:message aura:Id="outputTextId" title="{!taskValues.TaskName}" class="blueMessage" />
+                                        </td>
+                                        <aura:set attribute="else">
+                                            <aura:if isTrue="{!taskValues.TaskStatus == 'Dev Completed'}">
+                                                <td  class="slds-col slds-size_1-of-12" scope="col">
+  
+                                                    <ui:message title="{!taskValues.TaskName}" severity="confirm" />
+                                                </td>
+                                                <aura:set attribute="else">
+                                                    <aura:if isTrue="{!taskValues.TaskStatus == 'In Progress'}">
+                                                        <td  class="slds-col slds-size_1-of-12" scope="col" >
+                                                            <a onclick = "{!c.navigatingToTask}" data-recid="{!taskValues.TaskName}" id="{!taskValues.Description}" name="{!taskValues.TaskName}"  data-projectname="{!taskValues.TaskProjectName}" data-taskstatus="{!taskValues.TaskStatus}" data-giver="{!taskValues.AssingedBy}" data-modulename="{!taskValues.ModuleName}">
+                                                                <ui:message title="{!taskValues.TaskName}" severity="info" />
+                                                                <!--lightning:icon iconName='utility:info' alternativeText='info' variant='success' size='small' title='info'></lightning:icon-->
+                                                            </a>
+                                                        </td>
+                                                        <aura:set attribute="else">
+                                                                <aura:if isTrue="{!taskValues.TaskStatus == 'New'}">
+                                                                    <td  class="slds-col slds-size_1-of-12" scope="col" style="text-align:center;" >
+                                                                        <ui:message title="{!taskValues.TaskName}" severity="error" />
+                                                                        <!--<a onclick = "{!c.navigatingToTask}" data-recid="{!taskValues.TaskName}" id="{!taskValues.Description}" name="{!taskValues.TaskName}"  data-projectname="{!taskValues.TaskProjectName}" data-taskstatus="{!taskValues.TaskStatus}" data-giver="{!taskValues.AssingedBy}" data-modulename="{!taskValues.ModuleName}">-->
+                                                                            
+                                                                            <!--lightning:icon iconName='utility:info' alternativeText='info' variant='success' size='small' title='info'></lightning:icon-->
+                                                                        <!--</a>-->
+                                                                    </td>
+                                                                    <aura:set attribute="else">
+                                                                    	<p>this is some error in tasy😎</p>
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </aura:set>
+                                                    </aura:if>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:iteration>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </div>
+            <aura:set attribute="else">
+                <br/><br/><br/>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <span></span>
+                    </div>
+                    <div class="slds-col">
+                        <span></span>
+                    </div>
+                    <div class="slds-col">
+                        <span>         
+                            <ui:message title=" 😢😢Sorry!! No Tasks available for Today- Assign some Tasks To the Resources and then come again!!😊😊" severity="error" />
+                        </span>
+                    </div>
+                    <div class="slds-col">
+                        <span></span>
+                    </div>
+                    <div class="slds-col">
+                        <span></span>
+                    </div>
+                </div>
+            </aura:set>
+            <aura:if isTrue="{!v.showTaskInfo}">
+                <c:showModuleDescription jiraTaskName = "{!v.jiraTaskName}" isModalOpen="{!v.showTaskInfo}" filledDescription="{!v.filledDescription}" jiraTaskProjectName="{!v.TaskProjectName}" isEditable="true"  AssingedBy="{!v.AssingedBy}" ModuleName="{!v.ModuleName}"/>
+            </aura:if>
+        </aura:if> 
+    </aura:if>
+</aura:component>

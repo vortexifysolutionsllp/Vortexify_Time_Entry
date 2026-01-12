@@ -1,0 +1,42 @@
+<template>
+    <div class="slds-align_absolute-center slds-m-top_large">
+            <p class='slds-m-right_small' style="color:#969492;float:left;margin-right:5rem">Showing {pageParam} of {totalRecords} rows</p>
+
+            <!-- <lightning-button label="&#9668;&#9668;" class='slds-m-right_small slds-p-left_small slds-border_left'
+                disabled={disablePrev} onclick={handleFirst} style="font-family: sans-serif;"></lightning-button> -->
+                
+                <lightning-icon  icon-name='utility:chevronleft' alternative-text='back' size='small' title='back' disabled={disablePrev} onclick={handlePrev} style="cursor:pointer"></lightning-icon>
+                
+            
+            <span style="font-weight:bold;margin: 0px 20px 0px 10px;"></span>
+            <!-- <lightning-button class='slds-m-right_small' disabled={disablePrev} onclick={handlePrev} icon-name='utility:back'
+                style="font-family: sans-serif;"></lightning-button> -->
+
+            <template if:true={pageOptionsLoaded}>
+                <template for:each={pageOptions} for:index="index" for:item="pageOption">
+                    <ul key={pageOption.value} style="cursor:pointer">
+                        <li class="cursor: pointer;" onclick={handlePageChange} value={pageOption.value} style={pageOption.className}>{pageOption.value}</li>
+                    </ul>
+                </template>
+
+            
+                <!-- <lightning-combobox name="progress" label="Page" class='slds-m-right_small PageSelectors' value={currentPage}
+                    options={pageOptions} dropdown-alignment='bottom-right' onchange={handlePageChange} variant='label-hidden'>
+                </lightning-combobox> -->
+            </template>
+            <span style="font-weight:bold;margin: 0px 10px 0px 10px;"></span>
+            
+             <lightning-icon  icon-name='utility:chevronright' alternative-text='forward' size='small' title='forward' disabled={disableNext} onclick={handleNext} style="cursor:pointer" class="slds-m-right_xx-large"></lightning-icon>
+            
+            <!-- <lightning-button class='slds-m-right_small' disabled={disableNext} onclick={handleNext} icon-name='utility:forward'
+                style="font-family: sans-serif;border-width: 0px !important;"></lightning-button> -->
+            <!-- <lightning-button label="&#9654;&#9654;" class='slds-p-right_small slds-m-right_small slds-border_right'
+                disabled={disableNext} onclick={handleLast} style="font-family: sans-serif;"></lightning-button> -->
+            <!-- <lightning-combobox name="progress" label="Record to Display"
+                class='slds-m-right_small PageSelectors slds-float_right' value={pageLimit} dropdown-alignment='bottom-right'
+                placeholder="Limit" options={pageLimitOptions} onchange={handleLimitChange} variant='label-hidden'>
+            </lightning-combobox> -->
+
+            <lightning-button variant="base" label="Showmore" title="Showmore" onclick={handlemore} class="slds-m-left_xx-large"></lightning-button>
+    </div>
+</template>

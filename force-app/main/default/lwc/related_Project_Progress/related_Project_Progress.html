@@ -1,0 +1,50 @@
+<template>
+	<div class="card">
+
+	<template if:true={ProjectRecord}>
+	<lightning-layout multiple-rows>
+		<lightning-layout-item size="12" padding="around-small">
+			<div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+				<span style="font-size:37px;text-shadow: 2px 2px 4px;"><b>{ProjectRecord.Name}</b></span>
+			</div>
+		</lightning-layout-item>
+		<lightning-layout-item size="3" padding="around-small">
+			<label class="slds-form-element__label" for="form-element-01"><b>Project Start Date</b></label>
+			<div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+				<span>{ProjectRecord.Project_Start_Date__c}</span>
+			</div>
+		</lightning-layout-item>
+		<lightning-layout-item size="3" padding="around-small">
+			<label class="slds-form-element__label" for="form-element-01"><b>Project End Date</b></label>
+			<div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+				<span>{ProjectRecord.Project_End_Date__c}</span>
+			</div>
+		</lightning-layout-item>
+		<lightning-layout-item size="3" padding="around-small">
+			<label class="slds-form-element__label" for="form-element-01"><b>Project Allocated Hours</b></label>
+			<div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+				<span>{ProjectRecord.Allocated_Hour__c}</span>
+			</div>
+		</lightning-layout-item>
+		<lightning-layout-item size="3" padding="around-small">
+			<label class="slds-form-element__label" for="form-element-01"><b>Project Spent Hours</b></label>
+			<div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+				<span>{totalSpentHours}</span>
+			</div>
+		</lightning-layout-item>
+	</lightning-layout>
+	</template>
+<div class="tso-daily-digest content-section">
+	<div class="Modulebrick brick-chart">
+		<div class="chart">
+				<canvas class="linechart" lwc:dom="manual" width="570" height="300"></canvas>
+		</div>
+	</div>
+	<div class="brick brick-chart">
+		<div class="chart">
+				<canvas class="resourcechart" lwc:dom="manual" width="570" height="100"></canvas>
+		</div>
+	</div>
+</div>
+	</div>
+</template>

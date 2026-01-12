@@ -1,0 +1,32 @@
+<template>
+    <lightning-card title="SharePoint Integration" icon-name="standard:file">
+        
+        <!-- Fetch Files Section -->
+        <div class="slds-p-around_medium">
+            <lightning-button label="Fetch Files" variant="brand" onclick={handleFetchFiles}></lightning-button>
+            <template if:true={files.length}>
+                <lightning-datatable
+                    key-field="id"
+                    data={files}
+                    columns={columns}
+                    hide-checkbox-column="true">
+                </lightning-datatable>
+            </template>
+        </div>
+
+        <!-- Upload File Section -->
+        <div class="slds-p-around_medium">
+            <lightning-input type="text" label="File Name" value={fileName} onchange={handleFileNameChange}></lightning-input>
+            <lightning-file-upload
+                label="Upload File"
+                name="fileUploader"
+                accept=".txt,.pdf,.jpg,.png"
+                record-id={recordId}
+                onuploadfinished={handleFileUpload}>
+            </lightning-file-upload>
+            <template if:true={uploadMessage}>
+                <p class="slds-text-color_success">{uploadMessage}</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,16 @@
+.result-card {
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0070d2, #00bfa5);
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    transition: transform .2s ease-in-out;
+}
+.result-card:hover {
+    transform: scale(1.03);
+}
+.result-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+}

@@ -1,0 +1,108 @@
+<template>
+<lightning-card title="JIRA PROJECT DETAILS DASHBOARD">
+
+
+
+
+<h1><Strong>User's View</Strong></h1>
+<div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+    <!--Code for Carsouel-->
+
+
+
+
+    <lightning-layout multiple-rows>
+        <lightning-layout-item padding="around-small" size="12" small-device-size="12" medium-device-size="4">
+            <div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+                <h1><Strong>Task Queues</Strong></h1>
+                    <div class="slds-border_bottom">
+                        <lightning-card  title="Hello1">
+                            <p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+                            </lightning-card><br/>
+                    </div>
+                    <div class="slds-border_bottom">
+                        <lightning-card  title="Hello2">
+                            <p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+                            </lightning-card><br/>
+                    </div>
+                    <div class="slds-border_bottom">
+                        <lightning-card  title="Hello3">
+                            <p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+                            </lightning-card><br/>
+                    </div> 
+                    <div class="slds-border_bottom">
+                        <lightning-card  title="Hello4">
+                            <p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+                            </lightning-card>
+                    </div> 
+                    <div class="slds-border_bottom">
+                        <lightning-card  title="Hello5">
+                            <p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+                            </lightning-card>
+                    </div>
+                    <div class="slds-border_bottom">
+                        <lightning-card  title="Hello6">
+                            <p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+                            </lightning-card>
+                    </div>                        
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="12" small-device-size="12" medium-device-size="8">
+            <div class="slds-m-top_small slds-m-bottom_medium">
+
+                <div style="font-size: 20px;text-align:center;">{timeVal}</div>
+
+                    <template if:true={showStartBtn}>
+                        <lightning-button variant="brand" label="Start Your Job" onclick={start} style="margin-left: 145px;" class="slds-m-left_x-small"></lightning-button>
+                    </template>
+                    <template if:false={showStartBtn}>
+                        <lightning-button variant="brand" label="End Your Job" onclick={stop} style="margin-left: 145px;" class="slds-m-left_x-small"></lightning-button>
+                    </template>
+                    
+                    <lightning-button variant="brand" label="Reset" onclick={reset} style="margin-left: 10px;"></lightning-button>
+
+                <lightning-button variant="brand" label="Mark As Completed" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+
+                <lightning-button variant="brand" label="Ask For Extension" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+
+                <lightning-button variant="brand" label="Manual Time Entry" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+            </div>
+
+        <div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+                <div class="slds-border_bottom">
+                    <lightning-card  title="Hello Details">
+                        <p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+                    </lightning-card>
+                </div>
+        </div>
+        <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+            <lightning-layout multiple-rows>
+                <lightning-layout-item padding="around-small" size="12" small-device-size="12" medium-device-size="6">
+                    <div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+                        <Strong>Requirement Details</Strong>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="12" small-device-size="12" medium-device-size="6">
+                    <div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+                        <Strong>Solution Details</Strong>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <div class="slds-m-top_small slds-m-bottom_medium">
+            <lightning-button variant="destructive" label="Files" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        
+            <lightning-button variant="destructive" label="Recordings" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        
+            <lightning-button variant="destructive" label="Communication" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+
+            <lightning-button variant="destructive" label="Bugs" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+
+            <lightning-button variant="destructive" label="Change Request" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        </div> 
+        </lightning-layout-item>
+    </lightning-layout>
+</div>
+
+</lightning-card>
+</template>

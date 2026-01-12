@@ -1,0 +1,29 @@
+<apex:page controller="GenerateDocumentController" renderAs="pdf" showHeader="false" applyBodyTag="false" standardStylesheets="false">
+    <apex:form >
+
+        <!-- HEADER (Fixed on every page) -->
+        <div style="position: fixed; top: 0; left: 0; right: 0; width: 100%; text-align: center; z-index: 1000;">
+            <img src="{!URLFOR($Resource.vortexify_bond)}" style="width: 100%; height: auto;" />
+        </div>
+
+        <!-- FOOTER (Fixed on every page) -->
+        <div style="position: fixed; bottom: 0; left: 0; right: 0;
+                    border-top: 1px solid #000;
+                    font-size:10px;
+                    text-align: center;
+                    width: 100%;
+                    padding: 5px; z-index: 1000;">
+            Registered Address: 18B, Gyan Khand - 4, Indirapuram, Ghaziabad, Uttar Pradesh, 201014, India <br/>
+            Noida Branch: 107, 1st Floor, A-186, Sector 63, A-Block Noida, Uttar Pradesh, 201301, India
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div style="margin-top: 160px; margin-bottom: 70px;">
+
+            <!-- Rich Text Area Content -->
+            <apex:outputPanel rendered="{!NOT(ISBLANK(finalContent))}">
+                <apex:outputText value="{!finalContent}" escape="false"/>
+            </apex:outputPanel>
+        </div>
+    </apex:form>
+</apex:page>

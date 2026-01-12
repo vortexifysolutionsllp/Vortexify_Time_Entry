@@ -1,0 +1,242 @@
+/* ===============================
+   FORCE REMOVE PAGE WHITE SPACE
+==================================*/
+:host {
+    display: block;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #f7f9fc;
+    font-family: "Salesforce Sans", sans-serif;
+}
+
+
+/* ===============================
+   FUTURISTIC BALANCE CARDS (WHITE THEME)
+==================================*/
+.balance-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.balance-card {
+    width: 100%;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #dce3f0;
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.balance-card.glow:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 10px 25px rgba(33, 150, 243, 0.25);
+}
+
+.balance-card .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1565c0;
+}
+
+.balance-card .label {
+    font-size: 14px;
+    color: #607d8b;
+}
+
+
+/* ===============================
+   FIX SLDS MODAL ROOT
+==================================*/
+.slds-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+   
+} 
+
+
+/* ===============================
+   KILL SLDS DEFAULT GAP
+==================================*/
+.slds-modal__container {
+    margin: 0 !important;
+    min-height: unset !important;
+    height: auto !important;
+    max-height: 100vh !important;
+    padding: 0 !important;
+   
+} 
+
+
+/* ===============================
+   FUTURISTIC MODAL CONTAINER
+==================================*/
+.futuristic-modal-container {
+    background: #ffffff;
+    border-radius: 18px !important;
+    border: 1px solid #cfd8dc;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+    width: 100%;
+    max-width: 600px;
+    animation: modalPop 0.25s ease;
+}
+
+
+/* ===============================
+   MODAL ANIMATION
+==================================*/
+@keyframes modalPop {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* ===============================
+   HEADER
+==================================*/
+.modal-header {
+    background: #1565c0;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 18px;
+    border-radius: 18px 18px 0 0;
+}
+
+
+/* ===============================
+   BODY
+==================================*/
+.modal-body {
+    padding: 1.5rem;
+}
+
+
+/* ===============================
+   FORM GRID (1/2 LAYOUT)
+==================================*/
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.5rem;
+}
+
+.form-grid .full-width {
+    grid-column: span 2;
+}
+
+.form-grid lightning-input,
+.form-grid lightning-combobox,
+.form-grid lightning-textarea {
+    margin-bottom: 0;
+}
+
+
+/* ===============================
+   DATATABLE SCROLLER (NEW)
+==================================*/
+.datatable-wrapper {
+    max-height: 420px;      /* ✅ table scroll height */
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Smooth scrollbar (Firefox) */
+.datatable-wrapper {
+    scrollbar-width: thin;
+}
+
+/* Chrome / Edge scrollbar */
+.datatable-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.datatable-wrapper::-webkit-scrollbar-thumb {
+    background: #c5d4e6;
+    border-radius: 6px;
+}
+
+.datatable-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #90caf9;
+}
+
+/* Sticky header */
+.futuristic-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f5f7fa;
+}
+
+
+/* ===============================
+   FOOTER
+==================================*/
+.modal-footer {
+    padding: 1.2rem;
+    background: #f1f3f6;
+    border-top: 1px solid #d0d7e2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+
+/* ===============================
+   BUTTON COLORS
+==================================*/
+.btn-save {
+    --slds-c-button-brand-color-background: #1e88e5;
+    --slds-c-button-brand-color-background-hover: #1565c0;
+    --slds-c-button-brand-color-border: #1e88e5;
+}
+
+.btn-new {
+    --slds-c-button-brand-color-background: #1e88e5;
+    --slds-c-button-brand-color-background-hover: #1565c0;
+    --slds-c-button-brand-color-border: #1e88e5;
+}
+
+
+/* ===============================
+   BACKDROP
+==================================*/
+.futuristic-backdrop {
+    backdrop-filter: blur(2px);
+}
+
+
+/* ===============================
+   MOBILE FULLSCREEN + SINGLE COLUMN
+==================================*/
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid .full-width {
+        grid-column: span 1;
+    }
+}
+
+@media (max-height: 700px) {
+    .futuristic-modal-container {
+        height: 100vh;
+       
+        border-radius: 0;
+    }
+}
