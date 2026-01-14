@@ -14,6 +14,7 @@ import addJiraComment from '@salesforce/apex/TaskManagerChildViewLWCController.a
 import { refreshApex } from '@salesforce/apex';
 import { loadScript, loadStyle } from 'lightning/platformResourceLoader';
 import SWEETALERT from '@salesforce/resourceUrl/sweetalert2';
+import EMPTY_STATE from '@salesforce/resourceUrl/No_Task_Image'; 
 
 
 const fileCol = [
@@ -32,6 +33,7 @@ export default class TaskManagerChildView extends LightningElement {
     @track ManageTaskModal= false;
 
     fileCol = fileCol;
+    tasksPresent = false;
 
 
     @track extensionDetail = {
@@ -58,21 +60,22 @@ export default class TaskManagerChildView extends LightningElement {
     @track showExtensionPopup = false;
     @track showDependencyPopup = false;
     @track selectedManualTime = 0;
+    selectedExtensionReason = '';
     @track totalMilliseconds = 0;
     @track showFilesTab;
     @track showCommentModal = false;
     @track newComment = '';
     @track breakTimer = '00h:00m:00s';
-breakInterval;
+    breakInterval;
 
-breakElapsedMs = 0;
-formatMs(ms) {
-    const sec = Math.floor(ms / 1000);
-    const h = String(Math.floor(sec / 3600)).padStart(2, '0');
-    const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
-    const s = String(sec % 60).padStart(2, '0');
-    return `${h}h:${m}m:${s}s`;
-}
+    breakElapsedMs = 0;
+    formatMs(ms) {
+        const sec = Math.floor(ms / 1000);
+        const h = String(Math.floor(sec / 3600)).padStart(2, '0');
+        const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+        const s = String(sec % 60).padStart(2, '0');
+        return `${h}h:${m}m:${s}s`;
+    }
 
 
 
@@ -166,23 +169,6 @@ formatMs(ms) {
         }
         return null;
     }
-    
-    
-    
-    // get formattedComments() {
-    //     if (this.selectedJiraTask && this.selectedJiraTask.Comments__c) {
-    //         return this.selectedJiraTask.Comments__c
-    //             .split('\n')
-    //             .map((text, index) => ({
-    //                 id: index,
-    //                 text: text.trim(),
-    //                 timestamp: new Date().toLocaleString() // You can enhance this
-    //             }));
-    //     }
-    //     return null;
-    // }
-    
-    
 
 
     get startButtonClass() {
@@ -194,17 +180,11 @@ formatMs(ms) {
 
     @wire(getAllTaskRelatedToContact,{conId:'$conId',selectedDate:'$selectedDate',selectedMonth:'$selectedMonth',selectedYear:'$selectedYear'})
     wiredResult(result){
-        console.log('Child View Result---',result);
-        console.log('SELECTEDMONTH--',this.selectedMonth);
-        console.log('SELECTEDDATE--',this.selectedDate);
-        console.log('SELECTEDYEAR--',this.selectedYear);
-
         this.isLoading = false;
         this.wiredResponse = result;
         this.clearCache();
 
         if(result.data){
-            debugger;
             result.data.forEach((item,index)=>{
                 let obj = {...item};
                 obj.disableStartBreak =  obj.Status__c=='Dev Completed' || !obj.Actual_Task_Start_Time__c || obj.Status__c=='New'
@@ -213,11 +193,10 @@ formatMs(ms) {
                 obj.startTimeStyle = obj.Status__c == 'In Progress' ? 'success':'brand';
                 obj.disableStartTime  = obj.Actual_Task_Start_Time__c || obj.Status__c=='Dev Completed';
                 obj.endDisableStartTime = obj.Status__c=='Dev Completed' || (obj.Break_Start_Time__c && !obj.Break_End_Time__c) || obj.Actual_Task_End_Time__c!=null || !obj.Actual_Task_Start_Time__c;
-                obj.disableManualTimeEntry = obj.Status__c == 'Dev Completed' || (obj.Break_Start_Time__c && !obj.Break_End_Time__c);
+                obj.disableManualTimeEntry = obj.Status__c == 'Dev Completed' || (obj.Break_Start_Time__c && !obj.Break_End_Time__c) || (obj.Actual_Task_Start_Time__c && !obj.Actual_Task_End_Time__c);
                 obj.disableAskForExtension = obj.Status__c == 'Dev Completed' || (obj.Break_Start_Time__c && !obj.Break_End_Time__c);
-                obj.estimatedHrs = 'Estimated Hours: '+obj.Estimated_Efforts__c + 'hrs';
+                obj.estimatedHrs = 'Estimated Hours: '+obj.Estimated_Efforts_in_hour__c + 'hrs';
                 if(obj.Actual_Task_Start_Time__c && !obj.Actual_Task_End_Time__c){
-                    debugger;
                     console.log('obj.Actual_Task_Start_Time__c',obj.Actual_Task_Start_Time__c);
 
                     let cTime = new Date();
@@ -258,8 +237,6 @@ formatMs(ms) {
                     obj.longStartTime = diffTime;
                 }
 
-              
-                debugger;
                 if(this.selectedJiraTask){
                     obj.selected = this.selectedJiraTask.Id==obj.Id; 
                 }else{
@@ -274,7 +251,6 @@ formatMs(ms) {
             this.showTasks = this.tasks.length>0;
             this.selectedJiraTask = this.tasks.find(item=>item.selected);
             if(!this.selectedJiraTask && this.tasks.length>0 ){
-                debugger;
                 this.tasks[0].selected = true;
                 this.selectedJiraTask = this.tasks[0];
             }
@@ -282,7 +258,6 @@ formatMs(ms) {
             if(this.selectedJiraTask){
 
                 if(this.selectedJiraTask.Actual_Task_Start_Time__c){
-                    debugger;
                     if((this.selectedJiraTask.Break_Start_Time__c && !this.selectedJiraTask.Break_End_Time__c) || (this.selectedJiraTask.Actual_Task_Start_Time__c && this.selectedJiraTask.Actual_Task_End_Time__c)){
                         this.setPauseTimer(this.selectedJiraTask.longStartTime);
                         this.stopTimer();
@@ -300,8 +275,15 @@ formatMs(ms) {
             this.selectedManualTime = 0;
             if(this.tasks.length>0 ){
             this.ManageTaskModal = true;
+            this.tasksPresent = true;
+            }else{
+                this.tasksPresent = false;
             }
         }
+    }
+
+    get emptyStateImage() {
+        return EMPTY_STATE;
     }
 
     clearCache(){
@@ -322,6 +304,11 @@ formatMs(ms) {
         this.selectedManualTime = event.target.value;
     }
 
+    manualReasonChangeHandler(event){
+        this.selectedExtensionReason = event.target.value;
+        console.log('this.selectedExtensionReason', this.selectedExtensionReason);
+    }
+
     taskClicked(event){
         debugger;
         let jiraTaskId = event.currentTarget.dataset.id;
@@ -331,10 +318,7 @@ formatMs(ms) {
         let selectedIndex = this.tasks.findIndex(item=>item.Id==jiraTaskId);
         this.tasks[selectedIndex].selected = true;
         this.selectedJiraTask = this.tasks[selectedIndex];
-
-
         if(this.selectedJiraTask.longStartTime){
-
             let cTime = new Date();
             let istTime = new Date(this.selectedJiraTask.Actual_Task_Start_Time__c);
 
@@ -389,15 +373,12 @@ formatMs(ms) {
     }
 
     startJob(){
-        debugger;
         this.isLoading = true;
         let params = {taskId:this.selectedJiraTask.Id,conId:this.conId,selectedDate:this.selectedDate,selectedMonth:this.selectedMonth,selectedYear:this.selectedYear,prmId:this.selectedJiraTask.Project_Resource_Mapping__c};
-        console.log('Params---',params);
 
         sJob(params)
         .then(result=>{
             this.isLoading = false;
-            console.log('Job Started Result--',result);
             if(result=='Success'){
                 this.showSwalAlert('Success', 'Job Started!', 'success');
                 //this.showNotification('Success','Job Started!','success');
@@ -598,9 +579,13 @@ restoreBreakAfterRefresh() {
             this.showNotification('Failed','Please enter time taken by you.','error');
             return;
         }
+        if(!this.selectedExtensionReason || this.selectedExtensionReason==0){
+            this.showNotification('Failed','Please enter reason for exntension.','error');
+            return;
+        }
 
         this.isLoading = true;
-        manualTimeEntry({taskId:this.selectedJiraTask.Id,conId:this.conId,selectedDate:this.selectedDate,selectedMonth:this.selectedMonth,selectedYear:this.selectedYear,usedHours:this.selectedManualTime,prmId:this.selectedJiraTask.Project_Resource_Mapping__c}).then(result=>{
+        manualTimeEntry({taskId:this.selectedJiraTask.Id,conId:this.conId,selectedDate:this.selectedDate,selectedMonth:this.selectedMonth,selectedYear:this.selectedYear,usedHours:this.selectedManualTime,prmId:this.selectedJiraTask.Project_Resource_Mapping__c, reason: this.selectedExtensionReason}).then(result=>{
             this.isLoading = false;
             if(result=='Success'){
                 this.showMTEPopup = false;
@@ -640,134 +625,6 @@ restoreBreakAfterRefresh() {
         })
 
     }
-
-    // startBreak(){
-    //     debugger;
-    //     if(this.selectedJiraTask.Total_Break_Time__c && this.selectedJiraTask.Total_Break_Time__c>5){
-    //         this.showNotification('Failed','Oppss, Break time can only be taken at once 😥','error');
-    //         return;
-    //     }
-    //     breakStartEnd({taskId:this.selectedJiraTask.Id,breakType:'startBreak'}).then(result=>{
-    //         if(result=='Success'){
-    //             this.showNotification('Success','Break Time Started','success');
-    //             refreshApex(this.wiredResponse);
-    //         }else{
-    //             this.showNotification('Failed',result,'error');
-    //         }
-    //     });
-    // }
-
-//     startBreak() {
-//     if (this.selectedJiraTask.Total_Break_Time__c && this.selectedJiraTask.Total_Break_Time__c > 5) {
-//         this.showNotification('Failed', 'Oppss, Break time can only be taken at once 😥', 'error');
-//         return;
-//     }
-
-//     // UI change immediately
-//     this.selectedJiraTask.disableStartBreak = true;
-//     this.selectedJiraTask.disableEndBreak = false;
-
-//     breakStartEnd({
-//         taskId: this.selectedJiraTask.Id,
-//         breakType: 'startBreak'
-//     })
-//     .then(result => {
-//         if (result === 'Success') {
-//             //this.showNotification('Success', 'Break Time Started', 'success');
-//             refreshApex(this.wiredResponse);
-//         } else {
-//             // rollback UI on failure
-//             this.selectedJiraTask.disableStartBreak = false;
-//             this.selectedJiraTask.disableEndBreak = true;
-
-//            // this.showNotification('Failed', result, 'error');
-//         }
-//     })
-//     .catch(error => {
-//         // rollback on error
-//         this.selectedJiraTask.disableStartBreak = false;
-//         this.selectedJiraTask.disableEndBreak = true;
-//         console.error(error);
-//     });
-// }
-
-
-
-    // endBreak(){
-    //      breakStartEnd({taskId:this.selectedJiraTask.Id,breakType:'endBreak'}).then(result=>{
-    //         if(result=='Success'){
-    //             this.showNotification('Success','Break Time Ended','success');
-    //             refreshApex(this.wiredResponse);
-    //         }else{
-    //             this.showNotification('Failed',result,'error');
-    //         }
-    //     });
-    // }
-
-//     endBreak() {
-//     // UI change immediately
-//     this.selectedJiraTask.disableStartBreak = false;
-//     this.selectedJiraTask.disableEndBreak = true;
-
-//     breakStartEnd({
-//         taskId: this.selectedJiraTask.Id,
-//         breakType: 'endBreak'
-//     })
-//     .then(result => {
-//         if (result === 'Success') {
-//            // this.showNotification('Success', 'Break Time Ended', 'success');
-//             refreshApex(this.wiredResponse);
-//         } else {
-//             // rollback on failure
-//             this.selectedJiraTask.disableStartBreak = true;
-//             this.selectedJiraTask.disableEndBreak = false;
-
-//             //this.showNotification('Failed', result, 'error');
-//         }
-//     })
-//     .catch(error => {
-//         // rollback on error
-//         this.selectedJiraTask.disableStartBreak = true;
-//         this.selectedJiraTask.disableEndBreak = false;
-//         console.error(error);
-//     });
-// }
-
-//**** */
-   /* startBreak() {
-    if (this.selectedJiraTask.disableStartBreak) {
-        return;
-    }
-
-    // Start disable, Stop enable (FORCE)
-    this.selectedJiraTask = {
-        ...this.selectedJiraTask,
-        disableStartBreak: true,
-        disableEndBreak: false
-    };
-
-    breakStartEnd({
-        taskId: this.selectedJiraTask.Id,
-        breakType: 'startBreak'
-    })
-    .then(result => {
-        if (result !== 'Success') {
-            this.selectedJiraTask = {
-                ...this.selectedJiraTask,
-                disableStartBreak: false,
-                disableEndBreak: true
-            };
-        }
-    })
-    .catch(error => {
-        this.selectedJiraTask = {
-            ...this.selectedJiraTask,
-            disableStartBreak: false,
-            disableEndBreak: true
-        };
-        console.error(error);
-    });
-}*/
 
 freezeBreakTimer(finalMs) {
     clearInterval(this.breakInterval);
@@ -989,7 +846,6 @@ disableBreakButtonsCompletely() {
     }
 
     zeroPadding(num){
-        console.log('NUMBER CHOOSED----',num);
         if(num){
             return num.toString().length==1? `0${num}`:num;
         }

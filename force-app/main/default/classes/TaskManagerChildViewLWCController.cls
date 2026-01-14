@@ -7,7 +7,7 @@ public without sharing class TaskManagerChildViewLWCController {
         try {
             
             Date startDate = Date.newInstance(selectedYear,selectedMonth,selectedDate); 
-            Map<Id,Jira_Task__c> taskMap = new Map<Id,Jira_Task__c>([Select Id,Name,Actual_Task_Start_Time__c,Actual_Task_End_Time__c,Comments__c,Priority__c,Total_Break_Time__c,Solution_Details_if_any__c,Break_Start_Time__c,Break_End_Time__c,Task_Description__c,Status__c,Project_Resource_Mapping__c,Actual_Efforts__c,Estimated_Efforts__c,Module__r.Name,Module__r.Project__r.Name,(Select Id,Name,Stat_Time_date__c,End_Time_Date__c,Status__c,Jira_Task__c From Time_Entry_Line_Items__r) From Jira_Task__c Where Status__c!='Deployed' And Task_Start_Date__c >=:startDate AND Task_End_Date__c<=:startDate+1 AND (Team_Member__c = :conId OR Stand_By_Resource__c = :conId)]);
+            Map<Id,Jira_Task__c> taskMap = new Map<Id,Jira_Task__c>([Select Id,Name,Actual_Task_Start_Time__c,Estimated_Efforts_in_hour__c, Actual_Task_End_Time__c,Comments__c,Priority__c,Total_Break_Time__c,Solution_Details_if_any__c,Break_Start_Time__c,Break_End_Time__c,Task_Description__c,Status__c,Project_Resource_Mapping__c,Actual_Efforts__c,Estimated_Efforts__c,Module__r.Name,Module__r.Project__r.Name,(Select Id,Name,Stat_Time_date__c,End_Time_Date__c,Status__c,Jira_Task__c From Time_Entry_Line_Items__r) From Jira_Task__c Where Status__c!='Deployed' And Task_Start_Date__c >=:startDate AND Task_End_Date__c<=:startDate+1 AND (Team_Member__c = :conId OR Stand_By_Resource__c = :conId)]);
             
             return taskMap.values();
         } catch (Exception e) {
@@ -202,14 +202,14 @@ public static String breakStartEnd(String taskId, String breakType){
     }
     
     @AuraEnabled
-    public static string manualTimeEntry(String taskId,String conId,Integer selectedDate, Integer selectedMonth, Integer selectedYear,Decimal usedHours,String prmId){
+    public static string manualTimeEntry(String taskId,String conId,Integer selectedDate, Integer selectedMonth, Integer selectedYear,Decimal usedHours,String prmId, String reason){
         try {
             Date startDate = Date.newInstance(selectedYear,selectedMonth,selectedDate);
             
             Integer min = (usedHours * 60).intValue();
             DateTime sDate = System.now().addMinutes(-min);    
             
-            Jira_Task__c jTask = new Jira_Task__c(Id=taskId,Actual_Task_Start_Time__c =sDate, Actual_Task_End_Time__c = System.now(),Status__c='Dev Completed');
+            Jira_Task__c jTask = new Jira_Task__c(Id=taskId,Actual_Task_Start_Time__c =sDate, Actual_Task_End_Time__c = System.now(),Status__c='Dev Completed', Extension_Reason__c = reason);
             update jTask;
             
             // Time_Entry_Line_Items__c tli;

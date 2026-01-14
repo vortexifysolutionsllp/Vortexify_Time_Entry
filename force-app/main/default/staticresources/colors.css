@@ -1,0 +1,16 @@
+.datatable-orange{
+  color:#fff;
+  background-color:#e06000;
+}
+.datatable-grey{
+	background-color: #bdbcbc;
+}
+.datatable-green{
+	background-color: #55b17c;
+}
+
+.no-hover tr:hover > * { 
+
+    background-color: inherit !important; 
+
+}

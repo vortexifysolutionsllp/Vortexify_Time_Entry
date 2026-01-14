@@ -2,7 +2,6 @@
     doInit : function(component, event, helper) {
         debugger;
         var recordId = component.get('v.recordId');
-        console.log('-----r-test--1---' + recordId);
 
         var action = component.get("c.getConDetails");
         action.setParams({
@@ -17,6 +16,8 @@
 
                 if(response.getReturnValue().conDetails){
                     component.set("v.conDetails", response.getReturnValue().conDetails);
+                    component.set("v.isCheckInDisabled", response.getReturnValue().isCheckedIn);
+                    component.set("v.isCheckOutDisabled", response.getReturnValue().isCheckedOut);
 
                     var role = response.getReturnValue().conDetails.Role__c;
 
@@ -175,7 +176,7 @@
             if (response.getState() === "SUCCESS") {
                 helper.showSuccessAlert1(component, response.getReturnValue());
                 component.set("v.isCheckOutDisabled", true);
-                component.set("v.isCheckInDisabled", false);
+                component.set("v.isCheckInDisabled", true);
             } else {
                 helper.showErrorAlert1(component, "Failed to check out.");
             }

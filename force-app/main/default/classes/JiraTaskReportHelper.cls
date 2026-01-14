@@ -16,9 +16,9 @@ global  without sharing class JiraTaskReportHelper {
         system.debug('taskList'+taskList);
         
         if(ConRec.Role__c != 'Project Manager'){
-            conList =  [Select Id, Name from Contact where  Id = :conId and Is_Resource_Available__c = true];
+            conList =  [Select Id, Name from Contact where  Id = :conId and Status__c = 'Available'];
         }else{
-            conList =  [Select Id, Name from Contact  where Is_Resource_Available__c = true order by Name ASC];
+            conList =  [Select Id, Name from Contact  where Status__c = 'Available' order by Name ASC];
         }
         system.debug('conList'+conList);
         for(Contact con : conList){

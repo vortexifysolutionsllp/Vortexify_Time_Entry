@@ -61,16 +61,58 @@
         <!-- TABLE -->
         <lightning-card title="Attendance Records" icon-name="utility:clock">
             <template if:true={filteredData}>
-                <div class="table-container slds-scrollable_y">
-                    <lightning-datatable key-field="id" data={filteredData} columns={columns} hide-checkbox-column>
-                    </lightning-datatable>
-                </div>
+                <template if:false={monthlyView}>
+                    <div class="table-container slds-scrollable_y no-hover">
+                        <lightning-datatable key-field="id" data={filteredData} columns={columns} hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                </template>
             </template>
+            <template if:true={monthlyView}>
+                    <div class="slds-p-around_small calendar-body" style="overflow-y:scroll;height:500px;">
+                        <div class="slds-grid slds-wrap slds-text-title_bold slds-border_top slds-border_bottom">
+                            <template for:each={dayNames} for:item="day">
+                                <div key={day} class="slds-col slds-size_1-of-7 slds-text-align_center slds-p-vertical_xx-small">
+                                    {day}
+                                </div>
+                            </template>
+                        </div>
 
-            <template if:true={isEmpty}>
-                <p class="no-record">No Attendance Records Found</p>
+                        <div class="slds-grid slds-wrap slds-border_bottom">
+                            <template for:each={preparedCells} for:item="cell">
+                                <div key={cell.key} class="slds-p-around_small slds-col slds-size_1-of-1 slds-medium-size_1-of-7 slds-border_right slds-border_bottom">
+                                    <div class="task-grid">
+                                        <div class={cell.containerClass}>
+                                            <div class="card-header">
+                                                <span class="icon">📅</span>
+                                                <span class="title">{cell.dateLabel}</span>
+                                            </div>
+
+                                            <template if:true={cell.hasVisits}>
+                                                <div class="buttoncls" style="text-align:center;margin-top:0px;">
+                                                    <div class="slds-box slds-badge slds-radius_medium"
+                                                        style={cell.buttonColorStyle}
+                                                        data-date={cell.date}
+                                                        onclick={handleClick}
+                                                        onmouseover={handleHover}
+                                                        onmouseout={handleUnhover}>
+                                                        {cell.visitLabel}
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+            <template if:false={monthlyView}>
+                <template if:true={isEmpty}>
+                    <p class="no-record">No Attendance Records Found</p>
+                </template>
             </template>
         </lightning-card>
-
     </div>
 </template>

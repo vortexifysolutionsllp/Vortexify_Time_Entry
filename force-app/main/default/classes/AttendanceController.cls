@@ -2,7 +2,7 @@ global without sharing  class AttendanceController {
     @AuraEnabled(cacheable=true)
     public static List<DayAttendance__c> getAttendance(Date fromDate, Date toDate ,String contactId) {
         return [
-            SELECT Id, Date__c, Day_Status__c, FirstCheckIn__c, CheckinCount__c,
+            SELECT Id, Date__c, Day_Status__c, FirstCheckIn__c, CheckinCount__c, LastCheckOut__c,
                    Employee__r.Name FROM DayAttendance__c WHERE Date__c >= :fromDate AND Date__c <= :toDate AND Employee__r.Status__c = 'Available' AND Employee__c = :contactId ORDER BY Date__c ASC
         ];
     }
