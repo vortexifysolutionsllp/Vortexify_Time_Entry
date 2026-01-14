@@ -3,9 +3,23 @@ global without sharing class taskOnCalenderController {
         public static List<Jira_Task__c> getjiratasksForContact(Id contactId) {
             system.debug('---Contact ID---'+contactId);
           return [
-               SELECT Id, Name,	Task_Start_Date__c, Module_Name__c,Priority__c,Project_Name__c,Status__c,
+               SELECT Id, Name,	Task_Start_Date__c, Task_End_Date__c, Module_Name__c,Priority__c,Project_Name__c,Status__c,
                 Task_Start_Date_Time__c,Task_End_Date_Time__c, Task_Description__c FROM Jira_Task__c where Team_Member__c =: contactId
             ];
+        }
+        @AuraEnabled
+        public static List<DayAttendance__c> getLeaveAndHolidays(Id contactId){
+            try{
+                List<DayAttendance__c> dayAttendanceList = [
+                    SELECT Id, Name, Date__c, Day_Status__c, Employee__c
+                    FROM DayAttendance__c
+                    WHERE Employee__c = :contactId
+                    ORDER BY Date__c DESC
+                ];
+                return dayAttendanceList;
+            }catch(exception e){
+                throw new AuraHandledException('Error fetching Day Attendance: ' + e.getMessage());
+            }
         }
        // @AuraEnabled(cacheable=true)
        // public static Contact getContactDetails() {

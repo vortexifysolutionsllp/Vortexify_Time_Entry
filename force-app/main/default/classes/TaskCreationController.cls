@@ -1,39 +1,27 @@
 global without sharing class TaskCreationController {
 
     @AuraEnabled
-public static void createJiraTask(ID projectId,ID moduleId, ID contactId, String priority, DateTime startDateTime, DateTime endDateTime, String description) {
-    //try {
-    	
-    System.debug('--projectId--'+ projectId);
-    System.debug('--moduleId--'+ moduleId);
-    System.debug('--contactId--'+ contactId);
-    System.debug('--priority--'+ priority);
-    System.debug('--startDateTime--'+ startDateTime);
-    System.debug('--endDateTime--'+ endDateTime);
-    System.debug('--description--'+ description);
-        
+public static string createJiraTask(ID projectId,ID moduleId, ID contactId, String priority, DateTime startDateTime, DateTime endDateTime, String description) {
+    try {
+        List<Jira_Task__c> existingTaskForSimilarTime = [SELECT Id FROM Jira_Task__c WHERE Project_Resource_Mapping__c = :projectId AND Module__c = :moduleId AND Team_Member__c = :contactId AND ((Task_Start_Date_Time__c >= :startDateTime AND Task_Start_Date_Time__c <= :endDateTime) OR (Task_End_Date_Time__c >= :startDateTime AND Task_End_Date_Time__c <= :endDateTime))];
+        if(existingTaskForSimilarTime?.size()>0){
+            return 'Task has already been created for this time slot';
+        }
         Jira_Task__c task = new Jira_Task__c();
         task.Project_Resource_Mapping__c = projectId;
         task.Module__c = moduleId;
         task.Team_Member__c = contactId;
         task.Priority__c = priority;
         task.Assigned_By__c = contactId;
-        task.Task_Start_Date_Time__c = DateTime.valueOf(startDateTime.addminutes(-330)); // Format: "yyyy-MM-dd HH:mm:ss"
-        task.Task_End_Date_Time__c = DateTime.valueOf(endDateTime.addminutes(-330));
-
-        // Use valueOfGmt for ISO 8601 timestamps
-        //task.Task_Start_Date_Time__c = DateTime.valueOfGmt(startDateTime);
-        //task.Task_End_Date_Time__c = DateTime.valueOfGmt(endDateTime);
-         // Use valueOfGmt to handle ISO 8601 format with 'T' and 'Z'
-       // task.Task_Start_Date_Time__c = DateTime.valueOfGmt(startDateTime);
-       // task.Task_End_Date_Time__c = DateTime.valueOfGmt(endDateTime);
+        task.Task_Start_Date_Time__c = DateTime.valueOf(startDateTime); // Format: "yyyy-MM-dd HH:mm:ss"
+        task.Task_End_Date_Time__c = DateTime.valueOf(endDateTime);
 
         task.Task_Description__c = description;
         insert task;
-        System.debug('-----test--' + task);
-    //} catch (Exception e) {
-        //throw new AuraHandledException('Error creating task: ' + e.getMessage());
-    //}
+        return 'Task Successfully Created';
+    } catch (Exception e) {
+        throw new AuraHandledException('Error creating task: ' + e.getMessage());
+    }
 }
     @AuraEnabled
 public static Id getProjectResourceMappingId(Id projectId, Id candidateId) {
@@ -97,10 +85,10 @@ public static List<Jira_Task__c> getJiraTasks(Id contactid) {
         // Add 330 minutes (5.5 hours) to each task's start/end datetime
         for (Jira_Task__c task : tasks) {
             if (task.Task_Start_Date_Time__c != null) {
-                task.Task_Start_Date_Time__c = task.Task_Start_Date_Time__c.addMinutes(330);
+                task.Task_Start_Date_Time__c = task.Task_Start_Date_Time__c;
             }
             if (task.Task_End_Date_Time__c != null) {
-                task.Task_End_Date_Time__c = task.Task_End_Date_Time__c.addMinutes(330);
+                task.Task_End_Date_Time__c = task.Task_End_Date_Time__c;
             }
         }
 

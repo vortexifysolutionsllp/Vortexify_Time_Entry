@@ -3,8 +3,8 @@ global  without sharing class JiraTaskManagerViewHelper{
     @AuraEnabled
 public static String checkInAttendance(Id contactId) {
     try {
-        Date today = Date.today();
-
+        Date today = date.today();
+        System.debug('today--> ' + today);
         // 1. Fetch today's DayAttendance record
         DayAttendance__c dayAtt = [
             SELECT Id,
@@ -28,6 +28,7 @@ public static String checkInAttendance(Id contactId) {
         }
 
         // 3. Create Checkin record
+
         Checkin__c checkin = new Checkin__c();
         checkin.Employee__c = contactId;
         checkin.DayAttendance__c = dayAtt.Id;
@@ -56,70 +57,43 @@ public static String checkInAttendance(Id contactId) {
     }
 }
 
-/*public static String checkInAttendance(Id contactId) {
-    try {
-        // Check if there's already an attendance record for today
-        List<Attendance__c> existingAttendanceList = [
-            SELECT Id, Check_Out__c 
-            FROM Attendance__c 
-            WHERE Contact__c = :contactId 
-            AND Date__c = :Date.today() 
-            LIMIT 1
-        ];
- 
-        if (!existingAttendanceList.isEmpty()) {
-            Attendance__c existingAttendance = existingAttendanceList[0];
-            if (existingAttendance.Check_Out__c != null) {
-                return 'Check-in not allowed. You have already checked out today.';
-            } else {
-                return 'You have already checked in today.';
-            }
-        }
- 
-        // Proceed to check-in
-        Attendance__c attendance = new Attendance__c();
-        attendance.Contact__c = contactId;
-        attendance.Check_In__c =DateTime.now().addMinutes(330).time();  // Store full datetime
-        attendance.Date__c = Date.today();        // Just the date
- 
-        insert attendance;
-        return 'Check-in successful.';
-    } catch (Exception e) {
-        throw new AuraHandledException('Error during check-in: ' + e.getMessage());
-    }
-}
-
 
 @AuraEnabled
 public static String checkOutAttendance(Id contactId) {
     try {
-        // Get today's attendance record
-        List<Attendance__c> attList = [
-            SELECT Id, Check_Out__c 
-            FROM Attendance__c 
-            WHERE Contact__c = :contactId 
-            AND Date__c = :Date.today() 
+        Date today = Date.today();
+        List<DayAttendance__c> dayAtt = [
+            SELECT Id,
+                   Day_Status__c,
+                   FirstCheckIn__c,
+                   CheckinCount__c,
+                   LastCheckOut__c,
+                   IsHoliday__c,
+                   IsWeekend__c
+            FROM DayAttendance__c
+            WHERE Employee__c = :contactId
+            AND Date__c = :today
             LIMIT 1
         ];
 
-        if (attList.isEmpty()) {
+        if (dayAtt.isEmpty()) {
             return 'No check-in found for today. Please check in first.';
         }
 
-        Attendance__c att = attList[0];
+        DayAttendance__c att = dayAtt[0];
 
-        if (att.Check_Out__c != null) {
+        if (att.LastCheckOut__c != null) {
             return 'You have already checked out today.';
         }
 
         // Perform check-out
-        att.Check_Out__c =  DateTime.now().addMinutes(330).time();
+        att.LastCheckOut__c =  System.now();
         update att;
         return 'Check-out successful.';
     } catch (Exception e) {
         throw new AuraHandledException('Error during check-out: ' + e.getMessage());
     }
-}*/
+}
     @AuraEnabled
     public static List<RecordsData> fetchRecords(String objectName, String filterField, String searchString, String value, string contactType){
         try{
@@ -554,6 +528,23 @@ whereClause += idByValueMap.get(keys)+' = '+keys+' OR Stand_By_Resource__c = '+k
     @AuraEnabled
     public static mainCompData getConDetails(String ConId){
         system.debug('ConId' + ConId );
+        Date today = Date.today();
+
+        // 1. Fetch today's DayAttendance record
+        List<DayAttendance__c> dayAtt = [
+            SELECT Id,
+                   Day_Status__c,
+                   FirstCheckIn__c,
+                   CheckinCount__c,
+                   LastCheckOut__c,
+                   IsHoliday__c,
+                   IsWeekend__c
+            FROM DayAttendance__c
+            WHERE Employee__c = :ConId
+            AND Date__c = :today
+            AND FirstCheckIn__c != null
+            LIMIT 1
+        ];
         Contact ConDetails = [Select id ,Contact_Role__c ,Role__c,  name from Contact where id = :ConId ];
         //Project Data
         List<Project__c> projectList = [SELECT Id,Active__c FROM Project__c];
@@ -635,6 +626,8 @@ whereClause += idByValueMap.get(keys)+' = '+keys+' OR Stand_By_Resource__c = '+k
         mcd.totalWorkingHours = totalHoursworked;
         mcd.individualWorkingHours = totalIndHoursworked;
         mcd.totalWorkingToday=TodaysTaskEstimationHours;
+        mcd.isCheckedIn = dayAtt?.size()>0;
+        mcd.isCheckedOut = ((dayAtt?.size()>0 && dayAtt[0].LastCheckOut__c !=null) || dayAtt.size() == 0);
         system.debug('mcd'+mcd);
         return mcd;
         
@@ -716,6 +709,12 @@ whereClause += idByValueMap.get(keys)+' = '+keys+' OR Stand_By_Resource__c = '+k
         
         @AuraEnabled
         public Decimal totalWorkingToday{get;set;}
+
+        @AuraEnabled
+        public Boolean isCheckedIn{get;set;}
+
+        @AuraEnabled
+        public Boolean isCheckedOut{get;set;}
         
     }   
     

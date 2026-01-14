@@ -128,11 +128,17 @@
     box-shadow: none;
 }
 
-.THIS .check-in:hover {
+.THIS .check-in:hover:not(:disabled) {
     background: linear-gradient(to bottom, #66bb6a, #2e7d32); /* Lightens on hover */
     box-shadow: 0 6px 14px rgba(76, 175, 80, 0.4); /* Green shadow */
     transform: translateY(-2px);
     color: white;
+}
+
+.THIS .check-in:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none; /* Prevents movement if clicked while disabled */
 }
 
 
@@ -148,11 +154,17 @@
     box-shadow: none;
 }
 
-.THIS .check-out:hover {
+.THIS .check-out:hover:not(:disabled) {
     background: linear-gradient(to bottom, #ff7043, #bf360c); /* Brighter hover */
     box-shadow: 0 6px 14px rgba(244, 81, 30, 0.4); /* Orange-red glow */
     transform: translateY(-2px);
     color: white;
+}
+
+.THIS .check-out:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none; /* Prevents movement if clicked while disabled */
 }
 
 

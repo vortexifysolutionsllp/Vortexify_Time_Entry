@@ -7,339 +7,230 @@
           <span class="slds-text-heading_small">Manage Daily Tasks</span>
       </div>
 
-      <!-- Right Side: Button Group (aligned to right) -->
-       <!-- <div class="slds-grid slds-grid_vertical-align-center">
-          <lightning-button 
-              disabled={selectedJiraTask.disableStartBreak} 
-              variant="brand"
-              title="Start Break" 
-              label="Start Break" 
-              onclick={startBreak}
-              class="slds-m-right_small">
-          </lightning-button>
-    
-          <div class="slds-text-body_regular slds-theme_info slds-p-around_x-small slds-m-right_small slds-align_absolute-center slds-border_radius_circle">
-            {currentTimer}
-          </div>
-    
-          <lightning-button 
-              disabled={selectedJiraTask.disableEndBreak} 
-              variant="brand" 
-              title="Stop Break"
-              label="Stop Break" 
-              onclick={endBreak}>
-          </lightning-button>
-        </div>  -->
+      <template if:true={tasksPresent}>
+        <div class="slds-p-around_medium">
+          <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-6">
+              <div class="slds-card" style="overflow-y:auto;border:2px solid rgb(197, 197, 197); max-height:26rem">
+                <template for:each={tasks} for:item="task">
+                  <div key={task.Id} style="padding: 10px;">
 
+                    <template if:true={task.selected}>
+                      <div class="slds-card cardselected"
+                        style="border-style: solid;border-color: rgb(129, 129, 129);border-width: 1px;padding: 10px;">
+                        <template if:true={task.Module__c}>
+                          <div style="display: flex;justify-content: space-between;">
+                            <h1 class="slds-text-title_bold slds-text-color_inverse slds-media slds-media_center">
+                              <span>{task.Name} - {task.Module__r.Project__r.Name}</span>
+                            </h1>
+                            <lightning-badge label={task.Priority__c}></lightning-badge>
+                          </div>
 
+                          <div style="display: flex;justify-content: space-between;">
+                            <lightning-badge label={selectedJiraTask.estimatedHrs} class="slds-badge slds-m-top_xx-small"
+                              style="background-color: #3498db; color: #ecf0f1;">
+                            </lightning-badge>
+                            <h1 style="padding-top:12px;">{task.Status__c}</h1>
+                          </div>
+                        </template>
+                      </div>
+                    </template>
+                    <template if:false={task.selected}>
+                      <div data-id={task.Id} class="slds-card cardunselected"
+                        style="border-style: solid; border-color: rgb(129, 129, 129); border-width: 1px; padding: 10px;"
+                        onclick={taskClicked}>
+                        <template if:true={task.Module__c}>
+                          <div style="display: flex; justify-content: space-between;">
+                            <h1 class="slds-text-title_bold slds-text-color_default slds-media slds-media_center">
+                              <span>{task.Name} - {task.Module__r.Project__r.Name}</span>
+                            </h1>
+                            <lightning-badge label={task.Priority__c}></lightning-badge>
+                          </div>
 
-      <div class="slds-p-around_medium">
-        <div class="slds-grid slds-gutters">
-          <div class="slds-col slds-size_2-of-6">
-            <div class="slds-card" style="overflow-y:auto;border:2px solid rgb(197, 197, 197); ">
-              <template for:each={tasks} for:item="task">
-                <div key={task.Id} style="padding: 10px;">
+                          <div style="display: flex; justify-content: space-between;">
+                            <lightning-badge label={task.estimatedHrs} class="slds-badge slds-m-top_xx-small"
+                              style="background-color: #3498db; color: #ecf0f1;">
+                            </lightning-badge>
+                            <h1 style="padding-top:12px;">{task.Status__c}</h1>
+                          </div>
+                        </template>
+                      </div>
+                    </template>
 
-                  <template if:true={task.selected}>
-                    <div class="slds-card cardselected"
-                      style="border-style: solid;border-color: rgb(129, 129, 129);border-width: 1px;padding: 10px;">
-                      <template if:true={task.Module__c}>
-                        <div style="display: flex;justify-content: space-between;">
-                          <h1 class="slds-text-title_bold slds-text-color_inverse slds-media slds-media_center">
-                            <span>{task.Name} - {task.Module__r.Project__r.Name}</span>
-                          </h1>
-                          <lightning-badge label={task.Priority__c}></lightning-badge>
-                        </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <div class="slds-col slds-size_4-of-6 right-panel-scroll">
+              <template if:true={selectedJiraTask}>
+                <div class="slds-card slds-box "
+                  style="padding: 1%; background-color:#f7f8fa;border:2px solid lightgray;">
+                  <div class="slds-grid slds-grid_align-end slds-wrap slds-m-bottom_medium slds-m-top_small"
+                    style="gap: 0.5rem;">
 
-                        <div style="display: flex;justify-content: space-between;">
-                          <lightning-badge label={selectedJiraTask.estimatedHrs} class="slds-badge slds-m-top_xx-small"
-                            style="background-color: #3498db; color: #ecf0f1;">
-                          </lightning-badge>
-                          <h1 style="padding-top:12px;">{task.Status__c}</h1>
-                        </div>
-                      </template>
+                    <!-- Right Side: Button Group (aligned to right) -->
+        <div class="slds-grid slds-grid_vertical-align-center">
+            <lightning-button 
+                disabled={selectedJiraTask.disableStartBreak} 
+                variant="brand"
+                title="Start Break" 
+                label="Start Break" 
+                onclick={startBreak}
+                class="slds-m-right_small">
+            </lightning-button>
+      
+            <!-- <div class="slds-text-body_regular slds-theme_info slds-p-around_x-small slds-m-right_small slds-align_absolute-center slds-border_radius_circle">
+              {currentTimer}
+            </div> -->
+      
+            <lightning-button 
+                disabled={selectedJiraTask.disableEndBreak}
+                variant="brand" 
+                title="Stop Break"
+                label="Stop Break" 
+                class={stopBreakClass}
+                onclick={endBreak}>
+            </lightning-button>
+
+            <div class="slds-text-body_regular slds-theme_info slds-p-around_x-small slds-align_absolute-center slds-border_radius_circle slds-m-top_x-small">
+      ☕ Break Time : {breakTimer}
+  </div>
+
+            <div class="slds-text-body_regular slds-theme_warning slds-p-around_x-small slds-m-right_small slds-align_absolute-center slds-border_radius_circle">
+                      ⏱Total Time :  {currentTimer}
+                      </div>
+          </div> 
+                    <div class="slds-icon_container" title="Start Task"
+                      style="background-color: rgb(196, 201, 207);border-radius: 50%; padding: 4px;">
+                      <lightning-button-icon disabled={selectedJiraTask.disableStartTime} icon-name="utility:play"
+                        alternative-text="Start Task" onclick={startJob}
+                        class="slds-icon_x-small slds-button_icon-inverse">
+                      </lightning-button-icon>
                     </div>
-                  </template>
-                  <template if:false={task.selected}>
-                    <div data-id={task.Id} class="slds-card cardunselected"
-                      style="border-style: solid; border-color: rgb(129, 129, 129); border-width: 1px; padding: 10px;"
-                      onclick={taskClicked}>
-                      <template if:true={task.Module__c}>
-                        <div style="display: flex; justify-content: space-between;">
-                          <h1 class="slds-text-title_bold slds-text-color_default slds-media slds-media_center">
-                            <span>{task.Name} - {task.Module__r.Project__r.Name}</span>
-                          </h1>
-                          <lightning-badge label={task.Priority__c}></lightning-badge>
-                        </div>
 
-                        <div style="display: flex; justify-content: space-between;">
-                          <lightning-badge label={selectedJiraTask.estimatedHrs} class="slds-badge slds-m-top_xx-small"
-                            style="background-color: #3498db; color: #ecf0f1;">
-                          </lightning-badge>
-                          <h1 style="padding-top:12px;">{task.Status__c}</h1>
-                        </div>
-                      </template>
+                    <!-- End Task -->
+                    <div class="slds-icon_container" title="End Task"
+                      style="background-color: rgb(196, 201, 207);border-radius: 50%; padding: 4px;">
+                      <lightning-button-icon disabled={selectedJiraTask.endDisableStartTime} icon-name="utility:stop"
+                        alternative-text="End Task" onclick={endJob}
+                        class="slds-icon_x-small slds-button_icon-inverse">
+                      </lightning-button-icon>
                     </div>
-                  </template>
 
+                    <!-- Complete Task -->
+                    <div class="slds-icon_container" title="Complete Task"
+                      style="background-color: rgb(196, 201, 207); border-radius: 50%; padding: 4px;">
+                      <lightning-button-icon disabled={selectedJiraTask.disableMarkAsCompleted} icon-name="utility:check"
+                        alternative-text="Complete Task" onclick={markAsComplete} variant="bare" style="fill: #ffffff;"
+                        class="slds-icon_x-small slds-button_icon-inverse">
+                      </lightning-button-icon>
+                    </div>
+
+                    <!-- Extend Task -->
+                    <!-- Manual Entry -->
+                    <div class="slds-icon_container" title="Manual Entry"
+                      style="background-color: rgb(196, 201, 207); border-radius: 50%; padding: 4px;">
+                      <lightning-button-icon disabled={selectedJiraTask.disableManualTimeEntry} icon-name="utility:edit"
+                        alternative-text="Manual Entry" onclick={manualTimeBtnClicked} variant="bare"
+                        style="fill: #ffffff;" class="slds-icon_x-small slds-button_icon-inverse">
+                      </lightning-button-icon>
+                    </div>
+
+                    <div class="slds-icon_container" title="Add Comment"
+                      style="background-color: rgb(196, 201, 207); border-radius: 50%; padding: 4px;">
+                      <lightning-button-icon
+                        icon-name="utility:comments"
+                        alternative-text="Add Comment"
+                        onclick={handleopencomments}
+                        variant="bare"
+                        style="fill: #e60c0c !important;"
+                        class="slds-icon_x-small">
+                    </lightning-button-icon>
+                    </div>
+
+
+                  </div>
+
+
+                  <!-- Card with Task Info -->
+                  <div class="slds-card slds-p-around_medium slds-m-bottom_small"
+                    style="background-color: #d6eaff; border-left: 5px solid #1b5297; border-radius: 6px;">
+                    <div class="slds-grid slds-grid_align-spread slds-m-bottom_x-small">
+                      <label class="slds-text-title_bold slds-text-color_default">
+                        Task Description
+                      </label>
+                    </div>
+
+                    <div class="slds-text-body_regular slds-text-color_weak">
+                      <lightning-formatted-rich-text
+                        value={selectedJiraTask.Task_Description__c}></lightning-formatted-rich-text>
+                    </div>
+                  </div>
+
+                  <div class="slds-card slds-p-around_medium slds-m-bottom_small"
+      style="background-color: #d6eaff; border-right: 5px solid #1b5297; border-radius: 6px;overflow-y:scroll;height:180px;">
+
+    <!-- Comments Header -->
+    <div class="slds-grid slds-grid_align-spread slds-m-bottom_x-small">
+      <label class="slds-text-title_bold slds-text-color_default">
+        Comments
+      </label>
+    </div>
+
+    <!-- Comment List -->
+    <template if:true={formattedComments}>
+      <ul class="slds-list_vertical slds-has-dividers_top-space">
+        <template for:each={formattedComments} for:item="comment">
+          <li key={comment.id} class="slds-item slds-p-vertical_x-small">
+            <div class="slds-media">
+              <div class="slds-media__body">
+                <p class="slds-text-body_medium slds-text-color_default">
+                  {comment.text}
+                </p>
+                <p class="slds-text-color_weak slds-text-body_xx-small slds-text-align_right slds-text-title_bold">
+                  {comment.contact} - {comment.timestamp}
+                </p>              
+              </div>
+            </div>
+          </li>
+        </template>
+      </ul>
+    </template>
+    
+
+    <template if:false={formattedComments}>
+      <p class="slds-text-body_small slds-text-color_weak">No comments yet.</p>
+    </template>
+  </div>
+
+
+
+
+                  <!-- Description -->
+                  <!-- <div class="slds-box slds-p-around_small" style="background-color: #f0f4f8; border-radius: 5px;">
+                      <h4 class="slds-text-title_bold" style="color: #333;">Requirement Details:</h4>
+                      <lightning-formatted-rich-text value={selectedJiraTask.Description__c}></lightning-formatted-rich-text>
+                    </div> -->
                 </div>
               </template>
             </div>
+
+
+
+
+
           </div>
-          <div class="slds-col slds-size_4-of-6 right-panel-scroll">
-            <template if:true={selectedJiraTask}>
-              <div class="slds-card slds-box "
-                style="padding: 1%; background-color:#f7f8fa;border:2px solid lightgray;">
-
-                <!-- Header Section -->
-                <!-- <div class="slds-grid slds-grid_align-end slds-m-bottom_medium">
-                    <lightning-button 
-                      disabled={selectedJiraTask.disableStartBreak} 
-                      variant="neutral" 
-                      title="Start Break" 
-                      label="Start Break" 
-                      onclick={startBreak} 
-                      class="slds-m-right_small slds-button_reset">
-                    </lightning-button>
-            
-                    <div class="slds-text-body_regular slds-theme_warning slds-p-around_x-small slds-m-right_small slds-align_absolute-center slds-border_radius_circle">
-                      {currentTimer}
-                    </div>
-            
-                    <lightning-button 
-                      disabled={selectedJiraTask.disableEndBreak} 
-                      variant="destructive" 
-                      title="Stop Break"
-                      label="Stop Break" 
-                      onclick={endBreak} 
-                      class="slds-button_reset">
-                    </lightning-button>
-                  </div> -->
-
-                <!-- Action Buttons -->
-                <!-- <div class="slds-grid slds-grid_align-end slds-wrap slds-m-bottom_medium slds-m-top_small" style="gap: 0.5rem;">
-                    <lightning-button 
-                      disabled={selectedJiraTask.disableStartTime} 
-                      variant="brand" 
-                      title="Start Task" 
-                      label="Start Task" 
-                      onclick={startJob}
-                      class="slds-size_auto slds-button_reset">
-                    </lightning-button>
-            
-                    <lightning-button 
-                      disabled={selectedJiraTask.endDisableStartTime} 
-                      variant="brand" 
-                      title="End Task"
-                      label="End Task" 
-                      onclick={endJob} 
-                      class="slds-size_auto slds-button_reset">
-                    </lightning-button>
-            
-                    <lightning-button 
-                      disabled={selectedJiraTask.disableMarkAsCompleted} 
-                      variant="success" 
-                      label="Complete Task" 
-                      title="Complete Task" 
-                      onclick={markAsComplete}
-                      class="slds-size_auto slds-button_reset">
-                    </lightning-button>
-            
-                    <lightning-button 
-                      disabled={selectedJiraTask.disableAskForExtension} 
-                      variant="outline-brand"
-                      label="Extend Task" 
-                      title="Extend Task" 
-                      onclick={askExtensionBtnClicked}
-                      class="slds-size_auto slds-button_reset">
-                    </lightning-button>
-            
-                    <lightning-button 
-                      disabled={selectedJiraTask.disableManualTimeEntry} 
-                      variant="neutral"
-                      label="Manual Entry" 
-                      title="Manual Entry" 
-                      onclick={manualTimeBtnClicked}
-                      class="slds-size_auto slds-button_reset">
-                    </lightning-button>
-                  </div> -->
-                <div class="slds-grid slds-grid_align-end slds-wrap slds-m-bottom_medium slds-m-top_small"
-                  style="gap: 0.5rem;">
-
-                  <!-- Right Side: Button Group (aligned to right) -->
-       <div class="slds-grid slds-grid_vertical-align-center">
-          <lightning-button 
-              disabled={selectedJiraTask.disableStartBreak} 
-              variant="brand"
-              title="Start Break" 
-              label="Start Break" 
-              onclick={startBreak}
-              class="slds-m-right_small">
-          </lightning-button>
-    
-          <!-- <div class="slds-text-body_regular slds-theme_info slds-p-around_x-small slds-m-right_small slds-align_absolute-center slds-border_radius_circle">
-            {currentTimer}
-          </div> -->
-    
-          <lightning-button 
-              disabled={selectedJiraTask.disableEndBreak}
-              variant="brand" 
-              title="Stop Break"
-              label="Stop Break" 
-              class={stopBreakClass}
-              onclick={endBreak}>
-          </lightning-button>
-
-          <div class="slds-text-body_regular slds-theme_info slds-p-around_x-small slds-align_absolute-center slds-border_radius_circle slds-m-top_x-small">
-    ☕ Break Time : {breakTimer}
-</div>
-
-          <div class="slds-text-body_regular slds-theme_warning slds-p-around_x-small slds-m-right_small slds-align_absolute-center slds-border_radius_circle">
-                    ⏱Total Time :  {currentTimer}
-                    </div>
-        </div> 
-                  
-
-                  <!-- Start Task -->
-                  <!-- <div class="slds-icon_container" title="Start Task"
-                    style="background-color: rgb(196, 201, 207); border-radius: 50%; padding: 4px;">
-                    <lightning-button-icon disabled={selectedJiraTask.disableStartTime} icon-name="utility:play"
-                      alternative-text="Start Task" onclick={startJob}
-                      class="slds-icon_x-small slds-text-color-default" >
-                    </lightning-button-icon>
-                  </div> -->
-                  <div class="slds-icon_container" title="Start Task"
-                    style="background-color: rgb(196, 201, 207);border-radius: 50%; padding: 4px;">
-                    <lightning-button-icon disabled={selectedJiraTask.disableStartTime} icon-name="utility:play"
-                      alternative-text="Start Task" onclick={startJob}
-                      class="slds-icon_x-small slds-button_icon-inverse">
-                    </lightning-button-icon>
-                  </div>
-
-                  <!-- End Task -->
-                  <div class="slds-icon_container" title="End Task"
-                    style="background-color: rgb(196, 201, 207);border-radius: 50%; padding: 4px;">
-                    <lightning-button-icon disabled={selectedJiraTask.endDisableStartTime} icon-name="utility:stop"
-                      alternative-text="End Task" onclick={endJob}
-                      class="slds-icon_x-small slds-button_icon-inverse">
-                    </lightning-button-icon>
-                  </div>
-
-                  <!-- Complete Task -->
-                  <div class="slds-icon_container" title="Complete Task"
-                    style="background-color: rgb(196, 201, 207); border-radius: 50%; padding: 4px;">
-                    <lightning-button-icon disabled={selectedJiraTask.disableMarkAsCompleted} icon-name="utility:check"
-                      alternative-text="Complete Task" onclick={markAsComplete} variant="bare" style="fill: #ffffff;"
-                      class="slds-icon_x-small slds-button_icon-inverse">
-                    </lightning-button-icon>
-                  </div>
-
-                  <!-- Extend Task -->
-                  <!-- <div class="slds-icon_container" title="Extend Task" style="background-color: #ffc107; border-radius: 50%; padding: 4px;">
-                      <lightning-button-icon 
-                        disabled={selectedJiraTask.disableAskForExtension}
-                        icon-name="utility:add"
-                        alternative-text="Extend Task"
-                        onclick={askExtensionBtnClicked}
-                        variant="bare"
-                        class="slds-icon_x-small slds-button_icon-inverse">
-                      </lightning-button-icon>
-                    </div> -->
-
-                  <!-- Manual Entry -->
-                  <div class="slds-icon_container" title="Manual Entry"
-                    style="background-color: rgb(196, 201, 207); border-radius: 50%; padding: 4px;">
-                    <lightning-button-icon disabled={selectedJiraTask.disableManualTimeEntry} icon-name="utility:edit"
-                      alternative-text="Manual Entry" onclick={manualTimeBtnClicked} variant="bare"
-                      style="fill: #ffffff;" class="slds-icon_x-small slds-button_icon-inverse">
-                    </lightning-button-icon>
-                  </div>
-
-                  <div class="slds-icon_container" title="Add Comment"
-                    style="background-color: rgb(196, 201, 207); border-radius: 50%; padding: 4px;">
-                    <lightning-button-icon
-    icon-name="utility:comments"
-    alternative-text="Add Comment"
-    onclick={handleopencomments}
-    variant="bare"
-    style="fill: #e60c0c !important;"
-    class="slds-icon_x-small">
-</lightning-button-icon>
-                  </div>
-
-
-                </div>
-
-
-                <!-- Card with Task Info -->
-                <div class="slds-card slds-p-around_medium slds-m-bottom_small"
-                  style="background-color: #d6eaff; border-left: 5px solid #1b5297; border-radius: 6px;">
-                  <div class="slds-grid slds-grid_align-spread slds-m-bottom_x-small">
-                    <label class="slds-text-title_bold slds-text-color_default">
-                      Task Description
-                    </label>
-                  </div>
-
-                  <div class="slds-text-body_regular slds-text-color_weak">
-                    <lightning-formatted-rich-text
-                      value={selectedJiraTask.Task_Description__c}></lightning-formatted-rich-text>
-                  </div>
-                </div>
-
-                <div class="slds-card slds-p-around_medium slds-m-bottom_small"
-     style="background-color: #d6eaff; border-right: 5px solid #1b5297; border-radius: 6px;overflow-y:scroll;height:180px;">
-
-  <!-- Comments Header -->
-  <div class="slds-grid slds-grid_align-spread slds-m-bottom_x-small">
-    <label class="slds-text-title_bold slds-text-color_default">
-      Comments
-    </label>
-  </div>
-
-  <!-- Comment List -->
-  <template if:true={formattedComments}>
-    <ul class="slds-list_vertical slds-has-dividers_top-space">
-      <template for:each={formattedComments} for:item="comment">
-        <li key={comment.id} class="slds-item slds-p-vertical_x-small">
-          <div class="slds-media">
-            <div class="slds-media__body">
-              <p class="slds-text-body_medium slds-text-color_default">
-                {comment.text}
-              </p>
-              <p class="slds-text-color_weak slds-text-body_xx-small slds-text-align_right slds-text-title_bold">
-                {comment.contact} - {comment.timestamp}
-              </p>              
-            </div>
-          </div>
-        </li>
-      </template>
-    </ul>
-  </template>
-  
-
-  <template if:false={formattedComments}>
-    <p class="slds-text-body_small slds-text-color_weak">No comments yet.</p>
-  </template>
-</div>
-
-
-
-
-                <!-- Description -->
-                <!-- <div class="slds-box slds-p-around_small" style="background-color: #f0f4f8; border-radius: 5px;">
-                    <h4 class="slds-text-title_bold" style="color: #333;">Requirement Details:</h4>
-                    <lightning-formatted-rich-text value={selectedJiraTask.Description__c}></lightning-formatted-rich-text>
-                  </div> -->
-              </div>
-            </template>
-          </div>
-
-
-
-
-
         </div>
-      </div>
+      </template>
+      <template if:false={tasksPresent}>
+        <div class="empty-state-container">
+          <img
+                  src={emptyStateImage}
+                  alt="No tasks today"
+                  class="empty-state-image"
+              />
+        </div>
+      </template>
     </lightning-card>
   </template>
   <template if:true={showTasks}>
@@ -361,6 +252,14 @@
               <div class="slds-form-element__control">
                 <input type="number" id="text-input-id-47" placeholder="Enter the time" required="" class="slds-input"
                   value={selectedManualTime} onchange={manualTimeChangeHandler} />
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="text-input-id-47">
+                <abbr class="slds-required" title="required">* </abbr>Reason for Extension</label>
+              <div class="slds-form-element__control">
+                <input type="text" id="reasonId" placeholder="Enter the reason" required="" class="slds-input"
+                  value={selectedExtensionReason} onkeyup={manualReasonChangeHandler} />
               </div>
             </div>
           </div>

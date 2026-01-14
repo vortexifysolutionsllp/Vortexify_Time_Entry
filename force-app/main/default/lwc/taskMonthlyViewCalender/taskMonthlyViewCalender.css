@@ -167,3 +167,38 @@
 .slds-card {
     overflow: visible !important;
 }
+
+.custom-card {
+    padding: 5px 15px;
+    height: 115px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+}
+
+.holiday-card {
+    background-color: #7e57c2;
+    color: #ffffff;
+}
+
+.weekend-card {
+    background-color: #9e9e9e;
+    color: #ffffff;
+}
+
+.leave-card {
+    background-color: #f48fb1;
+    color: #ffffff;
+}
+
+.today-card {
+    border: 4px solid #0176d3;
+    background: linear-gradient(135deg, #e8f3ff, #ffffff);
+    box-shadow: 0 0 0 2px rgba(1, 118, 211, 0.15);
+}
+
+.today-card .title::after {
+    content: ' *';
+    color: #0176d3;
+    font-weight: 600;
+    font-size: 0.75rem;
+}

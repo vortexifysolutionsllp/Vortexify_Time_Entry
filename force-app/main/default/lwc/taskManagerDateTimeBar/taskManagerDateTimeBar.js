@@ -74,6 +74,7 @@ export default class TaskManagerDateTimeBar extends LightningElement {
         this.selectedDate = this.dateList[0].fDate;
         this.selectedMonth = this.dateList[0].month.substring(0, 3);
         this.selectedYear = this.dateList[0].year;
+        this.onNextPrevHandler();
     }
 
     pushDate(isSelected) {
@@ -92,6 +93,19 @@ export default class TaskManagerDateTimeBar extends LightningElement {
     ondatechoosedhandler(event) {
         this.selectedDate = event.target.dataset.id;
 
+        this.dateList.forEach(item => item.selected = false);
+        const selectedItem = this.dateList.find(item => item.fDate === this.selectedDate);
+        if (selectedItem) {
+            selectedItem.selected = true;
+            this.selectedMonth = selectedItem.month.substring(0, 3);
+            this.selectedYear = selectedItem.year;
+        }
+
+        this.callParentMethod();
+    }
+
+    onNextPrevHandler() {
+        console.log('next prev handler', this.selectedDate)
         this.dateList.forEach(item => item.selected = false);
         const selectedItem = this.dateList.find(item => item.fDate === this.selectedDate);
         if (selectedItem) {

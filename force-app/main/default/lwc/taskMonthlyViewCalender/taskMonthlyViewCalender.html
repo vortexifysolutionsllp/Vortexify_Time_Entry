@@ -41,12 +41,6 @@
                     </c-custom-lookup>
                 </div>
            </template> 
-
-            <!-- Month Label -->
-            <!-- <div class="month-year-display">
-                <lightning-icon icon-name="utility:event" size="x-small" class="slds-m-right_x-small"></lightning-icon>
-                <span>{monthYearLabel}</span>
-            </div> -->
         </div>
 
         <!-- Calendar Days and Cells -->
@@ -63,21 +57,23 @@
                 <template for:each={preparedCells} for:item="cell">
                     <div key={cell.key} class="slds-p-around_small slds-col slds-size_1-of-1 slds-medium-size_1-of-7 slds-border_right slds-border_bottom">
                         <div class="task-grid">
-                            <div class="custom-card" style="padding: 5px 15px; height:115px; border:1px solid #ddd; border-radius:20px;">
+                            <div class={cell.containerClass}>
                                 <div class="card-header">
                                     <span class="icon">📅</span>
                                     <span class="title">{cell.dateLabel}</span>
                                 </div>
 
                                 <div class="row" style="margin-bottom:10px;text-align:center;">
-                                    <template if:true={cell.hasVisits}>
-                                        <p><strong>Tasks Count: </strong>{cell.tasks.length}</p>
-                                    </template>
-                                    <template if:false={cell.hasVisits}>
-                                        <p>No Task Assigned</p>
+                                    <template if:false={cell.isEmpty}>
+                                        <template if:true={cell.hasVisits}>
+                                            <p style="margin-top: -10px;"><strong>Tasks Count: </strong>{cell.tasks.length}</p>
+                                        </template>
+                                        <template if:false={cell.hasVisits}>
+                                            <p>No Task Assigned</p>
+                                        </template>
                                     </template>
                                 </div>
-
+                                
                                 <template if:true={cell.hasVisits}>
                                     <div class="buttoncls" style="text-align:center;margin-top:0px;">
                                         <div class="slds-box slds-badge slds-radius_medium"

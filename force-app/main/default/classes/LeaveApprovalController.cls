@@ -153,6 +153,21 @@ private static String row(String label, String value) {
         leaveRecord.Status__c = 'Approved';
         update leaveRecord;
 
+        List<DayAttendance__c> dayAttendanceList = [SELECT Id, Date__c, Day_Status__c, Employee__c, Approved_Leave__c FROM DayAttendance__c WHERE Employee__c = :leaveRecord.Employee__c AND Date__c >= :leaveRecord.Start_Date__c AND Date__c <= :leaveRecord.End_Date__c];
+        System.debug('dayAttendanceList--->'+dayAttendanceList);
+        if(dayAttendanceList?.size()>0){
+            for(DayAttendance__c dayAttendance : dayAttendanceList){
+                dayAttendance.Day_Status__c = 'Approved Leave';
+                dayAttendance.Approved_Leave__c = leaveRecord.Id;
+            }
+            update dayAttendanceList;
+        }else{
+            ApexPages.addMessage(
+                new ApexPages.Message(ApexPages.Severity.CONFIRM, 'No Leave Application Records Found')
+            );
+            return null;
+        }
+
         /* CALL NEW METHOD */
         sendStatusEmail('Approved');
 

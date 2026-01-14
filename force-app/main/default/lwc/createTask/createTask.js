@@ -449,11 +449,6 @@ closeReadOnlyModal() {
 
 handleSubmit() {
     if (!this.selectedProject || !this.selectedModule || !this.selectedContact || !this.startDateTime || !this.endDateTime || !this.description) {
-        System.debug('Selected project'+ selectedProject);
-        System.debug('Selected contact'+ selectedContact);
-        System.debug('Selected startdatetime'+ startDateTime);
-        System.debug('Selected enddatetime'+ endDateTime);
-        System.debug('Selected description'+ description);
         this.showSwalAlert('Error', 'Please fill all required fields.', 'error');
         return;
     }
@@ -461,6 +456,9 @@ handleSubmit() {
     // ✅ Convert to local time correctly
     const now = new Date();
     now.setSeconds(0, 0);
+
+    console.log('Selected startdatetime'+ this.startDateTime);
+    console.log('Selected enddatetime'+ this.endDateTime);
 
     const startTime = new Date(this.startDateTime); // already UTC → JS auto converts to local
     startTime.setSeconds(0, 0);
@@ -524,7 +522,11 @@ handleSubmit() {
         endDateTime: this.endDateTime,
         description: this.description
     })
-    .then(() => {
+    .then((result) => {
+        if(result == 'Task has already been created for this time slot'){
+            this.showSwalAlert('Error', result, 'error');
+            return;
+        }
         this.closeModal();
         this.getTaskData();
         // ✅ Show alert only if task creation succeeds
@@ -633,6 +635,7 @@ handleSubmit() {
         this.viewStart = t.startTime;   // FIXED
         this.viewEnd = t.endTime;       // FIXED
         this.viewDescription = t.description;
+        console.log('viewStart: ' + this.viewStart + ' viewEnd: ' + this.viewEnd + ' viewDescription:')
     }
 
     this.isReadOnlyModalOpen = true;

@@ -1,0 +1,25 @@
+<template>
+    <lightning-modal-header label={header}>
+    </lightning-modal-header>
+
+    <lightning-modal-body>
+        <div class="time-card">
+            <div class="time-row">
+                <span class="label">Check-In Time</span>
+                <span class="value">{checkInTime}</span>
+            </div>
+
+            <div class="time-row">
+                <span class="label">Check-Out Time</span>
+                <span class="value">{checkOutTime}</span>
+            </div>
+        </div>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <lightning-button
+            label="Close"
+            onclick={handleClose}>
+        </lightning-button>
+    </lightning-modal-footer>
+</template>
