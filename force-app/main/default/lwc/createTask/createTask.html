@@ -9,7 +9,7 @@
         <div class="slds-p-around_medium"
             style="border-top:2px solid rgb(214, 214, 214);padding-left:0.8%;padding-right:0.6%;overflow-y:scroll;">
             <div class="task-grid">
-                <template for:each={tasks} for:item="task">
+                <template if:true={isTasksAvailable} for:each={tasks} for:item="task">
                     <div key={task.id} class="custom-card">
 
                         <!-- HEADER : ICON + TITLE + ACTION ICONS -->
@@ -80,6 +80,30 @@
                             <p><strong>Assign To : </strong>{task.AssignTo}</p>
                         </div>
 
+                    </div>
+                </template>
+                <template if:false={isTasksAvailable}>
+                    <div class="empty-task-container">
+                        <img
+                            src={emptyTaskImage}
+                            alt="No tasks available"
+                            class="empty-task-image"
+                        />
+
+                        <!-- <h2 class="empty-task-title">
+                            Lucky Day! 🎉
+                        </h2>
+
+                        <p class="empty-task-subtitle">
+                            No task assigned to you today
+                        </p>
+
+                        <lightning-button
+                            label="Create New Task"
+                            variant="brand"
+                            onclick={handleCreateTask}
+                            class="create-task-btn">
+                        </lightning-button> -->
                     </div>
                 </template>
             </div>

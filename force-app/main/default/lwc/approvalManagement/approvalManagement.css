@@ -1,0 +1,10 @@
+.container {
+    padding: 1rem;
+    background: #f7f9fc;
+}
+
+/* Smooth tab transitions */
+lightning-tabset {
+    --slds-c-tabs-item-color-active: #0176d3;
+    --slds-c-tabs-item-color-hover: #014486;
+}

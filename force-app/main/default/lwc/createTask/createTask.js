@@ -8,6 +8,7 @@ import updateJiraTask from '@salesforce/apex/TaskCreationController.updateJiraTa
 import deleteJiraTask from '@salesforce/apex/TaskCreationController.deleteJiraTask';
 import { loadScript, loadStyle } from 'lightning/platformResourceLoader';
 import SWEETALERT from '@salesforce/resourceUrl/sweetalert2';
+import EMPTY_TASK_IMAGE from '@salesforce/resourceUrl/emptyTaskIllustration';
 
 export default class CreateTask extends LightningElement {
     @api recordid;
@@ -30,6 +31,7 @@ export default class CreateTask extends LightningElement {
     @track viewStart;
     @track viewEnd;
     @track viewDescription;
+    isTasksAvailable = false;
 
 @track isReadOnlyModalOpen = false;
 @track viewTask = {};
@@ -128,6 +130,7 @@ renderedCallback() {
                 console.error('Error fetching tasks:', error);
                 this.tasks = [];
             });
+            this.isTasksAvailable = this.tasks.length>0;
     }
 
     // Tooltip Handlers
@@ -155,30 +158,6 @@ renderedCallback() {
         this.isModalOpen = true;
     }
 
-
- /*handleClone(event) {
-        const taskId = event.target.dataset.id;
-        const task = this.tasks.find(t => t.id === taskId);
-        if (task) {
-            this.currentTaskId = task.id;
-            this.selectedProject = task.projectId;
-            this.selectedModule = task.mainmoduleID;
-            this.selectedModuleName = task.module;
-            this.selectedContact = task.contactId;
-            this.selectedContactName = task.AssignTo;
-            //this.selectedContact = task.lastModifiedBy;
-            this.selectedPriority = task.priority;
-            this.startDateTime = task.startTime;
-            this.endDateTime = task.endTime;
-            this.description = task.description;
-
-            this.modalTitle = 'Create Task';
-            this.submitButtonLabel = 'Create Task';
-            this.isEditMode = true;
-            this.isModalOpen = true;
-        }
-    }*/
-
    handleClone(event) {
     const taskId = event.target.dataset.id;
     const task = this.tasks.find(t => t.id === taskId);
@@ -201,8 +180,6 @@ renderedCallback() {
         this.projectResourceMappingId = task.ProjectResourceMapping;
 
         this.selectedPriority = task.priority;
-       // this.startDateTime = task.startTime;
-       // this.endDateTime = task.endTime;
         this.description = task.description;
 
         this.modalTitle = 'Create Task';
@@ -210,11 +187,6 @@ renderedCallback() {
         this.isModalOpen = true;
     }
 }
-
-
- 
-
-
 
     // Modal Open for Edit
     handleEdit(event) {
@@ -227,7 +199,6 @@ renderedCallback() {
             this.selectedModuleName = task.module;
             this.selectedContact = task.contactId;
             this.selectedContactName = task.AssignTo;
-            //this.selectedContact = task.lastModifiedBy;
             this.selectedPriority = task.priority;
             this.startDateTime = task.startTime;
             this.endDateTime = task.endTime;
@@ -300,14 +271,7 @@ closeReadOnlyModal() {
     }
     
 
-    // handleProjectChange(event) {
-    //     this.selectedProject = event.detail.recordId;
-    //     console.log('--selectedProject--' + this.selectedProject);
-    //     this.tryFetchProjectResourceMapping();
-    // }
     handleProjectChange(event) {
-        // this.selectedProject = event.detail.recordId;
-        // console.log('--selectedProject--' + this.selectedProject);
         this.selectedProject = event.detail.recordId;
         console.log('--selectedProject--' + this.selectedProject);
         this.disableFilters = !this.selectedProject;
@@ -330,7 +294,6 @@ closeReadOnlyModal() {
                 }));
                 console.log('--moduleOptions--'+this.moduleOptions);
                 console.log('---test--'+JSON.stringify(this.moduleOptions));
-                //console.log('--moduleOptions.length--'+this.moduleOptions.length);)
                 console.log('--moduleOptions--'+this.moduleOptions.length);
             })
             .catch(error => {
@@ -348,7 +311,6 @@ closeReadOnlyModal() {
                 }));
                 console.log('--ContactOptions--'+this.contactOptions);
                 console.log('---test--'+JSON.stringify(this.contactOptions));
-                //console.log('--moduleOptions.length--'+this.moduleOptions.length);)
                 console.log('--moduleOptions--'+this.contactOptions.length);
             })
             .catch(error => {
@@ -385,13 +347,11 @@ closeReadOnlyModal() {
 
     handleStartDateTimeChange(event) {
         this.startDateTime = event.detail.value; // e.g., 2025-05-03T10:22:00.000Z
-        //this.startDateTime = raw.replace('T', ' ').split('.')[0]; // -> 2025-05-03 10:22:00
         console.log('--Formatted Start DateTime--', this.startDateTime);
     }
     
     handleEndDateTimeChange(event) {
         this.endDateTime = event.detail.value;
-        //this.endDateTime = raw.replace('T', ' ').split('.')[0];
         console.log('--Formatted End DateTime--', this.endDateTime);
     }
     
@@ -401,50 +361,6 @@ closeReadOnlyModal() {
         this.description = event.target.value;
         console.log('--description--'+this.description);
     }
-
-    // Form Submit (Unified for Create/Update)
-  /*  handleSubmit() {
-        if (!this.selectedProject || !this.selectedModule || !this.selectedContact || !this.startDateTime || !this.endDateTime || !this.description) {
-            //this.alert('Error', 'Please fill all required fields.', 'error');
-            this.showSwalAlert('Error','Please fill all required fields.','error');
-            return;
-        }
-
-        if (this.isEditMode) {
-            this.updateTask();
-        } else {
-            this.submitTask();
-        }
-    }*/
-
-
-  /*  handleSubmit() {
-    if (!this.selectedProject || !this.selectedModule || !this.selectedContact || !this.startDateTime || !this.endDateTime || !this.description) {
-        this.showSwalAlert('Error', 'Please fill all required fields.', 'error');
-        return;
-    }
-
-    // ✅ Check Start Time against Current Time
-    const now = new Date();
-    const startTime = new Date(this.startDateTime);
-
-    if (startTime < now){
-        this.showSwalAlert('Error', 'Start Time cannot be earlier and equal than current time.', 'error');
-        return;
-    }
-
-   if (startTime.getTime() == now.getTime()) {
-        this.showSwalAlert('Error', 'Start Time cannot be equal to current time.', 'error');
-        return;
-    }
-
-    // ✅ Proceed with create/update
-    if (this.isEditMode) {
-        this.updateTask();
-    } else {
-        this.submitTask();
-    }
-}*/
 
 
 handleSubmit() {
@@ -476,30 +392,12 @@ handleSubmit() {
         this.showSwalAlert('Error', 'Start Date cannot be in the past.', 'error');
         return;
     }
-    // 🚨 Start Time < Current Time
-    /*if (startTime < now) {
-        this.showSwalAlert('Error', 'Start Time cannot be earlier than current time.', 'error');
-        return;
-    }
-
-    // 🚨 Start Time == Current Time (same minute)
-    if (startTime.getTime() === now.getTime()) {
-        this.showSwalAlert('Error', 'Start Time cannot be equal to current time.', 'error');
-        return;
-    }*/
 
     // 🚨 End Time <= Start Time
     if (endTime <= startTime) {
         this.showSwalAlert('Error', 'End Time must be greater than Start Time.', 'error');
         return;
     }
-
-    // ✅ Proceed with create/update
-   /* if (this.isEditMode) {
-        this.updateTask();
-    } else {
-        this.submitTask();
-    }*/
 
     if (this.isEditMode && !this.isCloneMode) {
     this.updateTask();
@@ -644,6 +542,10 @@ handleSubmit() {
 
     closeReadOnlyModal() {
         this.isReadOnlyModalOpen = false;
+    }
+
+    get emptyTaskImage() {
+        return EMPTY_TASK_IMAGE;
     }
 
       

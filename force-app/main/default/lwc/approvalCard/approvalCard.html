@@ -1,0 +1,20 @@
+<template>
+    <div class="approval-card">
+        <div class="header">
+            <h3><b>Employee Name:&nbsp;</b>{request.Employee__r.Name}</h3>
+            <span class={statusClass}>{request.Status__c}</span>
+        </div>
+
+        <p class="type"><b>Leave Type:&nbsp;</b>{request.Leave_Type__c}</p>
+        <p class="dates"><b>Date Range:&nbsp; </b>{request.Start_Date__c} → {request.End_Date__c}</p>
+        <p class="dates"><b>No. Of Days:&nbsp; </b>{request.Days__c}</p>
+        <p class="reason"><b>Reason&nbsp;</b>{request.Reason_for_Leave__c}</p>
+
+        <template if:true={isPending}>
+            <div class="actions">
+                <lightning-button variant="brand" label="Approve" onclick={approve}></lightning-button>
+                <lightning-button variant="destructive" label="Reject" onclick={reject}></lightning-button>
+            </div>
+        </template>
+    </div>
+</template>

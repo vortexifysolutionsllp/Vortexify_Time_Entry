@@ -319,6 +319,7 @@
     border: 4px solid #0176d3;
     background: linear-gradient(135deg, #e8f3ff, #ffffff);
     box-shadow: 0 0 0 2px rgba(1, 118, 211, 0.15);
+    color:#000;
 }
 
 .today-card .title::after {
