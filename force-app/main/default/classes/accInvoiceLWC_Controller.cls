@@ -2,6 +2,7 @@ public with sharing class accInvoiceLWC_Controller {
     @AuraEnabled(cacheable=true)
     public static Map<String, Object> getInvoicesByAccount(Id accountId) {
         //Test Vaibhav for Conflict
+        //Test Angel 2
         Map<String, Object> result = new Map<String, Object>();
         if (accountId == null) return result;
 
