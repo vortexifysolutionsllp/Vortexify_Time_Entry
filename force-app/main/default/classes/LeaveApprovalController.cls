@@ -189,4 +189,76 @@ private static String row(String label, String value) {
         );
         return null;
     }
+
+    @AuraEnabled (cacheable=true)
+    public static appovalList getApprovalRequests(String approverId, String status){
+        try{
+            appovalList result = new appovalList();
+            List<Leave_Application__c> leaveApplicationList = [SELECT Id, Name, Start_Date__c, End_Date__c, Reason_for_Leave__c, Status__c, Employee__r.Name, Employee__c, Leave_Type__c, Days__c FROM Leave_Application__c WHERE Approver__c = :approverId AND Status__c = :status ORDER BY Start_Date__c DESC];
+            result.leaveRequests = leaveApplicationList;
+            return result;
+        }catch(exception e){
+            throw new AuraHandledException('Error fetching Leave Application: ' + e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static String approveRequest(String recordId){
+        try{
+            appovalList result = new appovalList();
+            List<Leave_Application__c> leaveApplicationList = [SELECT Id, Name, Start_Date__c, End_Date__c, Status__c, Employee__r.Name, Employee__c, Approver__c, Approved_By__c FROM Leave_Application__c WHERE Id = :recordId];
+            if(leaveApplicationList?.size()>0){
+                leaveApplicationList[0].Status__c = 'Approved';
+                leaveApplicationList[0].Approved_By__c = leaveApplicationList[0].Approver__c;
+                leaveApplicationList[0].Approved_On__c = System.now();
+                update leaveApplicationList[0];
+                List<DayAttendance__c> dayAttendanceList = [SELECT Id, Date__c, Day_Status__c, Employee__c, Approved_Leave__c FROM DayAttendance__c WHERE Employee__c = :leaveApplicationList[0].Employee__c AND Date__c >= :leaveApplicationList[0].Start_Date__c AND Date__c <= :leaveApplicationList[0].End_Date__c];
+                System.debug('dayAttendanceList--->'+dayAttendanceList);
+                if(dayAttendanceList?.size()>0){
+                    for(DayAttendance__c dayAttendance : dayAttendanceList){
+                        dayAttendance.Day_Status__c = 'Approved Leave';
+                        dayAttendance.Approved_Leave__c = leaveApplicationList[0].Id;
+                    }
+                    update dayAttendanceList;
+                }
+                return  'Leave Approved Successfully.';
+            }
+            return 'No Leave Application Records Found';
+        }catch(exception e){
+            throw new AuraHandledException('Error fetching Leave Application: ' + e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static String rejectRequest(String recordId){
+        try{
+            appovalList result = new appovalList();
+            List<Leave_Application__c> leaveApplicationList = [SELECT Id, Name, Start_Date__c, End_Date__c, Status__c, Employee__r.Name, Employee__c, Approver__c, Approved_By__c, Approved_On__c FROM Leave_Application__c WHERE Id = :recordId];
+            if(leaveApplicationList?.size()>0){
+                leaveApplicationList[0].Status__c = 'Rejected';
+                leaveApplicationList[0].Approved_By__c = leaveApplicationList[0].Approver__c;
+                leaveApplicationList[0].Approved_On__c = System.now();
+                update leaveApplicationList[0];
+                return 'Leave Rejected Successfully.';
+                // List<DayAttendance__c> dayAttendanceList = [SELECT Id, Date__c, Day_Status__c, Employee__c, Approved_Leave__c FROM DayAttendance__c WHERE Employee__c = :leaveApplicationList[0].Employee__c AND Date__c >= :leaveApplicationList[0].Start_Date__c AND Date__c <= :leaveApplicationList[0].End_Date__c];
+                // System.debug('dayAttendanceList--->'+dayAttendanceList);
+                // if(dayAttendanceList?.size()>0){
+                //     for(DayAttendance__c dayAttendance : dayAttendanceList){
+                //         dayAttendance.Day_Status__c = 'Approved Leave';
+                //         dayAttendance.Approved_Leave__c = leaveRecord.Id;
+                //     }
+                //     update dayAttendanceList;
+                // }
+            }
+            return 'No Leave Application Records Found';
+        }catch(exception e){
+            throw new AuraHandledException('Error fetching Leave Application: ' + e.getMessage());
+        }
+    }
+
+    public class appovalList{
+        @AuraEnabled
+        public List<Leave_Application__c> leaveRequests {get; set;}
+    }
+
 }

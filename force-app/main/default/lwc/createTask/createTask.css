@@ -261,3 +261,39 @@ c-custom-lookup,
 c-custom-filtered-lookup {
     width: 100%;
 }
+
+.empty-task-container {
+    height: 100%;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #eef4ff, #f5f0ff);
+    border-radius: 12px;
+    padding: 24px;
+    width:100%;
+}
+
+.empty-task-image {
+    max-width: 100%;
+    margin-bottom: 16px;
+}
+
+.empty-task-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #16325c;
+    margin-bottom: 6px;
+}
+
+.empty-task-subtitle {
+    font-size: 0.95rem;
+    color: #54698d;
+    margin-bottom: 16px;
+}
+
+.create-task-btn {
+    margin-top: 8px;
+}

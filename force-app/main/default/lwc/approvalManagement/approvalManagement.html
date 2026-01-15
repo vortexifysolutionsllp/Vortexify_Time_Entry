@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title="Approval Management" icon-name="standard:approval">
+        <div class="container">
+
+            <!-- MAIN STATUS TABS -->
+            <lightning-tabset active-tab-value={activeMainTab}>
+                <lightning-tab label="Pending" value="Pending" onactive={handleMainTab}>
+                    <c-approval-list status="Pending" record-id={recordId} onshowtoast={handleShowToast}></c-approval-list>
+                </lightning-tab>
+
+                <lightning-tab label="Approved" value="Approved" onactive={handleMainTab}>
+                    <c-approval-list status="Approved" record-id={recordId} onshowtoast={handleShowToast}></c-approval-list>
+                </lightning-tab>
+
+                <lightning-tab label="Declined" value="Rejected" onactive={handleMainTab}>
+                    <c-approval-list status="Rejected" record-id={recordId} onshowtoast={handleShowToast}></c-approval-list>
+                </lightning-tab>
+            </lightning-tabset>
+
+        </div>
+    </lightning-card>
+</template>

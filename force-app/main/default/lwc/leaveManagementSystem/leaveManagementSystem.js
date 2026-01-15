@@ -22,6 +22,7 @@ export default class LeaveManagementSystem extends LightningElement {
 
     selectedEmployeeId;
     selectedEmployeeName;
+    reportingManager;
 
     @track numberOfDays = 0;
     @track showSpinner = false;
@@ -72,6 +73,7 @@ export default class LeaveManagementSystem extends LightningElement {
         if (data) {
             this.employeeId = data.Id;
             this.employeeName = data.Name;
+            this.reportingManager = data.ReportsToId;
         } else if (error) {
             console.error(error);
         }
@@ -178,6 +180,7 @@ export default class LeaveManagementSystem extends LightningElement {
     }
 
     async saveLeave() {
+        debugger;
         try {
             if (!this.validateForm()) {
                 this.showSwalAlert(
@@ -200,13 +203,14 @@ export default class LeaveManagementSystem extends LightningElement {
             this.showSpinner = true;
 
             const req = {
-                Status: 'Draft',
+                Status: 'Pending',
                 EmployeeId: this.employeeId,
                 LeaveType: this.query('[data-id="leaveType"]'),
                 StartDate: this.query('[data-id="start"]'),
                 EndDate: this.query('[data-id="end"]'),
                 Days: this.numberOfDays,
-                Reason: this.query('[data-id="reason"]')
+                Reason: this.query('[data-id="reason"]'),
+                ReportingManager: this.reportingManager
             };
 
             await createLeave({ req });

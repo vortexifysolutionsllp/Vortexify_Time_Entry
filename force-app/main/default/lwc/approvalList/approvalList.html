@@ -1,0 +1,23 @@
+<template>
+    <lightning-tabset variant="scoped">
+        <lightning-tab label="Leave Requests">
+            <div class="grid">
+                <template for:each={leaveRequests} for:item="req">
+                    <div key={req.Id} class="card">
+                        <c-approval-card request={req} status={status} record-id={recordId} onrefresh={handleRefresh}></c-approval-card>
+                    </div>
+                </template>
+            </div>
+        </lightning-tab>
+
+        <lightning-tab label="Work From Home">
+            <div class="grid">
+                <template for:each={wfhRequests} for:item="req">
+                    <div key={req.Id} class="card">
+                        <c-approval-card request={req} status={status} record-id={recordId} onrefresh={handleRefresh}></c-approval-card>
+                    </div>
+                </template>
+            </div>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

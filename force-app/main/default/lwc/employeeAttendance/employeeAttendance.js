@@ -416,14 +416,20 @@ export default class EmployeeAttendance extends LightningElement {
 
         if (this.viewMode === 'Today') {
             this.loadTodayAttendance();
+            this.monthlyView = false;
         }
 
         if (this.viewMode === 'Yesterday') {
             this.loadYesterdayAttendance();
+            this.monthlyView = false;
         }
 
         if (this.viewMode === 'Monthly') {
             this.loadMonthlyAttendance();
+        }
+
+        if (this.viewMode === 'Custom') {
+            this.monthlyView = false;
         }
     }
 

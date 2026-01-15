@@ -26,7 +26,7 @@
                     if(role === 'Team Lead'){
                         component.set("v.ShowResTasks", false);    
                         component.set("v.ShowManDashboard", false);
-                        component.set("v.ShowTLDashboard", false);
+                        component.set("v.ShowTLDashboard", true);
                         component.set("v.ShowResDashboard", false);
                     }
                     else if(role === 'Developer' || role === 'UI/UX Designer'){
@@ -37,18 +37,17 @@
                     else if(role === 'Project Manager'){
                         component.set("v.ShowResTasks", false);    
                         component.set("v.ShowManDashboard", false);
-                        component.set("v.ShowTLDashboard", false);
+                        component.set("v.ShowTLDashboard", true);
                         component.set("v.ShowResDashboard", false);
                     }
 
                     /* ================= DAILY TASK VIEW ACCESS CONTROL (NEW) ================= */
 
                     // ❌ Hide Daily Task View for Student & Developer
-                    if(role === 'student' || role === 'Developer'){
+                    if(role === 'Student' || role === 'Developer' || role === 'Quality Analyst' || role === 'Consultant'){
                         component.set("v.ShowDailyTaskTab", false);
                         component.set("v.ShowTaskOnDTV", false);
-                    } 
-                    // ✅ Show for all other roles
+                    }
                     else {
                         component.set("v.ShowDailyTaskTab", true);
                     }
@@ -194,6 +193,7 @@
         component.set("v.ShowLeaveManagement", false);
         component.set("v.ShowTaskOnDTV", false);
         component.set("v.ShowAttendanceManagement", false);
+        component.set("v.ShowLeaveApproval", false);
     },
 
     handleShowTasks : function(component) {
@@ -204,6 +204,7 @@
         component.set("v.ShowLeaveManagement", false);
         component.set("v.ShowTaskOnDTV", false);
         component.set("v.ShowAttendanceManagement", false);
+        component.set("v.ShowLeaveApproval", false);
     },
 
     handleShowLeaveManagement: function(component, event, helper) {
@@ -215,6 +216,7 @@
     component.set("v.ShowTaskOnDTV", false);
     component.set("v.ShowLeaveManagement", true);
     component.set("v.ShowAttendanceManagement", false);
+    component.set("v.ShowLeaveApproval", false);
  },
 
     handleShowTLDashboard : function(component) {
@@ -225,6 +227,7 @@
         component.set("v.ShowLeaveManagement", false);
         component.set("v.ShowTaskOnDTV", false);
         component.set("v.ShowAttendanceManagement", false);
+        component.set("v.ShowLeaveApproval", false);
     },
 
     handleShowResDashboard : function(component) {
@@ -235,11 +238,11 @@
         component.set("v.ShowLeaveManagement", false);
         component.set("v.ShowTaskOnDTV", false);
         component.set("v.ShowAttendanceManagement", false);
+        component.set("v.ShowLeaveApproval", false);
     },
 
     handleShowDTVDashboard : function(component) {
 
-        // ❌ Safety check: Student & Developer blocked
         if (!component.get("v.ShowDailyTaskTab")) {
             return;
         }
@@ -251,6 +254,22 @@
         component.set("v.ShowLeaveManagement", false);
         component.set("v.ShowAttendanceManagement", false);
         component.set("v.ShowTaskOnDTV", true);
+        component.set("v.ShowLeaveApproval", false);
+    },
+    handleShowLeaveApproval : function(component) {
+
+        if (!component.get("v.ShowDailyTaskTab")) {
+            return;
+        }
+
+        component.set("v.ShowResTasks", false);
+        component.set("v.ShowTLDashboard", false);
+        component.set("v.ShowResDashboard", false);
+        component.set("v.ShowTaskOnCalender", false);
+        component.set("v.ShowLeaveManagement", false);
+        component.set("v.ShowAttendanceManagement", false);
+        component.set("v.ShowTaskOnDTV", false);
+        component.set("v.ShowLeaveApproval", true);
     },
         handleShowAttendanceManagement: function(component, event, helper) {
         component.set("v.ShowResTasks", false);
@@ -260,6 +279,7 @@
         component.set("v.ShowTaskOnDTV", false);
         component.set("v.ShowLeaveManagement", false);
          component.set("v.ShowAttendanceManagement", true);
+         component.set("v.ShowLeaveApproval", false);
     },
 
     handleLogout : function() {

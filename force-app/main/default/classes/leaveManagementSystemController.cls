@@ -3,7 +3,7 @@ global without sharing class leaveManagementSystemController {
     @AuraEnabled(cacheable=true)
     public static Contact getEmployee(String contactId){
         return [
-            SELECT Id, Name 
+            SELECT Id, Name, ReportsToId
             FROM Contact 
             WHERE Id = :contactId
             LIMIT 1
@@ -53,6 +53,7 @@ global without sharing class leaveManagementSystemController {
         rec.End_Date__c = Date.valueOf((String)req.get('EndDate'));
         rec.Days__c = Integer.valueOf(req.get('Days'));
         rec.Reason_for_Leave__c = (String)req.get('Reason');
+        rec.Approver__c = (String)req.get('ReportingManager');
 
         insert rec;
 

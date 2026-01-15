@@ -18,6 +18,7 @@
     <aura:attribute name="ShowTLDashboard" type="Boolean" default="false"/>
     <aura:attribute name="ShowResDashboard" type="Boolean" default="false"/>
     <aura:attribute name="ShowTaskOnDTV" type="Boolean" default="false"/>
+    <aura:attribute name="ShowLeaveApproval" type="Boolean" default="false"/>
     <aura:attribute name="ShowLeaveManagement" type="Boolean" default="false"/>
     <aura:attribute name="ShowAttendanceManagement" type="Boolean" default="false"/>
     <aura:attribute name="ShowAvaiableResource" type="Boolean" default="false"/>
@@ -88,6 +89,10 @@
                 </aura:if>
                 <lightning:tab label="Leave Management" onactive="{!c.handleShowLeaveManagement}">
                 </lightning:tab>
+                <aura:if isTrue="{!v.ShowDailyTaskTab}">
+                    <lightning:tab label="Leave Approvals" onactive="{!c.handleShowLeaveApproval}">
+                    </lightning:tab>
+                </aura:if>
                <lightning:tab label="Attendence Management" onactive="{!c.handleShowAttendanceManagement}">
                 </lightning:tab>
             </lightning:tabset>
@@ -171,7 +176,13 @@
                         
                     </div>
                 </aura:if> 
-                
+                <aura:if isTrue="{!v.ShowLeaveApproval}">
+                    <div class="right-section">
+                        
+                        <c:approvalManagement recordId="{!v.recordId}" />
+                        
+                    </div>
+                </aura:if>
                  <aura:if isTrue="{!v.ShowAttendanceManagement}">
                     <div class="right-section">
                         
