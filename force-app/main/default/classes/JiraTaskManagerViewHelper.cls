@@ -20,11 +20,14 @@ public static String checkInAttendance(Id contactId) {
         ];
 
         // 2. Do not allow check-in on Holiday / Weekend
-        if (dayAtt.IsHoliday__c) {
+        if (dayAtt.IsHoliday__c || dayAtt.Day_Status__c == 'Holiday') {
             return 'Today is a holiday. Check-in not allowed.';
         }
-        if (dayAtt.IsWeekend__c) {
+        if (dayAtt.IsWeekend__c || dayAtt.Day_Status__c == 'Weekend') {
             return 'Today is a weekend. Check-in not allowed.';
+        }
+        if (dayAtt.Day_Status__c == 'Approved Leave') {
+            return 'Check-In is not allowed on Leave Days.';
         }
 
         // 3. Create Checkin record

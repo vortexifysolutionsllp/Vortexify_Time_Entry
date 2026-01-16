@@ -113,30 +113,9 @@
         component.set("v.showAvailComp", true);
     },
 
-   /* handleCheckIn : function(component, event, helper) {
-        var action = component.get("c.checkInAttendance");
-        console.log('-----r-action--1---' + JSON.stringify(action));
-        action.setParams({ contactId: component.get("v.recordId") });
-
-        action.setCallback(this, function(response) 
-                           
-            if (response.getState() === "SUCCESS") {
-                helper.showSuccessAlert(component, response.getReturnValue());
-                   component.set("v.isCheckInDisabled", true);
-                  component.set("v.isCheckOutDisabled", false);
-            } else {
-                helper.showErrorAlert(component, "Failed to check in.");
-            }
-        });
-        $A.enqueueAction(action);
-    },*/
-
 
     handleCheckIn : function(component, event, helper) {
         var action = component.get("c.checkInAttendance");
-
-        // ✅ Proper logging
-        console.log('Check-in action:', action);
 
         action.setParams({
             contactId: component.get("v.recordId")
@@ -144,15 +123,15 @@
 
         action.setCallback(this, function(response) {
             var state = response.getState();
-            console.log('Check-in state:', state);
-
             if (state === "SUCCESS") {
                 console.log('Check-in result:', response.getReturnValue());
-
-                helper.showSuccessAlert(component, response.getReturnValue());
-                component.set("v.isCheckInDisabled", true);
-                component.set("v.isCheckOutDisabled", false);
-
+                if(response.getReturnValue().includes('not allowed')){
+                    helper.showErrorAlert(component,response.getReturnValue());
+                }else{
+                    helper.showSuccessAlert(component, response.getReturnValue());
+                    component.set("v.isCheckInDisabled", true);
+                    component.set("v.isCheckOutDisabled", false);
+                }
             } else if (state === "ERROR") {
                 var errors = response.getError();
                 console.error('Check-in error:', errors);

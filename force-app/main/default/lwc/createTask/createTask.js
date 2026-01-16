@@ -11,8 +11,8 @@ import SWEETALERT from '@salesforce/resourceUrl/sweetalert2';
 import EMPTY_TASK_IMAGE from '@salesforce/resourceUrl/emptyTaskIllustration';
 
 export default class CreateTask extends LightningElement {
-    @api recordid;
-    @track showSpinner = false;
+@api recordid;
+@track showSpinner = false;
 @track showDeleteModal = false;
 @track taskIdToDelete = null;
 @track selectedModuleName = '';
@@ -23,7 +23,6 @@ export default class CreateTask extends LightningElement {
 
 // VIEW ONLY MODAL PROPERTIES ---------------------------
     @track isReadOnlyModalOpen = false;
-
     @track viewProject;
     @track viewModule;
     @track viewTeamMember;
@@ -125,12 +124,12 @@ renderedCallback() {
                         tooltipVisible: false
                     };
                 });
+                this.isTasksAvailable = this.tasks.length>0;
             })
             .catch(error => {
                 console.error('Error fetching tasks:', error);
                 this.tasks = [];
             });
-            this.isTasksAvailable = this.tasks.length>0;
     }
 
     // Tooltip Handlers
