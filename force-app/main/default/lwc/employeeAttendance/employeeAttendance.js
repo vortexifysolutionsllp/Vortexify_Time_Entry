@@ -144,11 +144,11 @@ export default class EmployeeAttendance extends LightningElement {
                 class: { fieldName: 'statusClass' }
             }
          },
-        { label: 'First Check-in', fieldName: 'firstcheckin', cellAttributes: {
+        { label: 'Check In Time', fieldName: 'firstcheckin', cellAttributes: {
                 class: { fieldName: 'statusClass' }
             }
          },
-        { label: 'Checkin Count', fieldName: 'checkincount', cellAttributes: {
+        { label: 'Check Out Time', fieldName: 'checkoutTime', cellAttributes: {
                 class: { fieldName: 'statusClass' }
             }
          },
@@ -293,7 +293,7 @@ export default class EmployeeAttendance extends LightningElement {
                         status: rowDate > today && row.Day_Status__c == 'Absent' ? '' : row.Day_Status__c,
                         firstcheckin: this.formatTime(row.FirstCheckIn__c),
                         lastcheckOut: this.formatTime(row.LastCheckOut__c),
-                        checkincount: row.CheckinCount__c
+                        checkoutTime: this.formatTime(row.LastCheckOut__c)
                     };
                 });
             })
