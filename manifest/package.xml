@@ -33,7 +33,7 @@
         <name>StaticResource</name>
     </types>
 	<types>
-		<members>ApprovalSitePermissionSet</members>
+		<members>*</members>
 		<name>PermissionSet</name>
 	</types>
     <version>65.0</version>
