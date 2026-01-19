@@ -53,7 +53,7 @@
                     }
                 }
 
-                var title = 'Welcome ' + response.getReturnValue().conDetails.Name + ' 😊😊';
+                var title = 'Welcome ' + response.getReturnValue().conDetails.Name;
                 component.set("v.titleName", title);
                 component.set("v.ShowProgress", true);
             }
