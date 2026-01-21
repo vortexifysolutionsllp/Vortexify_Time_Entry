@@ -190,7 +190,7 @@
     addRow: function(component, event, helper) {
         debugger; 
         var moduleList = component.get("v.data");
-        var projectID = component.get("v.data[0].ProjectID");
+        var projectID = component.get("v.ProjectId");
         var PRM = component.get("v.data[0].PRM");
         //Add New Account Record
         moduleList.push({

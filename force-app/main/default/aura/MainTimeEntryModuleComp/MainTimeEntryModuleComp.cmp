@@ -71,6 +71,17 @@
                 
             </div>
         </div>
+
+        <!-- <div class="slds-grid slds-wrap slds-grid_align-center slds-gutters slds-m-around_medium" style="height:50px;">
+            <aura:if isTrue="{!v.ShowDailyTaskTab}">
+                <div class="slds-m-right_x-small">
+                    <lightning:button variant="brand" onclick="{!c.showModuleUpdate}" label="Update Modules"/>
+                </div>
+                <div class="slds-m-right_x-small">
+                    <lightning:button variant="brand" onclick="{!c.tagTeamMember}" label="Add Team Members 🚸"/>
+                </div>
+            </aura:if>
+        </div> -->
         
         <!-- Main Content Section -->
         <div class="slds-grid slds-wrap">

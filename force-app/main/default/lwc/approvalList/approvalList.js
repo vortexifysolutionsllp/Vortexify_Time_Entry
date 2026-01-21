@@ -11,13 +11,14 @@ export default class ApprovalList extends LightningElement {
     wiredResult;
 
     @wire(getApprovalRequests, { approverId: '$recordId', status: '$status' })
-    wiredData({ data }) {
-        this.wiredResult = data;
-        if (data) {
-            this.leaveRequests = data.leaveRequests || [];
-            this.wfhRequests = data.wfh || [];
+    wiredGetApprovalRequests(result,error) {
+        this.wiredResult = result;
+        if (result.data) {
+            this.leaveRequests = result.data.leaveRequests || [];
+            this.wfhRequests = result.data.wfh || [];
         }
     }
+
     handleRefresh(event) {
         const { recordId, status } = event.detail;
         this.leaveRequests = this.leaveRequests.filter(r => r.Id !== recordId);

@@ -3,6 +3,7 @@ import getEmployee from '@salesforce/apex/leaveManagementSystemController.getEmp
 import getLeaveTypes from '@salesforce/apex/leaveManagementSystemController.getLeaveTypes';
 import getLeaves from '@salesforce/apex/leaveManagementSystemController.getLeaves';
 import createLeave from '@salesforce/apex/leaveManagementSystemController.createLeave';
+import getRemainingAndUsedLeaves from '@salesforce/apex/leaveManagementSystemController.getRemainingAndUsedLeaves';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 import { loadScript, loadStyle } from 'lightning/platformResourceLoader';
@@ -16,6 +17,7 @@ export default class LeaveManagementSystem extends LightningElement {
     leaveTypeOptions = [];
     leaveData = [];
     leaveResult;
+    leaveBalanceResult;
 
     hide = true;
     isFormOpen = false;
@@ -28,11 +30,12 @@ export default class LeaveManagementSystem extends LightningElement {
     @track showSpinner = false;
     sweetAlertInitialized = false;
 
-    leaveBalances = [
-        { label: "Sick Leave", value: 18 },
-        { label: "Casual Leave", value: 18 },
-        { label: "Paid Leave", value: 18 },
-        { label: "Total Leave", value: 54 }
+    @track leaveBalances = [
+        { label: "Sick Leave", value: 0, remaining:0 },
+        { label: "Casual Leave", value: 0, remaining:0 },
+        /*{ label: "Earned Leave", value: 0, remaining:0 },*/
+        { label: "Holidays", value: 0, remaining:0 },
+        { label: "Total Leave", value: 0, remaining:0}
     ];
 
     renderedCallback() {
@@ -101,6 +104,41 @@ export default class LeaveManagementSystem extends LightningElement {
         }
     }
 
+    @wire(getRemainingAndUsedLeaves, {employeeId: '$recordId'})
+    wiredGetRemainingAndUsedLeaves(result,error){
+        this.leaveBalanceResult = result;
+        if(result.data){
+            const balances = JSON.parse(result.data);
+            let totalUsed = 0;
+            let totalRemaining = 0;
+            const balanceMap = {
+                'Sick Leave': { value: 0, remaining: 0 },
+                'Casual Leave': { value: 0, remaining: 0 },
+                'Holidays': { value: 0, remaining: 0 }
+            };
+            this.leaveBalances = Object.keys(balances).map(type => {
+                const used = balances[type].used || 0;
+                const remaining = balances[type].remaining || 0;
+
+                totalUsed += used;
+                totalRemaining += remaining;
+
+                return {
+                    label: type,
+                    value: used,
+                    remaining: remaining
+                };
+            });
+            this.leaveBalances.push({
+                label: 'Total Leave',
+                value: totalUsed,
+                remaining: totalRemaining
+            });
+        }else if (error) {
+            console.error(error);
+        }
+    }
+
 
 
     columns = [
@@ -132,12 +170,28 @@ export default class LeaveManagementSystem extends LightningElement {
         startEl.setCustomValidity('');
         endEl.setCustomValidity('');
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        if (start < today) {
+            startEl.setCustomValidity('Start Date cannot be in the past');
+            startEl.reportValidity();
+            return;
+        }
+
+        if (end < today) {
+            endEl.setCustomValidity('End Date cannot be in the past');
+            endEl.reportValidity();
+            return;
+        }
+
         if (!startDate || !endDate) {
             return;
         }
 
-        const start = new Date(startDate);
-        const end = new Date(endDate);
 
         if (end < start) {
             endEl.setCustomValidity('End Date cannot be before Start Date');
@@ -219,6 +273,7 @@ export default class LeaveManagementSystem extends LightningElement {
             this.isFormOpen = false;
 
             await refreshApex(this.leaveResult);
+            await refreshApex(this.leaveBalanceResult);
 
             this.showSwalAlert(
                 'Leave Created',

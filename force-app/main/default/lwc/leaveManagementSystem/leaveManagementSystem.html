@@ -6,15 +6,16 @@
     </template>
 
     <!-- TOP HEADER AREA -->
-    <div class="leave-header">
+    <div class="leave-header" style="padding: 1rem;">
 
         <!-- LEFT: BALANCE CARDS -->
         <div class="balance-wrapper">
             <div class="balance-section">
                 <template for:each={leaveBalances} for:item="bal">
                     <div key={bal.label} class="balance-card glow">
-                        <div class="value">{bal.value}</div>
-                        <div class="label">{bal.label}</div>
+                        <div class="value">{bal.label}</div>
+                        <div class="label"><b>Used:&nbsp;</b> {bal.value}</div>
+                        <div class="label"><b>Remaining:&nbsp;</b>{bal.remaining}</div>
                     </div>
                 </template>
             </div>
@@ -69,7 +70,7 @@
                         <lightning-input type="date" label="End Date" data-id="end" onchange={handleDateChange} required>
                         </lightning-input>
 
-                        <lightning-combobox label="Leave Type" data-id="leaveType" options={leaveTypeOptions} required>
+                        <lightning-combobox label="Leave Type" data-id="leaveType" options={leaveTypeOptions} required onchange={handleLeaveTypeChange}>
                         </lightning-combobox>
 
                         <lightning-input type="number" label="Number of Days" data-id="days" value={numberOfDays}
