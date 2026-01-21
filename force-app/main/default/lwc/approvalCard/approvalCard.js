@@ -1,7 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import approveRequest from '@salesforce/apex/LeaveApprovalController.approveRequest';
 import rejectRequest from '@salesforce/apex/LeaveApprovalController.rejectRequest';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class ApprovalCard extends LightningElement {
     @api request;

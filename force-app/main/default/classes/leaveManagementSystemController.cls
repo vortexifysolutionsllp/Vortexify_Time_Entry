@@ -40,8 +40,49 @@ global without sharing class leaveManagementSystemController {
 
     }
 
+    @AuraEnabled(cacheable=true)
+    public static String getRemainingAndUsedLeaves(String employeeId){
+        try{
+            List<Leave_Entitlement__c> leaveEntitlementList = [SELECT Id, Casual_Leaves_Remaining__c, Casual_Leaves_Used__c, Earned_Leaves_Remaining__c, Earned_Leaves_Used__c, Floater_Leaves_Remaining__c, Floater_Leaves_Used__c, Sick_Leaves_Remaining__c, Sick_Leaves_Used__c FROM Leave_Entitlement__c WHERE Employee__c =: employeeId AND Is_Current_Year__c = true LIMIT 1];
+            List<Holiday__c> holidayList = [SELECT Id, Name, Date__c FROM Holiday__c WHERE Date__c = THIS_YEAR];
+            List<Holiday__c> elapsedHolidayList = [SELECT Id, Name, Date__c FROM Holiday__c WHERE Date__c = THIS_YEAR AND Date__c <= TODAY];
+            String result = '';
+            if(leaveEntitlementList?.size()>0){
+                Map<String, Object> response = new Map<String, Object>();
+                response.put('Holidays', new Map<String, Decimal>{
+                    'used' => elapsedHolidayList.size(),
+                    'remaining' => holidayList.size() - elapsedHolidayList.size()
+                });
+                
+                response.put('Sick Leave', new Map<String, Decimal>{
+                    'used' => leaveEntitlementList[0].Sick_Leaves_Used__c,
+                    'remaining' => leaveEntitlementList[0].Sick_Leaves_Remaining__c
+                });
+
+                response.put('Casual Leave', new Map<String, Decimal>{
+                    'used' => leaveEntitlementList[0].Casual_Leaves_Used__c,
+                    'remaining' => leaveEntitlementList[0].Casual_Leaves_Remaining__c
+                });
+
+                /*response.put('Earned Leave', new Map<String, Decimal>{
+                    'used' => leaveEntitlementList[0].Earned_Leaves_Used__c,
+                    'remaining' => leaveEntitlementList[0].Earned_Leaves_Remaining__c
+                });*/
+                System.debug('response--> ' + response);
+                return JSON.serialize(response);
+            }
+            return result;
+        }catch(exception e){
+            return null;
+        }
+    }
+
     @AuraEnabled
     public static String createLeave(Map<String, Object> req){
+        List<Leave_Entitlement__c> leaveEntitlementList = [SELECT Id FROM Leave_Entitlement__c WHERE Employee__c = :(String)req.get('EmployeeId') AND Is_Current_Year__c = true LIMIT 1];
+        if(leaveEntitlementList?.size()==0){
+            return 'No Leave Entitlement Found';
+        }
 
         Leave_Application__c rec = new Leave_Application__c();
 
@@ -54,6 +95,7 @@ global without sharing class leaveManagementSystemController {
         rec.Days__c = Integer.valueOf(req.get('Days'));
         rec.Reason_for_Leave__c = (String)req.get('Reason');
         rec.Approver__c = (String)req.get('ReportingManager');
+        rec.Leave_Entitlement__c = leaveEntitlementList[0].Id;
 
         insert rec;
 

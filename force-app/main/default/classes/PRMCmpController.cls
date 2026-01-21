@@ -23,7 +23,7 @@ global  without sharing class  PRMCmpController {
         system.debug('MembersByProject'+MembersByProject);
         Boolean alreadyExisting = false;
         for(Project_Resource_Mapping__c prm : prmList){
-            if(MembersByProject.get(prm.Project__c).contains(prm.Contact__c)){
+            if(MembersByProject.containsKey(prm.Project__c) && MembersByProject.get(prm.Project__c).contains(prm.Contact__c)){
                 system.debug('MembersByProject.get(prm.Project__c)'+MembersByProject.get(prm.Project__c));
                 alreadyExisting = true;
             }else{
@@ -32,7 +32,7 @@ global  without sharing class  PRMCmpController {
         }
         system.debug('alreadyExisting'+alreadyExisting);
         if(alreadyExisting == true){
-            system.debug('Existing One not Found');
+            system.debug('Existing One Found');
             return null;
         }else{
             upsert prmList;

@@ -88,4 +88,13 @@
         // Set isModalOpen attribute to false  
         component.set("v.isModalOpen", false);
     },
+      handleComponentEvent : function(component, event, helper) {
+     
+    // get the selected Account record from the COMPONETN event 	 
+       var selectedAccountGetFromEvent = event.getParam("accountByEvent");
+	   
+	   component.set("v.selectedRecord" , selectedAccountGetFromEvent); 
+       console.log('selectedAccountGetFromEvent',selectedAccountGetFromEvent);
+      
+	},
 })

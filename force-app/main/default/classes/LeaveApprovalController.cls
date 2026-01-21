@@ -194,6 +194,8 @@ private static String row(String label, String value) {
     public static appovalList getApprovalRequests(String approverId, String status){
         try{
             appovalList result = new appovalList();
+            System.debug('approverId--->'+approverId);
+            System.debug('status--->'+status);
             List<Leave_Application__c> leaveApplicationList = [SELECT Id, Name, Start_Date__c, End_Date__c, Reason_for_Leave__c, Status__c, Employee__r.Name, Employee__c, Leave_Type__c, Days__c FROM Leave_Application__c WHERE Approver__c = :approverId AND Status__c = :status ORDER BY Start_Date__c DESC];
             result.leaveRequests = leaveApplicationList;
             return result;

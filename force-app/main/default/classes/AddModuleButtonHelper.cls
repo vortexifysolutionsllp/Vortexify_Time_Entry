@@ -14,25 +14,25 @@ global  without sharing class AddModuleButtonHelper {
         system.debug('mddList -- ' + mddList);
         String projectId = mddList[0].project__c;
         system.debug('projectId -- ' + projectId);
-        String DevMilestoneId = [Select id , Name__c from milestone__C where Name__c = 'Development' and project__c = :projectId limit 1].Id;
-        system.debug('DevMilestoneId -- ' + DevMilestoneId);
-        Map<ID, Milestone__c> milestoneRecById = new Map<ID, Milestone__c>([Select id , Name__c from Milestone__c where project__c = :projectId]);
-        map<String,String> milestoneIdByName = new Map<String,String>(); 
+        // String DevMilestoneId = [Select id , Name__c from milestone__C where Name__c = 'Development' and project__c = :projectId limit 1].Id;
+        // system.debug('DevMilestoneId -- ' + DevMilestoneId);
+        // Map<ID, Milestone__c> milestoneRecById = new Map<ID, Milestone__c>([Select id , Name__c from Milestone__c where project__c = :projectId]);
+        // map<String,String> milestoneIdByName = new Map<String,String>(); 
         
-        for(Milestone__c ms : milestoneRecById.values()){
-            milestoneIdByName.put(ms.Name__c , ms.Id);
-        }
-        system.debug('milestoneIdByName===>>>>'+milestoneIdByName);
+        // for(Milestone__c ms : milestoneRecById.values()){
+        //     milestoneIdByName.put(ms.Name__c , ms.Id);
+        // }
+        // system.debug('milestoneIdByName===>>>>'+milestoneIdByName);
         
-        for(Module__c mod : mddList){
-            if( String.isNotBlank(mod.Project__c)){
-                if(milestoneIdByName.ContainsKey(mod.Name)){
-                    mod.Milestone__c = milestoneIdByName.get(mod.Name);
-                }else{
-                    mod.Milestone__c = DevMilestoneId;
-                }
-            }
-        }
+        // for(Module__c mod : mddList){
+        //     if( String.isNotBlank(mod.Project__c)){
+        //         if(milestoneIdByName.ContainsKey(mod.Name)){
+        //             mod.Milestone__c = milestoneIdByName.get(mod.Name);
+        //         }else{
+        //             mod.Milestone__c = DevMilestoneId;
+        //         }
+        //     }
+        // }
         system.debug('mddList last ::'+mddList);
         upsert mddList;
         return mddList;

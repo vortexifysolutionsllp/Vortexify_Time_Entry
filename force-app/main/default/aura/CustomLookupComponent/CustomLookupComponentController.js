@@ -45,6 +45,7 @@
        var selectedAccountGetFromEvent = event.getParam("accountByEvent");
 	   
 	   component.set("v.selectedRecord" , selectedAccountGetFromEvent); 
+     console.log('selectedAccountGetFromEvent',selectedAccountGetFromEvent);
        
         var forclose = component.find("lookup-pill");
            $A.util.addClass(forclose, 'slds-show');

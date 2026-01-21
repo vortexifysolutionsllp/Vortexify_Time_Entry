@@ -115,8 +115,8 @@ public static void updateJiraTask(
         //if (moduleId != null) task.Module__c = moduleId;
         //if (contactId != null) task.Team_Member__c = contactId;
         if (priority != null) task.Priority__c = priority;
-        if (startDateTime != null) task.Task_Start_Date_Time__c = DateTime.valueOf(startDateTime.addminutes(-330));
-        if (endDateTime != null) task.Task_End_Date_Time__c = DateTime.valueOf(endDateTime.addminutes(-330));
+        if (startDateTime != null) task.Task_Start_Date_Time__c = DateTime.valueOf(startDateTime);
+        if (endDateTime != null) task.Task_End_Date_Time__c = DateTime.valueOf(endDateTime);
         if (description != null) task.Task_Description__c = description;
 
         update task;
