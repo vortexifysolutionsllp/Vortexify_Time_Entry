@@ -148,7 +148,7 @@ export default class EmployeeAttendance extends LightningElement {
                 class: { fieldName: 'statusClass' }
             }
          },
-        { label: 'Check Out Time', fieldName: 'checkoutTime', cellAttributes: {
+        { label: 'Check Out Time', fieldName: 'lastcheckOut', cellAttributes: {
                 class: { fieldName: 'statusClass' }
             }
          },

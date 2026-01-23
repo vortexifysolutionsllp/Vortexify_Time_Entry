@@ -1,5 +1,5 @@
 //shivam kumar mishra
-public class LeaveApprovalController {
+public without sharing class LeaveApprovalController {
 
     public Leave_Application__c leaveRecord { get; set; }
     public Boolean isValid { get; set; }
@@ -208,9 +208,9 @@ private static String row(String label, String value) {
     public static String approveRequest(String recordId){
         try{
             appovalList result = new appovalList();
-            List<Leave_Application__c> leaveApplicationList = [SELECT Id, Name, Start_Date__c, End_Date__c, Status__c, Employee__r.Name, Employee__c, Approver__c, Approved_By__c FROM Leave_Application__c WHERE Id = :recordId];
+            List<Leave_Application__c> leaveApplicationList = [SELECT Id, Name, Leave_Type__c, Start_Date__c, End_Date__c, Status__c, Employee__r.Name, Employee__c, Approver__c, Approved_By__c FROM Leave_Application__c WHERE Id = :recordId];
             if(leaveApplicationList?.size()>0){
-                leaveApplicationList[0].Status__c = 'Approved';
+                leaveApplicationList[0].Status__c = leaveApplicationList[0].Leave_Type__c.equalsIgnoreCase('Unpaid') ? 'Approved - Unpaid' : 'Approved';
                 leaveApplicationList[0].Approved_By__c = leaveApplicationList[0].Approver__c;
                 leaveApplicationList[0].Approved_On__c = System.now();
                 update leaveApplicationList[0];
@@ -232,7 +232,7 @@ private static String row(String label, String value) {
     }
 
     @AuraEnabled
-    public static String rejectRequest(String recordId){
+    public static String rejectRequest(String recordId, String rejectionReason){
         try{
             appovalList result = new appovalList();
             List<Leave_Application__c> leaveApplicationList = [SELECT Id, Name, Start_Date__c, End_Date__c, Status__c, Employee__r.Name, Employee__c, Approver__c, Approved_By__c, Approved_On__c FROM Leave_Application__c WHERE Id = :recordId];
@@ -240,6 +240,7 @@ private static String row(String label, String value) {
                 leaveApplicationList[0].Status__c = 'Rejected';
                 leaveApplicationList[0].Approved_By__c = leaveApplicationList[0].Approver__c;
                 leaveApplicationList[0].Approved_On__c = System.now();
+                leaveApplicationList[0].Rejection_Reason__c = rejectionReason;
                 update leaveApplicationList[0];
                 return 'Leave Rejected Successfully.';
                 // List<DayAttendance__c> dayAttendanceList = [SELECT Id, Date__c, Day_Status__c, Employee__c, Approved_Leave__c FROM DayAttendance__c WHERE Employee__c = :leaveApplicationList[0].Employee__c AND Date__c >= :leaveApplicationList[0].Start_Date__c AND Date__c <= :leaveApplicationList[0].End_Date__c];

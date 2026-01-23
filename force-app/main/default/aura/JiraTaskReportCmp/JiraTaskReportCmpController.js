@@ -12,10 +12,12 @@
             if (state === "SUCCESS") {
                 var contact = [];
                 var result = response.getReturnValue();
+                console.log('result',JSON.stringify(result));   
                 for(var key in result){
                     contact.push({key:key , value:result[key]});
                 }
-                component.set("v.conList",contact);         
+                component.set("v.conList",contact); 
+                console.log(JSON.stringify(contact));        
                 component.set("v.showSpinner", false);
                 component.set("v.showComp", true);
             }
@@ -23,13 +25,11 @@
         $A.enqueueAction(action);
     },
     
-    navigatingToTask : function (component, event, helper) {
-        debugger;
-        
-        var TaskName =  event.target.getAttribute('data-recid');
-        var AssingedBy =  event.target.getAttribute('data-giver');
-        var ModuleName =  event.target.getAttribute('data-modulename');
-        var TaskProjectName = event.target.getAttribute('data-projectname');
+    navigatingToTask : function (component, event, helper) {        
+        var TaskName =  event.currentTarget.dataset.recid;
+        var AssingedBy =  event.currentTarget.dataset.giver;
+        var ModuleName =  event.currentTarget.dataset.modulename;
+        var TaskProjectName = event.currentTarget.dataset.projectname;
         var Descrption = event.currentTarget.id; 
         component.set("v.TaskProjectName", TaskProjectName);
         component.set("v.jiraTaskName", TaskName);

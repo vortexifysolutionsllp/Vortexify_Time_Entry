@@ -84,6 +84,12 @@ global without sharing class leaveManagementSystemController {
             return 'No Leave Entitlement Found';
         }
 
+        List<Leave_Application__c> existingLeaveApplications = [SELECT Id FROM Leave_Application__c WHERE Employee__c = :(String)req.get('EmployeeId') AND Status__c != 'Rejected' AND ((Start_Date__c  <=: Date.valueOf((String)req.get('StartDate')) AND End_Date__c >=: Date.valueOf((String)req.get('StartDate'))) OR ((Start_Date__c  <=: Date.valueOf((String)req.get('EndDate')) AND End_Date__c >=: Date.valueOf((String)req.get('EndDate')))))];
+
+        if(existingLeaveApplications?.size()>0){
+            return 'Leave Application Already Exists for the given date range';
+        }
+
         Leave_Application__c rec = new Leave_Application__c();
 
       //  rec.Name = (String)req.get('Name');
