@@ -51,6 +51,21 @@
 
                     <!-- <lightning-input label="Status" value="Draft" disabled></lightning-input> -->
 
+                    <template if:true={showModalError}>
+                        <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_medium" role="alert">
+                            <span class="slds-assistive-text">Error</span>
+                            <span class="slds-icon_container slds-icon-utility-error slds-m-right_small">
+                                <lightning-icon
+                                    icon-name="utility:error"
+                                    alternative-text="Error"
+                                    size="small"
+                                    variant="error">
+                                </lightning-icon>
+                            </span>
+                            <h2>{modalErrorMessage}</h2>
+                        </div>
+                    </template>
+
                     <div class="form-grid">
 
                         <!-- LEFT COLUMN -->

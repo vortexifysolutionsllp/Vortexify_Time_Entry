@@ -29,6 +29,8 @@ export default class LeaveManagementSystem extends LightningElement {
     @track numberOfDays = 0;
     @track showSpinner = false;
     sweetAlertInitialized = false;
+    @track showModalError = false;
+    @track modalErrorMessage = '';
 
     @track leaveBalances = [
         { label: "Sick Leave", value: 0, remaining:0 },
@@ -156,6 +158,8 @@ export default class LeaveManagementSystem extends LightningElement {
     }
 
     closeForm() {
+        this.showModalError = false;
+        this.modalErrorMessage = '';
         this.isFormOpen = false;
     }
 
@@ -254,6 +258,17 @@ export default class LeaveManagementSystem extends LightningElement {
                 return;
             }
 
+            const selectedLeaveType = this.query('[data-id="leaveType"]') + ' Leave';
+            const remainingLeaves = this.getRemainingForLeaveType(selectedLeaveType);
+
+            if (selectedLeaveType != 'Unpaid Leave' && this.numberOfDays > remainingLeaves) {
+                this.showModalError = true;
+                this.modalErrorMessage = `You have only ${remainingLeaves} day(s) remaining for ${selectedLeaveType}.`;
+                return;
+            }else{
+                this.showModalError = false;
+            }
+
             this.showSpinner = true;
 
             const req = {
@@ -267,7 +282,15 @@ export default class LeaveManagementSystem extends LightningElement {
                 ReportingManager: this.reportingManager
             };
 
-            await createLeave({ req });
+            let response = await createLeave({ req });
+
+            if(response != 'SUCCESS'){
+                this.showModalError = true;
+                this.modalErrorMessage = response;
+                return;
+            }else{
+                this.showModalError = false;
+            }
 
             // Close modal
             this.isFormOpen = false;
@@ -293,6 +316,11 @@ export default class LeaveManagementSystem extends LightningElement {
                 this.showSpinner = false;
             }, 800);
         }
+    }
+
+    getRemainingForLeaveType(leaveType) {
+        const balance = this.leaveBalances.find(lb => lb.label === leaveType);
+        return balance ? balance.remaining : 0;
     }
 
 }

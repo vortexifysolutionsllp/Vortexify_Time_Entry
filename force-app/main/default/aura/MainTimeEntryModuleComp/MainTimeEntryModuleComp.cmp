@@ -27,7 +27,8 @@
     <aura:attribute name="isCheckInDisabled" type="Boolean" default="false"/>
     <aura:attribute name="isCheckOutDisabled" type="Boolean" default="true"/>
     <aura:attribute name="ShowDailyTaskTab" type="Boolean" default="true"/>
-
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    
 
 
     
@@ -35,6 +36,15 @@
     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <div class="myfull">
+
+        <aura:if isTrue="{!v.isLoading}">
+            <div class="spinner-backdrop">
+                <lightning:spinner
+                    alternativeText="Loading"
+                    size="medium"
+                    variant="brand"/>
+            </div>
+        </aura:if>
         <!-- Header Section with Logo -->
         <div class="header-section">
             <!-- Logo -->
@@ -59,6 +69,16 @@
                 <div>
                     <lightning:button label="Check In" onclick="{!c.handleCheckIn}" class="small-header-btn check-in slds-m-right_x-small" disabled="{!v.isCheckInDisabled}"/>
                     <lightning:button label="Check Out" onclick="{!c.handleCheckOut}" class="small-header-btn check-out" disabled="{!v.isCheckOutDisabled}"/>
+                    <!-- <aura:if isTrue="{!v.ShowDailyTaskTab}">
+                        <lightning:button 
+                            label="Get My Location" 
+                            onclick="{!c.getLocation}" />
+                            <p>Latitude: {!v.latitude}</p>
+                            <p>Longitude: {!v.longitude}</p>
+
+                            <lightning:button label="Check Location" onclick="{!c.checkLocation}" />
+                            <p>{!v.status}</p>
+                    </aura:if> -->
                 </div>
                 <lightning:buttonIcon 
                                       iconName="utility:logout"

@@ -114,54 +114,61 @@
     },
 
 
+    // handleCheckIn : function(component, event, helper) {
+    //     var action = component.get("c.checkInAttendance");
+
+    //     action.setParams({
+    //         contactId: component.get("v.recordId")
+    //     });
+
+    //     action.setCallback(this, function(response) {
+    //         var state = response.getState();
+    //         if (state === "SUCCESS") {
+    //             console.log('Check-in result:', response.getReturnValue());
+    //             if(response.getReturnValue().includes('not allowed')){
+    //                 helper.showErrorAlert(component,response.getReturnValue());
+    //             }else{
+    //                 helper.showSuccessAlert(component, response.getReturnValue());
+    //                 component.set("v.isCheckInDisabled", true);
+    //                 component.set("v.isCheckOutDisabled", false);
+    //             }
+    //         } else if (state === "ERROR") {
+    //             var errors = response.getError();
+    //             console.error('Check-in error:', errors);
+
+    //             helper.showErrorAlert(component,
+    //                 errors && errors[0] && errors[0].message
+    //                 ? errors[0].message
+    //                 : "Failed to check in."
+    //             );
+    //         }
+    //     });
+
+    //     $A.enqueueAction(action);
+    // },
+    // handleCheckOut : function(component, event, helper) {
+    //     var action = component.get("c.checkOutAttendance");
+    //     action.setParams({ contactId: component.get("v.recordId") });
+
+    //     action.setCallback(this, function(response) {
+    //         if (response.getState() === "SUCCESS") {
+    //             helper.showSuccessAlert1(component, response.getReturnValue());
+    //             component.set("v.isCheckOutDisabled", true);
+    //             component.set("v.isCheckInDisabled", true);
+    //         } else {
+    //             helper.showErrorAlert1(component, "Failed to check out.");
+    //         }
+    //     });
+    //     $A.enqueueAction(action);
+    // },
+
     handleCheckIn : function(component, event, helper) {
-        var action = component.get("c.checkInAttendance");
-
-        action.setParams({
-            contactId: component.get("v.recordId")
-        });
-
-        action.setCallback(this, function(response) {
-            var state = response.getState();
-            if (state === "SUCCESS") {
-                console.log('Check-in result:', response.getReturnValue());
-                if(response.getReturnValue().includes('not allowed')){
-                    helper.showErrorAlert(component,response.getReturnValue());
-                }else{
-                    helper.showSuccessAlert(component, response.getReturnValue());
-                    component.set("v.isCheckInDisabled", true);
-                    component.set("v.isCheckOutDisabled", false);
-                }
-            } else if (state === "ERROR") {
-                var errors = response.getError();
-                console.error('Check-in error:', errors);
-
-                helper.showErrorAlert(component,
-                    errors && errors[0] && errors[0].message
-                    ? errors[0].message
-                    : "Failed to check in."
-                );
-            }
-        });
-
-        $A.enqueueAction(action);
+        helper.checkLocationAndProceed(component, 'CHECKIN', helper);
     },
+
     handleCheckOut : function(component, event, helper) {
-        var action = component.get("c.checkOutAttendance");
-        action.setParams({ contactId: component.get("v.recordId") });
-
-        action.setCallback(this, function(response) {
-            if (response.getState() === "SUCCESS") {
-                helper.showSuccessAlert1(component, response.getReturnValue());
-                component.set("v.isCheckOutDisabled", true);
-                component.set("v.isCheckInDisabled", true);
-            } else {
-                helper.showErrorAlert1(component, "Failed to check out.");
-            }
-        });
-        $A.enqueueAction(action);
+        helper.checkLocationAndProceed(component, 'CHECKOUT', helper);
     },
-
     /* ================= TAB HANDLERS ================= */
 
     handleShowTasksOnCalender : function(component) {
@@ -267,5 +274,6 @@
 
     refreshTaskPage : function() {
         location.reload();
-    }
+    },
+
 })

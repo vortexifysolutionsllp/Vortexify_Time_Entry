@@ -10,10 +10,19 @@
         <p class="dates"><b>No. Of Days:&nbsp; </b>{request.Days__c}</p>
         <p class="reason"><b>Reason&nbsp;</b>{request.Reason_for_Leave__c}</p>
 
+        <template if:true={showRejectReason}>
+            <lightning-textarea
+                label="Reason for Rejection"
+                value={rejectReason}
+                onchange={handleRejectReasonChange}
+                required>
+            </lightning-textarea>
+        </template>
+
         <template if:true={isPending}>
             <div class="actions">
                 <lightning-button variant="brand" label="Approve" onclick={approve}></lightning-button>
-                <lightning-button variant="destructive" label="Reject" onclick={reject}></lightning-button>
+                <lightning-button variant="destructive" label="Reject" onclick={handleRejectClick}></lightning-button>
             </div>
         </template>
     </div>
