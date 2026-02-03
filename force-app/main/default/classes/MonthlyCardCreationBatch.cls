@@ -67,15 +67,19 @@ global class MonthlyCardCreationBatch implements Database.Batchable<sObject>
         }
 
         insert monthlyCards;
-
         Map<Id, Time_Entry_Monthly_Card__c> monthCardByPRM = new Map<Id, Time_Entry_Monthly_Card__c>();
         for(Integer i = 0; i < projectList.size(); i++){
-            monthCardByPRM.put(projectList[i].Id, monthlyCards[i]);
+            if(monthlyCards.size() > i){
+                monthCardByPRM.put(projectList[i].Id, monthlyCards[i]);
+            }
         }
 
         // ===== CREATE WEEKLY CARDS =====
         for(Project_Resource_Mapping__c prm : projectList){
             Integer weekNum = 0;
+            if(!monthCardByPRM.containsKey(prm.Id)){
+                continue;
+            }
 
             for(Integer i = 0; i < numberOfWeek; i++){
                 weekNum++;

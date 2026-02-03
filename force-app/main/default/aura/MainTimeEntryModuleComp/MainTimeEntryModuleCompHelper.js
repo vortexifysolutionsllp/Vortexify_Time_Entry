@@ -146,7 +146,7 @@
                     targetLat, targetLng
                 );
 
-                if (distance <= 200) {
+                if (distance <= 600) {
                     console.log("Distance:", distance)
                     if (actionType === 'CHECKIN') {
                         helper.proceedCheckIn(component);
